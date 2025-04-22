@@ -1,0 +1,104 @@
+/* Animation au chargement des éléments */
+.form-group h6,
+.form-group input,
+.form-group textarea,
+.form-group .MuiInputBase-root,
+.form-group .MuiSelect-select,
+.form-group .MuiMenuItem-root {
+    opacity: 0;
+    animation: fadeIn 0.6s ease-out forwards;
+}
+
+/* Suppression des bordures pour le Select */
+.form-group .MuiOutlinedInput-notchedOutline {
+    border: none !important;
+}
+
+.form-group .MuiInputBase-root {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+
+
+/* Style minimaliste pour tous les champs de formulaire */
+.form-group input,
+.form-group textarea,
+.form-group .MuiInputBase-root {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #eee;
+    outline: none;
+    background-color: transparent;
+    transition: border-color 0.3s ease;
+}
+
+/* Style au focus */
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group .MuiInputBase-root.Mui-focused {
+    border-bottom-color: #1976d2; /* Couleur bleue Material-UI */
+}
+
+/* Suppression des bordures spécifiques pour Material-UI */
+.form-group .MuiOutlinedInput-notchedOutline {
+    border: none !important;
+}
+
+.form-group .MuiInputBase-root {
+    box-shadow: none !important;
+    padding-left: 0 !important;
+}
+
+/* Style pour le textarea */
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Délais d'animation progressifs */
+.form-group h6 { animation-delay: 0.1s; }
+.form-group .MuiInputBase-root { animation-delay: 0.2s; }
+.form-group input { animation-delay: 0.3s; }
+.form-group textarea { animation-delay: 0.4s; }
+
+/* Définir l'animation fadeIn */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+
+
+
+
+/* Boutons */
+.grp-btns-save-annul {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.7rem;
+    flex-wrap: wrap;
+}
+
+.grp-btns-save-annul .imagesUploadSec {
+    flex: 1 1 0;
+    min-width: 0;
+}
+
+.grp-btns-save-annul .imagesUploadSec button {
+    width: 100% !important;
+}
+
+@media (max-width: 576px) {
+    .grp-btns-save-annul .imagesUploadSec button {
+        font-size: 15px !important;
+    }
+}

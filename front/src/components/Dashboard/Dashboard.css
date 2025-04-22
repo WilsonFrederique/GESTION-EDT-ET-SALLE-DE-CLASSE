@@ -1,0 +1,219 @@
+
+/* Recherche enseignant */
+
+:root {
+    --primary-color: #4285f4;
+    --secondary-color: #f1f3f4;
+    --border-color: #dadce0;
+    --text-color: #202124;
+    --hover-color: #e8f0fe;
+    --radius: 8px;
+    --shadow: 0 1px 6px rgba(32, 33, 36, 0.1);
+  }
+  
+  .search-group {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    width: 100%;
+  }
+  
+  @media (min-width: 768px) {
+    .search-group {
+      display: grid;
+      grid-template-columns: 1fr auto;
+    }
+  }
+  
+  .search-input-group {
+    position: relative;
+    width: 100%;
+  }
+  
+  .search-input-nom,
+  .search-select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    font-size: 1rem;
+    color: var(--text-color);
+    background-color: white;
+    transition: all 0.2s ease;
+    box-sizing: border-box; 
+  }
+
+  body.dark .search-input-nom,
+  body.dark .search-select{
+    background: rgba(255, 255, 255, 0.042) !important;
+  }
+  
+  .search-input-nom {
+    padding-right: 3rem;
+  }
+  
+  .search-input-nom:focus,
+  .search-select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: var(--shadow);
+  }
+  
+  .search-select {
+    appearance: none;
+    -webkit-appearance: none;
+    padding-right: 3rem;
+    cursor: pointer;
+    width: 100%; 
+  }
+  
+  .search-button1,
+  .search-button2 {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 2.5rem;
+    background: none;
+    border: none;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    color: var(--primary-color);
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    transition: background-color 0.2s ease;
+  }
+  
+  .search-button1:hover,
+  .search-button2:hover {
+    background-color: var(--hover-color);
+  }
+  
+  .search-icon1,
+  .search-icon2 {
+    font-size: 1.25rem;
+  }
+  
+  /* Style spécifique pour le select */
+  .search-input-group:has(.search-select)::after {
+    content: "⌄";
+    position: absolute;
+    right: 2.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: var(--text-color);
+  }
+  
+  /* Responsive pour petits écrans */
+  @media (max-width: 767px) {
+    .search-group {
+        width: 100% !important;
+    }
+    .search-input-group {
+        width: 100%;
+    }
+  }
+
+
+
+
+
+
+
+
+  /* Table enseignant  */
+
+  .table-container {
+    width: 100%;
+    overflow-x: auto;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    margin: 1rem 0;
+  }
+  
+  .enseignants-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    font-size: 0.875rem;
+    color: #2b2d42;
+  }
+  
+  .enseignants-table thead {
+    background-color: #4361ee;
+    color: white;
+    text-align: left;
+  }
+  
+  .enseignants-table th {
+    padding: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.75rem;
+  }
+  
+  .enseignants-table td {
+    padding: 1rem;
+    border-bottom: 1px solid #edf2f4;
+    vertical-align: middle;
+  }
+  
+  body.dark .enseignants-table td {
+    padding: 1rem;
+    border-bottom: 1px solid #edf2f453;
+    vertical-align: middle;
+  }
+  
+  .enseignants-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+  
+  .enseignants-table tbody tr:hover {
+    background-color: #f8f9fa;
+  }
+  
+  body.dark .enseignants-table tbody tr:hover {
+    background-color: #f8f9fa0d !important;
+  }
+  
+  .enseignants-table td:last-child {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  .enseignants-table svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .enseignants-table svg:first-child {
+    color: #4361ee;
+  }
+  
+  .enseignants-table svg:first-child:hover {
+    color: #3a56d4;
+  }
+  
+  .enseignants-table svg:last-child {
+    color: #ef233c;
+  }
+  
+  .enseignants-table svg:last-child:hover {
+    color: #d90429;
+  }
+  
+  @media (max-width: 768px) {
+    .enseignants-table {
+      font-size: 0.8125rem;
+    }
+    
+    .enseignants-table th, 
+    .enseignants-table td {
+      padding: 0.75rem;
+    }
+  }
+  

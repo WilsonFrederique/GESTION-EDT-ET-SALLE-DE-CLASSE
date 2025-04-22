@@ -1,0 +1,371 @@
+
+.ensbl{
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+}
+
+/* Style moderne pour le tableau */
+.tableNiveau {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    animation: fadeIn 0.5s ease-out;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body.dark .tableNiveau{
+    background: rgba(255, 255, 255, 0.077);
+  }
+  
+  /* Animation d'apparition principale */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Style pour l'en-tête */
+  .thead-Niveau {
+    background: linear-gradient(135deg, #6e8efb, #a777e3);
+    color: white;
+    position: sticky;
+    top: 0;
+  }
+  
+  /* Style pour l'en-tête */
+  body.dark .thead-Niveau {
+    background: linear-gradient(135deg, #6e8ffb6b, #a877e33d);
+  }
+  
+  .tr-Niveau {
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  
+  .th-Niveau {
+    padding: 18px 15px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: relative;
+  }
+  
+  /* Effet de survol sur les cellules d'en-tête */
+  .th-Niveau:hover {
+    background: rgba(255, 255, 255, 0.15);
+  }
+  
+  /* Style pour le corps du tableau */
+  .tbody-Niveau .tr-Niveau {
+    border-bottom: 1px solid #f0f0f0;
+  }
+  
+  .tbody-Niveau .tr-Niveau:last-child {
+    border-bottom: none;
+  }
+  
+  /* Effet de survol sur les lignes */
+  .tbody-Niveau .tr-Niveau:hover {
+    background-color: #f5f7ff1b;
+    transform: translateX(4px);
+  }
+  
+  /* Style pour les cellules de données */
+  .td-Niveau {
+    padding: 16px 15px;
+    font-size: 0.95rem;
+    color: #444;
+    border-bottom: 1px solid #f0f0f0;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+body.dark .td-Niveau{
+      border-bottom: 1px solid transparent;
+  }
+  
+  /* Animation d'apparition pour le contenu des cellules */
+  .td-Niveau::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform: translateX(-100%);
+    animation: slideInContent 0.6s forwards;
+    animation-delay: calc(var(--row-index) * 0.1s + 0.3s);
+  }
+  
+  @keyframes slideInContent {
+    to {
+      transform: translateX(100%);
+    }
+  }
+  
+  /* Style spécifique pour les colonnes */
+  .td-Niveau:nth-child(1) { /* Matricule */
+    font-weight: 600;
+    color: #2c3e50;
+  }
+  
+  .td-Niveau:nth-child(5) { /* Âge */
+    text-align: center;
+    font-weight: 500;
+  }
+  
+  .td-Niveau:nth-child(7) { /* Téléphone */
+    font-family: 'Courier New', Courier, monospace;
+  }
+  
+  .td-Niveau:nth-child(8) { /* Email */
+    color: #3498db;
+    font-size: 0.9rem;
+  }
+  
+  body.dark .td-Niveau:nth-child(8) { /* Email */
+    color: #1687d2d8 !important;
+    font-size: 0.9rem;
+  }
+  
+  /* Style pour le groupe de boutons */
+  .grp-btns {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    border-bottom: none !important;
+  }
+  
+  /* Style pour les icônes */
+  .edit, .delet {
+    cursor: pointer;
+    font-size: 1.8rem;
+    transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    padding: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.7);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+body.dark .edit, .delet{
+      background: rgba(255, 255, 255, 0.055);
+  }
+  
+  .edit {
+    color: #2ecc71;
+  }
+  
+  .edit:hover {
+    background-color: rgba(46, 204, 113, 0.15);
+    transform: scale(1.15) rotate(5deg);
+    box-shadow: 0 3px 8px rgba(46, 204, 113, 0.3);
+  }
+  
+  .delet {
+    color: #e74c3c;
+  }
+  
+  .delet:hover {
+    background-color: rgba(231, 76, 60, 0.15);
+    transform: scale(1.15) rotate(-5deg);
+    box-shadow: 0 3px 8px rgba(231, 76, 60, 0.3);
+  }
+  
+  /* Effet de zebra */
+  .tbody-Niveau .tr-Niveau:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    /* Effet de zebra */
+  body.dark .tbody-Niveau .tr-Niveau:nth-child(even) {
+    background-color: #f9f9f90f;
+  }
+  
+  .tbody-Niveau .tr-Niveau:nth-child(even):hover {
+    background-color: #f1f3ff;
+  }
+  
+  /* Animation pour les lignes */
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateX(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  .tbody-Niveau .tr-Niveau {
+    animation: slideIn 0.5s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+  }
+  
+  /* Délai d'animation pour chaque ligne */
+  .tbody-Niveau .tr-Niveau:nth-child(1) { 
+    animation-delay: 0.1s;
+    --row-index: 1;
+  }
+  .tbody-Niveau .tr-Niveau:nth-child(2) { 
+    animation-delay: 0.2s;
+    --row-index: 2;
+  }
+  .tbody-Niveau .tr-Niveau:nth-child(3) { 
+    animation-delay: 0.3s;
+    --row-index: 3;
+  }
+  .tbody-Niveau .tr-Niveau:nth-child(4) { 
+    animation-delay: 0.4s;
+    --row-index: 4;
+  }
+  .tbody-Niveau .tr-Niveau:nth-child(5) { 
+    animation-delay: 0.5s;
+    --row-index: 5;
+  }
+  .tbody-Niveau .tr-Niveau:nth-child(6) { 
+    animation-delay: 0.6s;
+    --row-index: 6;
+  }
+  .tbody-Niveau .tr-Niveau:nth-child(7) { 
+    animation-delay: 0.7s;
+    --row-index: 7;
+  }
+  .tbody-Niveau .tr-Niveau:nth-child(8) { 
+    animation-delay: 0.8s;
+    --row-index: 8;
+  }
+  .tbody-Niveau .tr-Niveau:nth-child(9) { 
+    animation-delay: 0.9s;
+    --row-index: 9;
+  }
+  .tbody-Niveau .tr-Niveau:nth-child(10) { 
+    animation-delay: 0.10s;
+    --row-index: 10;
+  }
+  .tbody-Niveau .tr-Niveau:nth-child(11) { 
+    animation-delay: 0.11s;
+    --row-index: 11;
+  }
+  .tbody-Niveau .tr-Niveau:nth-child(12) { 
+    animation-delay: 0.12s;
+    --row-index: 12;
+  }
+  .tbody-Niveau .tr-Niveau:nth-child(13) { 
+    animation-delay: 0.13s;
+    --row-index: 13;
+  }
+  .tbody-Niveau .tr-Niveau:nth-child(14) { 
+    animation-delay: 0.14s;
+    --row-index: 14;
+  }
+  .tbody-Niveau .tr-Niveau:nth-child(15) { 
+    animation-delay: 0.15s;
+    --row-index: 15;
+  }
+  .tbody-Niveau .tr-Niveau:nth-child(16) { 
+    animation-delay: 0.16s;
+    --row-index: 16;
+  }
+  
+/* Animation pour le contenu qui apparaît */
+@keyframes contentFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.td-Niveau > * {
+    animation: contentFadeIn 0.4s ease-out forwards;
+    animation-delay: calc(var(--row-index) * 0.1s + 0.4s);
+}
+
+@media (max-width: 1455px) {
+    /* conteneur */
+    .table-responsive {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch; /* inertial scroll sur iOS */
+    }
+
+    /* réduit un peu le padding et la taille de police */
+    .th-Niveau, .td-Niveau {
+        padding: 8px 10px;
+        font-size: 0.8rem;
+    }
+}
+  
+
+
+@media (max-width: 1250px) {
+
+    /* on masque l’en‑tête classique */
+    .thead-Niveau {
+      display: none;
+    }
+  
+    /* chaque ligne devient un bloc */
+    .tbody-Niveau .tr-Niveau {
+      display: block;
+      margin-bottom: 1rem;
+      border-bottom: 2px solid #eee;
+      padding: 0.5rem 0;
+      padding-right: 1rem;
+    }
+  
+    /* chaque cellule passe en flex pour label + valeur */
+    .td-Niveau {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 0;
+      font-size: 0.85rem;
+    }
+  
+    /* on ajoute le label devant via ::before */
+    .td-Niveau:nth-of-type(1)::before { content: "Matricule"; font-weight:600; padding-left: 1rem; padding-right: 1rem; }
+    .td-Niveau:nth-of-type(2)::before { content: "Parcour"; padding-left: 1rem; padding-right: 1rem;   }
+    .td-Niveau:nth-of-type(3)::before { content: "Nom"; padding-left: 1rem; padding-right: 1rem;         }
+    .td-Niveau:nth-of-type(4)::before { content: "Prénom"; padding-left: 1rem; padding-right: 1rem;      }
+    .td-Niveau:nth-of-type(5)::before { content: "Âge"; padding-left: 1rem; padding-right: 1rem;         }
+    .td-Niveau:nth-of-type(6)::before { content: "Adresse"; padding-left: 1rem; padding-right: 1rem;     }
+    .td-Niveau:nth-of-type(7)::before { content: "Téléphone"; padding-left: 1rem; padding-right: 1rem;   }
+    .td-Niveau:nth-of-type(8)::before { content: "Email"; padding-left: 1rem; padding-right: 1rem;       }
+    .td-Niveau:nth-of-type(9)::before { content: "";    }
+  
+    /* on centre les icônes actions dans ce nouveau flow */
+    .td-Niveau.grp-btns {
+      justify-content: flex-end;
+      gap: 1rem;
+    }
+
+    .edit, .delet {
+        cursor: pointer;
+        font-size: 1.9rem;
+        transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        padding: 8px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.7);
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      }
+}
+  

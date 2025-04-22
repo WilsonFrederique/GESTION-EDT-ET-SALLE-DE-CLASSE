@@ -1,0 +1,164 @@
+/* Table  */
+.creneaux-table-container {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    margin: 2rem 0;
+    background: white;
+    animation: fadeIn 0.5s ease-out;
+}
+
+body.dark .creneaux-table-container{
+      background: rgba(255, 255, 255, 0.047) !important;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .creneaux-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+  }
+
+  .creneaux-thead th {
+    background-color: #0000000f;
+    color: #000;
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+    white-space: nowrap;
+}
+
+body.dark .creneaux-thead th{
+      background-color: #4e46e51f !important;
+  }
+
+  .creneaux-tbody tr {
+    border-bottom: 1px solid #f1f5f9;
+    transition: all 0.2s ease;
+  }
+
+  .creneaux-tbody tr:hover {
+    background-color: #f8fafc;
+  }
+
+  body.dark .creneaux-tbody tr:hover{
+    background: #ffffff0d !important;
+  }
+
+  .creneaux-tbody td {
+    padding: 1rem;
+    color: #334155;
+    white-space: nowrap;
+  }
+
+  /* Style pour les cellules vides */
+  .creneaux-tbody td:empty::before {
+    content: "-";
+    color: #94a3b8;
+  }
+
+  .actions-cell {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .action-btn {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+  }
+
+  .edit-btn {
+    color: #3b82f6;
+  }
+
+  .delete-btn {
+    color: #ef4444;
+  }
+
+  .action-btn:hover {
+    transform: scale(1.1);
+    background-color: #f1f5f9;
+  }
+
+  /* Style pour les heures */
+  .creneaux-tbody td:nth-child(3),
+  .creneaux-tbody td:nth-child(4) {
+    font-family: 'Courier New', monospace;
+    font-weight: 500;
+  }
+
+  /* Style pour les dates */
+  .creneaux-tbody td:nth-child(5),
+  .creneaux-tbody td:nth-child(6) {
+    font-size: 0.9rem;
+  }
+
+  /* Dark mode */
+  body.dark .creneaux-table-container {
+    background: #1e293b;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  body.dark .creneaux-thead th {
+    background-color: #4338ca;
+  }
+
+  body.dark .creneaux-tbody tr {
+    border-bottom-color: #334155;
+  }
+
+  body.dark .creneaux-tbody tr:hover {
+    background-color: #1f2937;
+  }
+
+  body.dark .creneaux-tbody td {
+    color: #e2e8f0;
+  }
+
+  body.dark .creneaux-tbody td:empty::before {
+    color: #64748b;
+  }
+
+  body.dark .action-btn:hover {
+    background-color: #334155;
+  }
+
+  /* Responsive */
+  @media (max-width: 992px) {
+    .creneaux-table-container {
+      font-size: 0.9rem;
+    }
+    
+    .creneaux-thead th,
+    .creneaux-tbody td {
+      padding: 0.75rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .creneaux-table-container {
+      border-radius: 0;
+      margin: 1rem -15px;
+      width: calc(100% + 30px);
+    }
+    
+    .creneaux-thead th,
+    .creneaux-tbody td {
+      padding: 0.6rem;
+      font-size: 0.85rem;
+    }
+  }

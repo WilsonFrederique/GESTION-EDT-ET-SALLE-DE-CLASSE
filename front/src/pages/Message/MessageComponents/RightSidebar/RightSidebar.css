@@ -1,0 +1,93 @@
+.rs{
+    color: #fff !important;
+    background: #f0efef !important;
+    position: relative !important;
+    height: 65vh !important;
+    overflow-y: scroll !important;
+}
+
+body.dark .rs{
+    background: #001030 !important; 
+}
+
+
+.rs-profile{
+    padding-top: 60px !important;
+    text-align: center !important;
+    max-width: 70% !important;
+    margin: auto !important;
+}
+
+.rs-profile img{
+    width: 110px !important;
+    aspect-ratio: 1/1 !important;
+    border-radius: 50% !important;
+    object-fit: cover !important;
+}
+
+.rs-profile h3{
+    font-size: 20px !important;
+    font-weight: 400 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 5px !important;
+    margin: 5px 0 !important;
+}
+
+.rs-profile p{
+    font-size: 13px !important;
+    opacity: 80% !important;
+    font-weight: 300 !important;
+}
+
+.rs hr{
+    border-color: #ffffff50 !important;
+    margin: 15px 0 !important;
+}
+
+body.light .rs hr{
+    border-color: #13131350 !important;
+}
+
+.rs-media{
+    padding: 0px 20px !important;
+    font-size: 13px !important;
+}
+
+.rs-media div{
+    max-height: 230px !important;
+    overflow-y: scroll !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr 1fr 1fr !important;
+    gap: 5px !important;
+    margin-top: 8px !important;
+}
+
+.rs-media div img{
+    width: 180px !important;
+    border-radius: 4px !important;
+    cursor: pointer !important;
+}
+
+.rs button{
+    position: absolute !important;
+    bottom: 8px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    background: #077eff !important;
+    color: #fff !important;
+    border: none !important;
+    font-size: 12px !important;
+    font-weight: 300 !important;
+    padding: 10px 65px !important;
+    border-radius: 20px !important;
+    cursor: pointer !important;
+}
+
+@media only screen and (min-width: 320px) and (max-width: 1000px){
+    .rs{
+        grid-template-columns: 1fr 1fr !important;
+        background: green;
+    }
+}

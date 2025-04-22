@@ -1,0 +1,148 @@
+.ls{
+    background: #f0efef !important;
+    color: #fff !important;
+    height: 65vh !important;
+}
+
+body.dark .ls{
+    background: #001030 !important;    
+}
+
+.ls-top{
+    padding: 0 20px 20px !important;
+}
+
+.ls-nav{
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+}
+
+.ls-nav .logo{
+    max-width: 60px !important;
+}
+
+.ls-nav .menu svg{
+    font-size: 20px !important;
+    opacity: 0.8 !important;
+    cursor: pointer !important;
+    color: black !important;
+}
+
+.ls-search{
+    background-color: #c9ced7 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    padding: 10px 12px !important;
+    margin-top: 20px !important;
+    border-radius: 6px !important;
+}
+
+body.dark .ls-search{
+    background-color: #1d366d !important;
+}
+
+.ls-search svg{
+    font-size: 18px !important;
+    color: #001030;
+}
+
+body.dark .ls-search svg{
+    color: #dbdbdb;
+}
+
+.ls-search input{
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    color: black !important;
+    font-size: 13px !important;
+}
+
+.ls-search input::placeholder{
+    color: rgb(41, 41, 41) !important;
+}
+
+body.dark .ls-search input::placeholder{
+    color: rgb(214, 214, 214) !important;
+}
+
+.ls-list{
+    display: flex !important;
+    flex-direction: column !important;
+    height: 70% !important;
+    overflow: auto !important;
+}
+
+.ls-list img{
+    width: 55px !important;
+    aspect-ratio: 1/1 !important;
+    border-radius: 50% !important;
+    object-fit: cover !important;
+}
+
+.friends{
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    padding: 10px 20px !important;
+    cursor: pointer !important;
+    font-size: 13px !important;
+}
+
+.friends div{
+    display: flex !important;
+    flex-direction: column !important;
+    line-height: -10;
+}
+
+.friends span{
+    font-size: 11px !important;
+}
+
+.friends:hover{
+    background-color: #077fff19 !important;
+}
+
+.friends:hover span{
+    color: #fff !important !important;
+}
+
+.ls-nav .menu{
+    position: relative !important;
+    padding: 10px 0 !important;
+}
+
+.menu .sub-menu{
+    position: absolute !important;
+    top: 100% !important;
+    right: 0 !important;
+    width: 130px !important;
+    padding: 20px !important;
+    border-radius: 5px !important;
+    background-color: #fff !important;
+    color: black !important;
+    display: none !important;
+}
+
+body.dark .menu .sub-menu{
+    background-color: #151581 !important;
+    color: black !important;
+}
+
+.sub-menu hr{
+    border: none !important;
+    height: 1px !important;
+    background: #a4a4a4 !important;
+    margin: 8px 0 !important;
+}
+
+.sub-menu p{
+    cursor: pointer !important;
+    font-size: 14px !important;
+}
+
+.menu:hover .sub-menu{
+    display: block !important;
+}

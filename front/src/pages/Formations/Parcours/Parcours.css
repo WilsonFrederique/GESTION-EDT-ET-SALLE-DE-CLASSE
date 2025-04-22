@@ -1,0 +1,148 @@
+/* Icône à droite */
+.card .fa-reg-plus-square-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  
+  .card .fa-reg-plus-square-container svg {
+    font-size: 2rem;
+    color: #007bff;
+    cursor: pointer;
+    transition: color 0.2s ease, transform 0.2s ease;
+  }
+  
+  .card .fa-reg-plus-square-container svg:hover {
+    color: #0056b3;
+    transform: scale(1.2);
+  }
+  
+
+
+
+/* TABLE PRINCIPALE */
+.tableFormation {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background-color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border-radius: 12px;
+    overflow: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  body.dark .tableFormation {
+    background-color: #ffffff17;
+  }
+  
+  /* TR */
+  .tr-formation {
+    transition: all 0.2s ease-in-out;
+    position: relative;
+  }
+  
+  .tr-formation:hover {
+    background-color: #f1f3f5;
+    transform: translateY(-1px);
+  }
+  
+  body.dark .tr-formation:hover {
+    background-color: #1a202c36;
+  }
+  
+  /* DÉGRADÉ BORDURE INFÉRIEURE */
+  .tr-formation:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 1.25rem;
+    right: 1.25rem;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, #e9ecef 20%, #e9ecef 80%, transparent 100%);
+  }
+  
+  body.dark .tr-formation:not(:last-child)::after {
+    background: linear-gradient(90deg, transparent 0%, #c1cadb98 20%, #bcc9e094 80%, transparent 100%);
+  }
+  
+  /* TBODY : supprimer les bordures classiques */
+  .tbody-formation {
+    border-top: none;
+  }
+  
+  .tbody-formation tr:not(:last-child),
+  .tableFormation .tbody-formation .tr-formation td {
+    border-bottom: none;
+  }
+  
+  /* CELLULES */
+  .td-formation {
+    padding: 1rem 1.25rem;
+    vertical-align: middle;
+    color: #212529;
+    font-size: 0.925rem;
+    border: none;
+  }
+  
+  /* EN-TÊTES */
+  .th-formation {
+    padding: 1rem 1.25rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 0.5px;
+    color: #6c757d;
+    background-color: #f8f9fa;
+    border: none;
+  }
+  
+  body.dark .th-formation {
+    background-color: #051a3a;
+  }
+  
+  /* BOUTONS D'ACTION */
+  .td-formation.grp-btns {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 10px;
+  }
+  
+  /* Icônes SVG */
+  .td-formation svg {
+    cursor: pointer;
+    font-size: 28px;
+    transition: transform 0.2s ease, color 0.2s ease, background 0.2s ease;
+    color: #555;
+    padding: 5px;
+    border-radius: 35%;
+  }
+  
+  /* Bouton Modifier */
+  .td-formation .edit {
+    color: #4CAF50;
+    background-color: transparent;
+  }
+  
+  .td-formation .edit:hover {
+    background-color: #267229d0;
+    color: #fff;
+  }
+  
+  /* Bouton Supprimer */
+  .td-formation .delet {
+    color: #b01525;
+  }
+  
+  .td-formation .delet:hover {
+    background-color: #b01525;
+    color: #fff;
+  }
+  
+  /* Hover général */
+  .td-formation svg:hover {
+    transform: scale(1.2);
+  }
+  
