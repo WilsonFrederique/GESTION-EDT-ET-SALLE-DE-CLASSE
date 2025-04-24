@@ -1,4 +1,4 @@
-import '../MatiersFrm/MatiersFrm.css'
+import './MatiersFrm.css';
 
 import React from 'react'
 

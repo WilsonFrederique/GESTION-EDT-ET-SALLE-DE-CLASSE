@@ -1,4 +1,4 @@
-import '../NiveauxFrm/NiveauxFrm.css'
+import './NiveauxFrm.css'
 
 import React from 'react'
 

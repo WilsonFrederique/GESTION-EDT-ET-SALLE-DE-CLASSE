@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 
-import Logo from '../../assets/images/Logo2.png'
+import Logo from '../../assets/images/Logo1.png'
 import Patern from '../../assets/images/pattern.webp' 
 import GoogleIcon from '../../assets/images/Google.png' 
 
@@ -45,17 +45,15 @@ const SignUp = () => {
             <section className='loginSection signUpSection'>
                 <div className="row">
                     <div className="col-md-8 d-flex align-items-center flex-column justify-content-center part1">
-                        <h1>BEST UX/UI FASHION <span className='text-primary'>ECOMMECE DASHBOARD</span> & ADMIN PANEL</h1>
+                        <h1>GESTION <span className='text-primary'>D'EMPLOI DU TEMPS ET SALLE DE CLASSE</span> & ADMIN</h1>
                         <p>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
-                            Iste expedita autem voluptate quaerat, id totam placeat 
-                            consequatur consequuntur dolor rerum incidunt.id totam placeat 
-                            consequatur consequuntur dolor rerum incidunt. Autem impedit 
-                            reprehenderit soluta ipsum dolorum, illo nesciunt facere!
+                            Notre plateforme vous permet de gérer efficacement les emplois du temps, d’organiser 
+                            les salles de classe et de simplifier l’administration scolaire au quotidien. Grâce à 
+                            une interface intuitive, la planification devient rapide, fluide et accessible à tous.
                         </p>
 
                         <div className='w-100 mt-4 mb-3'>
-                            <Link to={'/'}><Button className='btn-primary btn-lg btn-big mb-3'><FaHome /> Go to Home</Button></Link>
+                            <Link to={'/'}><Button className='btn-primary btn-lg btn-big mb-3'><FaHome />Aller à l'accueil</Button></Link>
                         </div>
                     </div>
 
@@ -63,24 +61,24 @@ const SignUp = () => {
                         <div className="loginBox">
                             <div className="logo text-center d-flex flex-column align-items-center gap-0">
                                 <img src={Logo} alt="Logo" width="90px" />
-                                <h5 className='fw-bold'>Register a new account to WiFre</h5>
+                                <h5 className='fw-bold'>Planification Scolaire</h5>
                             </div>
 
                             <div className="wrapper mt-3 card border">
                                 <form>
                                     <div className={`form-group position-relative ${inputIndex===0 && 'focus'}`}>
                                         <span className="icon"><FaUser /></span>
-                                        <input autoFocus type="text" className='form-control' placeholder='Enter your name' onFocus={()=>focusInput(0)} onBlur={()=>setInputIndex(null)} />
+                                        <input autoFocus type="text" className='form-control' placeholder='Entrez votre nom' onFocus={()=>focusInput(0)} onBlur={()=>setInputIndex(null)} />
                                     </div>
 
                                     <div className={`form-group position-relative ${inputIndex===1 && 'focus'}`}>
                                         <span className="icon"><MdEmail /></span>
-                                        <input type="text" className='form-control' placeholder='Enter your email' onFocus={()=>focusInput(1)} onBlur={()=>setInputIndex(null)} />
+                                        <input type="text" className='form-control' placeholder='Entrez votre adresse e-mail' onFocus={()=>focusInput(1)} onBlur={()=>setInputIndex(null)} />
                                     </div>                                    
 
                                     <div className={`form-group position-relative ${inputIndex===2 && 'focus'}`}>
                                         <span className="icon"><RiLockPasswordFill /></span>
-                                        <input type={`${isShowPassword === true ? 'text' : 'password'}`} className='form-control' placeholder='Enter your password' onFocus={()=>focusInput(2)} onBlur={()=>setInputIndex(null)} />
+                                        <input type={`${isShowPassword === true ? 'text' : 'password'}`} className='form-control' placeholder='Entrez votre mot de passe' onFocus={()=>focusInput(2)} onBlur={()=>setInputIndex(null)} />
 
                                         <span className="toggleShowPassordw" onClick={()=>setIsShowPassword(!isShowPassword)}>
                                             {
@@ -92,7 +90,7 @@ const SignUp = () => {
 
                                     <div className={`form-group position-relative ${inputIndex===3 && 'focus'}`}>
                                         <span className="icon"><IoShieldCheckmark /></span>
-                                        <input type={`${isShowConfirmPassword === true ? 'text' : 'password'}`} className='form-control' placeholder='Confirm your password' onFocus={()=>focusInput(3)} onBlur={()=>setInputIndex(null)} />
+                                        <input type={`${isShowConfirmPassword === true ? 'text' : 'password'}`} className='form-control' placeholder='Confirmez votre mot de passe' onFocus={()=>focusInput(3)} onBlur={()=>setInputIndex(null)} />
 
                                         <span className="toggleShowPassordw" onClick={()=>setIsShowConfirmPassword(!isShowConfirmPassword)}>
                                             {
@@ -102,29 +100,29 @@ const SignUp = () => {
 
                                     </div>
 
-                                    <FormControlLabel className='mb-2' control={<Checkbox />} label="I agree to the all Terms & Conditions" />
+                                    <FormControlLabel className='mb-2' control={<Checkbox />} label="J’accepte l’ensemble des conditions générales" />
 
                                     <div className="form-group">
-                                        <Button className="btn btn-primary btn-lg w-100 btn-big">Sign up</Button>
+                                        <Button className="btn btn-primary btn-lg w-100 btn-big">S'inscrire</Button>
                                     </div>
 
                                     <div className="form-group text-center mb-0">
 
                                         <div className="d-flex align-items-center justify-content-center or mt-3 mb-3">
                                             <span className="line"></span>
-                                            <span className="text">Or</span>
+                                            <span className="text">Ou</span>
                                             <span className="line"></span>
                                         </div>
 
                                         <Button variant="outlined" className='w-100 btn-lg btn-big loginWithGoogle'>
-                                        <img src={GoogleIcon} alt="GoogleIcon" width="24px" /> &nbsp; Sign up with google
+                                        <img src={GoogleIcon} alt="GoogleIcon" width="24px" /> &nbsp; S'inscrire avec Google
                                         </Button>
                                     </div>
                                 </form>
 
                                 <span className="text-center mt-3 d-block">
-                                    Don't have an account? 
-                                    <Link to={'/login'} className='link color ms-2'>Sign in</Link>
+                                    Vous avez déjà un compte ? 
+                                    <Link to={'/login'} className='link color ms-2'>Se connecter</Link>
                                 </span>
                             </div>
                         </div>

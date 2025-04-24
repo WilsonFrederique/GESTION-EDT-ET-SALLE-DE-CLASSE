@@ -1,4 +1,4 @@
-import '../EtudiantsFrm/EtudiantsFrm.css'
+import './EtudiantsFrm.css';
 
 import React, { useState } from 'react'
 

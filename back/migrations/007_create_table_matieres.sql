@@ -1,0 +1,4 @@
+CREATE TABLE IF NOT EXISTS matieres (
+    IDMatiere VARCHAR(10) PRIMARY KEY,
+    Matiere VARCHAR(50)
+);

@@ -59,7 +59,7 @@ const Header = () => {
                         <div className="col-sm-2 part1">
                             <Link to="/" className='d-flex align-items-center logo'>
                                 <img src={Logo} alt="Logo" />
-                                <span className="ms-0">Planification Scolaire</span>
+                                <span className="ms-0 text-logo">Planification Scolaire</span>
                             </Link>
                         </div>
 
@@ -142,11 +142,11 @@ const Header = () => {
                                                 <div className="dropdownInfo">
                                                     <h4>
                                                         <span>
-                                                            <b>Joh Fotsiny</b> added to his favorite list 
+                                                            <b>Joh Fotsiny</b> Ajouté à sa liste de favoris 
                                                             <b>Leather belt steve madden</b>
                                                         </span>
                                                     </h4>
-                                                    <p className="text-sky mb-0">few seconds ago</p>
+                                                    <p className="text-sky mb-0">Il y a quelques secondes</p>
                                                 </div>
                                             </div>                                   
                                         </MenuItem>
@@ -163,11 +163,11 @@ const Header = () => {
                                                 <div className="dropdownInfo">
                                                     <h4>
                                                         <span>
-                                                            <b>Joh Fotsiny</b> added to his favorite list 
+                                                            <b>Joh Fotsiny</b> Ajouté à sa liste de favoris 
                                                             <b>Leather belt steve madden</b>
                                                         </span>
                                                     </h4>
-                                                    <p className="text-sky mb-0">few seconds ago</p>
+                                                    <p className="text-sky mb-0">Il y a quelques secondes</p>
                                                 </div>
                                             </div>                                   
                                         </MenuItem>
@@ -184,11 +184,11 @@ const Header = () => {
                                                 <div className="dropdownInfo">
                                                     <h4>
                                                         <span>
-                                                            <b>Joh Fotsiny</b> added to his favorite list 
+                                                            <b>Joh Fotsiny</b> Ajouté à sa liste de favoris 
                                                             <b>Leather belt steve madden</b>
                                                         </span>
                                                     </h4>
-                                                    <p className="text-sky mb-0">few seconds ago</p>
+                                                    <p className="text-sky mb-0">Il y a quelques secondes</p>
                                                 </div>
                                             </div>                                   
                                         </MenuItem>
@@ -205,18 +205,18 @@ const Header = () => {
                                                 <div className="dropdownInfo">
                                                     <h4>
                                                         <span>
-                                                            <b>Joh Fotsiny</b> added to his favorite list 
-                                                            <b>Leather belt steve madden</b>
+                                                            <b>Joh Fotsiny</b> Ajouté à sa liste de favoris 
+                                                            <b>Ceinture en cuir Steve Madden</b>
                                                         </span>
                                                     </h4>
-                                                    <p className="text-sky mb-0">few seconds ago</p>
+                                                    <p className="text-sky mb-0"> Il y a quelques secondes</p>
                                                 </div>
                                             </div>                                   
                                         </MenuItem>
                                     </div>
 
                                     <div className="ps-2 py-2 p-2 pt-3 mb-0 w-100">
-                                        <Button className='btn btn-primary w-100'>View all notifications</Button>
+                                        <Button className='btn btn-primary w-100'>Voir toutes les notifications</Button>
                                     </div>
                                 </Menu>
 
@@ -266,19 +266,19 @@ const Header = () => {
                                         <ListItemIcon>
                                             <FaUser />
                                         </ListItemIcon>
-                                        My account
+                                        Mon compte
                                         </MenuItem>
                                         <MenuItem onClick={handleCloseMyAccDrop}>
                                         <ListItemIcon>
                                             <IoShieldHalfSharp />
                                         </ListItemIcon>
-                                        Reset Password
+                                        Réinitialiser le mot de passe
                                         </MenuItem>
                                         <MenuItem onClick={handleCloseMyAccDrop}>
                                         <ListItemIcon>
                                             <Logout fontSize="small" />
                                         </ListItemIcon>
-                                        Logout
+                                        Se déconnecter
                                         </MenuItem>
                                     </Menu>
                                 </div>

@@ -1,0 +1,4 @@
+CREATE TABLE IF NOT EXISTS parcours (
+    IDParcours VARCHAR(5) PRIMARY KEY,
+    Parcours VARCHAR(100)
+);
