@@ -76,6 +76,8 @@ const SidBar = () => {
                         </Button>
                         <div className={`submenuWrapper ${activeTab===1 && isToggleSubmenu===true ? 'colapse' : 'colapsed'}`}>
                             <ul className="submenu">
+                                <li><Link to="/niveauxFrm">Ajouter un niveau</Link></li>
+                                <li><Link to="/parcoursFrm">Ajouter un Parcour</Link></li>
                                 <li><Link to="/niveaux">Niveaux disponibles</Link></li>
                                 <li><Link to="/parcours">Parcours proposés</Link></li>
                             </ul>
@@ -89,6 +91,7 @@ const SidBar = () => {
                         </Button>
                         <div className={`submenuWrapperClient ${activeTab===8 && isToggleSubmenuClient===true ? 'colapse' : 'colapsed'}`}>
                             <ul className="submenu">
+                                <li><Link to="/etudiantsFrm">Ajouter un étudiant</Link></li>
                                 <li><Link to="/niveauTous">Tous les étudiants inscrits</Link></li>
                                 <li><Link to="/niveauL1">Niveau L1</Link></li>
                                 <li><Link to="/niveauL2">Niveau L2</Link></li>
@@ -106,6 +109,7 @@ const SidBar = () => {
                         </Button>
                         <div className={`submenuWrapperEDT ${activeTab===14 && isToggleSubmenuEDT===true ? 'colapse' : 'colapsed'}`}>
                             <ul className="submenu">
+                                <li><Link to="/edtFrm">Ajouter un EDT</Link></li>
                                 <li><Link to="/listesTousEDT">Tous les emplois du temps</Link></li>
                                 <li><Link to="/listesL1EDT">Emploi du temps de L1</Link></li>
                                 <li><Link to="/listesL2EDT">Emploi du temps de L2</Link></li>

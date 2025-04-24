@@ -1,4 +1,4 @@
-import '../CreneauxFrm/CreneauxFrm.css'
+import './CreneauxFrm.css'
 
 import React from 'react'
 

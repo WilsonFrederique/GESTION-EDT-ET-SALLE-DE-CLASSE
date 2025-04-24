@@ -1,4 +1,4 @@
-import '../ParcoursFrm/ParcoursFrm.css'
+import './ParcoursFrm.css'
 
 import React from 'react'
 

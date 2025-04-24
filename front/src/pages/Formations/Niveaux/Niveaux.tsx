@@ -1,4 +1,4 @@
-import '../Niveaux/Niveaux.css'
+import './Niveaux.css'
 
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import HomeIcon from "@mui/icons-material/Home";
@@ -57,6 +57,7 @@ const Niveaux = () => {
                 <div className="card shadow border-0 p-3 mt-4">
                     <div className="fa-reg-plus-square-container">
                         <a href="/niveauxFrm"><FaRegPlusSquare /></a>
+                        {/* <a href="#"><FaRegPlusSquare /></a> */}
                     </div>
                     <table className="tableFormation table-hover table-bordered rounded shadow-sm overflow-hidden">
                         <thead className="table-light">

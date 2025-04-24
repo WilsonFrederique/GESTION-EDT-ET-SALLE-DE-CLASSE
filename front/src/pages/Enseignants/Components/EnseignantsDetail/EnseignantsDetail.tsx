@@ -159,49 +159,6 @@ const EnseignantsDetail = () => {
 
       <div className="card productDetailsSection">
         <div className="row">
-          {/* <div className='pt-3 pb-3 ps-4'>
-            <div className='container pt-20'>
-              Produit(s) commandé(s) ...
-              <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-5">
-                
-                <div className="border-2 p-4 rounded-md shadow-lg cursor-pointer">
-                  <div className='d-flex group-cmd'>
-                    <div>
-                      <h1 className="font-semibold text-xl text-primary mt-2">jupe</h1>
-                      <p className="text-sm text-gray-600 mt-1">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Perferendis, aut.</p>
-                      <div className="mt-3 flex justify-between group-btn-prix-produit">
-                        <h3 className="d-flex text-xl font-semibold">
-                          <div>
-                              <span className='new'>$21.00</span> &nbsp;
-                              <del className="text-decoration-line-through old text-danger">$25.00</del>
-                          </div>
-                        </h3>
-                      </div>
-                    </div>
-                    <div className='place-img-produit-cmd-de-client'>
-                      <img src={Jupe} className="w-full h-40 object-cover rounded-md" />
-                      <div className='plave-quantite'>
-                        <p className='p-quantite'>Quantité</p> <span className='span-cantite-chiffre'>03</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className='group-cmd-btn mt-3 flex justify-between gap-1.5'>
-                      <div className='d-flex'>
-                        <MdDelete className='icon-produit' /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <div>
-                          Payment &nbsp;&nbsp;<span className='spna-oui-non'>Oui</span>
-                        </div>
-                      </div>
-                      <div className='btn-right-cmd'>
-                        <FaGetPocket className='icon-produit-right rotate' />
-                        <FaGetPocket className='icon-produit-right' />
-                      </div>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-          </div> */}
         </div>
       </div>
 

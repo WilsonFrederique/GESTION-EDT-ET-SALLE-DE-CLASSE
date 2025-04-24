@@ -1,4 +1,4 @@
-import '../NiveauM1/NiveauM1.css'
+import './NiveauM1.css'
 import '../Niveau.css'
 
 import Breadcrumbs from "@mui/material/Breadcrumbs";
@@ -59,6 +59,7 @@ const NiveauM1 = () => {
                     <div className="fa-reg-plus-square-container ensbl">
                         <div>Liste des étudiants inscrits en Master 1</div>
                         <a href="/etudiantsFrm"><FaRegPlusSquare /></a>
+                        {/* <a href="#"><FaRegPlusSquare /></a> */}
                     </div>
                     
                     <table className="tableNiveau">

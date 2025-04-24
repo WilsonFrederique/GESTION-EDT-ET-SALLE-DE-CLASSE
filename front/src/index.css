@@ -540,7 +540,14 @@ body.dark .footer-text p{
     color: #fff;
 }
 
+@media (max-width: 580px){    
+}
+
 @media (max-width: 576px){
+    header .logo span{
+        display: none !important;
+    }
+
     .footer{
         flex-direction: column-reverse;
     }

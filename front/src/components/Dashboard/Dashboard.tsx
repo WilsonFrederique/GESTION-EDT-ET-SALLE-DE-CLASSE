@@ -158,13 +158,6 @@ const [currentPage, setCurrentPage] = useState(1);
                 </div>
 
                 <div className="text-white fw-bold">
-                    {/* <Chart
-                        chartType="PieChart"
-                        width="100%"
-                        height="100%"
-                        data={dataChart}
-                        options={options}
-                    /> */}
                     <Chart
                         chartEvents={[
                             {
@@ -236,7 +229,8 @@ const [currentPage, setCurrentPage] = useState(1);
                 <div>Emploi du temps</div>
                 <div>
                     <a href="#"><ImPrinter className='impression' /></a> &nbsp;&nbsp;
-                    <a href="/edtFrm"><FaRegPlusSquare /></a>
+                    {/* <a href="/edtFrm"><FaRegPlusSquare /></a> */}
+                    <a href=""><FaRegPlusSquare /></a>
                 </div>
             </div>
     

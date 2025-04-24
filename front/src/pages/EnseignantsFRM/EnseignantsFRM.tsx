@@ -1,4 +1,4 @@
-import '../EnseignantsFRM/EnseignantsFRM.css'
+import './EnseignantsFRM.css'
 
 import React, { useState } from 'react'
 
