@@ -1,4 +1,4 @@
-import '../EdtFrm/EdtFrm.css'
+import './EdtFrm.css'
 
 import React, { useState } from 'react'
 

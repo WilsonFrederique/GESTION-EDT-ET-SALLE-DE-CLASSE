@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import '../EnseignantsTousDetails/EnseignantsTousDetails.css'
+import './EnseignantsTousDetails.css'
 
 
 import Chip from '@mui/material/Chip';

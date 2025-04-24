@@ -1,5 +1,5 @@
 import React from 'react'
-import '../ListesM1EDT/ListesM1EDT.css'
+import './ListesM1EDT.css'
 import '../EDT.css'
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import HomeIcon from "@mui/icons-material/Home";
@@ -91,6 +91,7 @@ const ListesM1EDT = () => {
                         <div>
                             <a href="#"><ImPrinter className='impression' /></a> &nbsp;&nbsp;
                             <a href="/edtFrm"><FaRegPlusSquare /></a>
+                            {/* <a href="#"><FaRegPlusSquare /></a> */}
                         </div>
                     </div>
 

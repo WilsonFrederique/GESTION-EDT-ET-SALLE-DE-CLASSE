@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import '../ListesTousEDT/ListesTousEDT.css'
+import './ListesTousEDT.css'
 import '../EDT.css'
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import HomeIcon from "@mui/icons-material/Home";
@@ -105,7 +105,8 @@ const ListesTousEDT = () => {
                         <div>Emploi du temps</div>
                         <div>
                             <a href="#"><ImPrinter className='impression' /></a> &nbsp;&nbsp;
-                            <a href="/edtFrm"><FaRegPlusSquare /></a>
+                            {/* <a href="/edtFrm"><FaRegPlusSquare /></a> */}
+                            <a href="#"><FaRegPlusSquare /></a>
                         </div>
                     </div>
             

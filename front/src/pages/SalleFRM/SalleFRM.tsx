@@ -1,4 +1,4 @@
-import '../SalleFRM/SalleFRM.css'
+import './SalleFRM.css'
 
 import React from 'react'
 

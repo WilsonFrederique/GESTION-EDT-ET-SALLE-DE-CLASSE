@@ -23,6 +23,7 @@ const EnseignantsLists = () => {
                 <CiMenuKebab />
                 <div className="sub-menu">
                 <a href="/enseignantsFRM"><p>Ajouter</p></a>
+                {/* <a href="#"><p>Ajouter</p></a> */}
                 <hr />
                 <a href="/enseignants/details/tous"><p>Liste en détail</p></a>
                 </div>
