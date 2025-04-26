@@ -149,13 +149,17 @@ body.dark .search-input{
   }
 
   .matieres-thead th {
-    background-color: #00000023;
+    background-color: #00000012;
     color: black;
     padding: 1rem;
     text-align: left;
     font-weight: 600;
     position: sticky;
     top: 0;
+  }
+
+  body.dark .matieres-thead th{
+    background: #3b83f618 !important;
   }
 
   .matieres-tbody tr {
@@ -279,3 +283,161 @@ body.dark .search-input{
       font-size: 0.75rem;
     }
   }
+
+
+
+
+
+
+  /* Button Moderne Action Dans Tables */
+
+  /* Conteneur des actions */
+.actions-cell-moderne {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem 0;
+}
+
+/* Style de base pour tous les boutons */
+.actions-cell-moderne a {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Effet de halo au survol */
+.actions-cell-moderne a::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* Bouton Édition */
+.edit-moderne {
+  color: #10b981;
+  font-size: 1.1rem;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.actions-cell-moderne a:hover .edit-moderne {
+  color: #0e9f6e;;
+  transform: scale(1.15);
+}
+
+.actions-cell-moderne a[href*="details"] {
+  background-color: rgba(74, 108, 247, 0.1);
+}
+
+.actions-cell-moderne a[href*="details"]:hover {
+  background-color: rgba(74, 108, 247, 0.2);
+}
+
+.actions-cell-moderne a[href*="details"]::after {
+  box-shadow: 0 0 15px rgba(74, 108, 247, 0.4);
+}
+
+/* Bouton Détails */
+.detail-moderne {
+  color: #4a6cf7;
+  font-size: 1.1rem;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.actions-cell-moderne a:hover .detail-moderne {
+  color: #3a5ce4;
+  transform: scale(1.15);
+}
+
+.actions-cell-moderne a[href*="modifier"] {
+  background-color: rgba(16, 185, 129, 0.1);
+}
+
+.actions-cell-moderne a[href*="modifier"]:hover {
+  background-color: rgba(16, 185, 129, 0.2);
+}
+
+.actions-cell-moderne a[href*="modifier"]::after {
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
+}
+
+/* Bouton Suppression */
+.delet-moderne {
+  color: #ef4444;
+  font-size: 1.1rem;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.actions-cell-moderne a:hover .delet-moderne {
+  color: #dc2626;
+  transform: scale(1.15);
+}
+
+.actions-cell-moderne a:has(.delet-moderne) {
+  background-color: rgba(239, 68, 68, 0.1);
+}
+
+.actions-cell-moderne a:has(.delet-moderne):hover {
+  background-color: rgba(239, 68, 68, 0.2);
+}
+
+.actions-cell-moderne a:has(.delet-moderne)::after {
+  box-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
+}
+
+/* Effets communs au survol */
+.actions-cell-moderne a:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.actions-cell-moderne a:hover::after {
+  opacity: 1;
+}
+
+/* Animation au clic */
+.actions-cell-moderne a:active {
+  transform: translateY(0) scale(0.95);
+  transition: transform 0.1s ease;
+}
+
+/* Tooltip moderne */
+.actions-cell-moderne a {
+  position: relative;
+}
+
+.actions-cell-moderne a::before {
+  content: attr(title);
+  position: absolute;
+  bottom: -2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, bottom 0.2s ease;
+  z-index: 10;
+}
+
+.actions-cell-moderne a:hover::before {
+  opacity: 1;
+  bottom: -2.8rem;
+}

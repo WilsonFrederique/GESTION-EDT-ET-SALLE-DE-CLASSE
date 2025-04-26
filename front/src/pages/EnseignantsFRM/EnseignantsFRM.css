@@ -1,3 +1,97 @@
+/* STYLE DU CHAMP TÉLÉPHONE AVEC PRÉFIXE +261 */
+.form-group .input-group {
+    display: flex;
+    align-items: center;
+    margin-top: 0.5rem;
+    position: relative;
+    transition: all 0.3s ease;
+  }
+  
+  .form-group .input-group-text {
+    background-color: #f8f9fa;
+    border: 1px solid #ced4da;
+    border-right: none;
+    padding: 0.65rem 0.75rem;
+    border-radius: 8px 0 0 8px;
+    font-size: 1rem;
+    color: #495057;
+    font-weight: 500;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+  }
+  
+  .form-group .form-control.control {
+    border-left: none;
+    border-radius: 0 8px 8px 0;
+    padding: 0.65rem 0.75rem;
+    height: auto;
+    transition: all 0.3s ease;
+    box-shadow: none;
+    border: 1px solid #ced4da;
+    border-left: 0;
+  }
+  
+  /* Effets au focus */
+  .form-group .input-group:focus-within .input-group-text {
+    border-color: #4361ee;
+    background-color: rgba(67, 97, 238, 0.05);
+    color: #4361ee;
+  }
+  
+  .form-group .input-group:focus-within .form-control.control {
+    border-color: #4361ee;
+    box-shadow: 0 0 0 0.2rem rgba(67, 97, 238, 0.15);
+  }
+  
+  /* Style pour l'état désactivé */
+  .form-group .input-group.disabled .input-group-text,
+  .form-group .input-group.disabled .form-control.control {
+    background-color: #e9ecef;
+    opacity: 1;
+  }
+  
+  /* Style pour l'état erreur */
+  .form-group .input-group.error .input-group-text,
+  .form-group .input-group.error .form-control.control {
+    border-color: #dc3545;
+  }
+  
+  /* Animation */
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-5px); }
+    40%, 80% { transform: translateX(5px); }
+  }
+  
+  .form-group .input-group.error {
+    animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .form-group .input-group-text,
+    .form-group .form-control.control {
+      padding: 0.5rem 0.65rem;
+      font-size: 0.9rem;
+    }
+  }
+  
+  /* Intégration avec votre style existant */
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+  
+  .form-group label h6 {
+    margin-bottom: 0.5rem;
+    color: #2d3748;
+    font-weight: 600;
+  }
+
+
+
+
 /* Style moderne et élégant pour l'input file */
 .form-group .file-upload-container {
     --primary-color: #4361ee;

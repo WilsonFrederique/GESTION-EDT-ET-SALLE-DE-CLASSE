@@ -37,13 +37,14 @@ const Enseignants = () => {
                 <div className="card shadow border-0 w-100 flex-row p-4">
                     <h5 className="mb-0">Liste des enseignants</h5>
                     <Breadcrumbs aria-label="breadcrumb" className="ms-auto breadcrumb_">
-                        <StyledBreadcrumb
-                        className="StyledBreadcrumb"
-                        component="a"
-                        href="#"
-                        label="Accueil"
-                        icon={<HomeIcon fontSize="small" />}
-                        />
+                        <a href="/">
+                            <StyledBreadcrumb
+                            className="StyledBreadcrumb"
+                            component="a"
+                            label="Accueil"
+                            icon={<HomeIcon fontSize="small" />}
+                            />
+                        </a>
                         <StyledBreadcrumb
                         className="StyledBreadcrumb"
                         label="Enseignants"

@@ -159,14 +159,17 @@ export default function App() {
 
               <Route path="/enseignants" element={<Enseignants />} />
               <Route path="/enseignantsFRM" element={<EnseignantsFRM />} />
-              <Route path="/enseignants/details/tous" element={<EnseignantsTousDetails />} />
-              <Route path="/enseignants/details" element={<EnseignantsDetail />} />
+              <Route path="/modifierEnseignantsFRM/:cinEns" element={<EnseignantsFRM />} />
+              {/* <Route path="/enseignants/details/tous" element={<EnseignantsTousDetails />} /> */}
+              <Route path="/enseignants/details/:cinEns" element={<EnseignantsDetail />} />
 
               <Route path="/niveaux" element={<Niveaux />} />
               <Route path="/niveauxFrm" element={<NiveauxFrm />} />
+              <Route path="/modifierNiveauxFrm/:IDNiveaux" element={<NiveauxFrm />} />
               
               <Route path="/parcours" element={<Parcours />} />
               <Route path="/parcoursFrm" element={<ParcoursFrm />} />
+              <Route path="/modifierParcoursFrm/:IDParcours" element={<ParcoursFrm />} />
 
               <Route path="/niveauL1" element={<NiveauL1 />} />              
               <Route path="/niveauL2" element={<NiveauL2 />} />
@@ -175,6 +178,7 @@ export default function App() {
               <Route path="/niveauM2" element={<NiveauM2 />} />
               <Route path="/niveauTous" element={<NiveauTous />} />
               <Route path="/etudiantsFrm" element={<EtudiantsFrm />} />
+              <Route path="/modifierEtudiantsFrm/:Matricule" element={<EtudiantsFrm />} />
 
               <Route path="/listesL1EDT" element={<ListesL1EDT />} />
               <Route path="/listesL2EDT" element={<ListesL2EDT />} />
@@ -183,15 +187,20 @@ export default function App() {
               <Route path="/listesM2EDT" element={<ListesM2EDT />} />
               <Route path="/listesTousEDT" element={<ListesTousEDT />} />
               <Route path="/edtFrm" element={<EdtFrm />} />
+              <Route path="/modifierEdtFrm/:IDEdt" element={<EdtFrm />} />
 
               <Route path="/matiersListe" element={<MatiersListe />} />
               <Route path="/matiereFrm" element={<MatiersFrm />} />
+              <Route path="/modifierMatiereFrm/:IDMatiere" element={<MatiersFrm />} />
 
               <Route path="/salleListe" element={<SalleListe />} />
+              <Route path="/salleListe/details/:IDSalle" element={<SalleListe />} />
               <Route path="/salleFRM" element={<SalleFRM />} />
+              <Route path="/modifierSalleFRM/:IDSalle" element={<SalleFRM />} />
 
               <Route path="/creneauxListe" element={<CreneauxListe />} />
               <Route path="/creneauxFrm" element={<CreneauxFrm />} />
+              <Route path="/modifierCreneauxFrm/:IDCreneaux" element={<CreneauxFrm />} />
 
             </Routes>
           </div>

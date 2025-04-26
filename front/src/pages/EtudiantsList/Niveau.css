@@ -347,12 +347,6 @@ body.dark .edit, .delet{
     .td-Niveau:nth-of-type(7)::before { content: "Téléphone"; padding-left: 1rem; padding-right: 1rem;   }
     .td-Niveau:nth-of-type(8)::before { content: "Email"; padding-left: 1rem; padding-right: 1rem;       }
     .td-Niveau:nth-of-type(9)::before { content: "";    }
-  
-    /* on centre les icônes actions dans ce nouveau flow */
-    .td-Niveau.grp-btns {
-      justify-content: flex-end;
-      gap: 1rem;
-    }
 
     .edit, .delet {
         cursor: pointer;

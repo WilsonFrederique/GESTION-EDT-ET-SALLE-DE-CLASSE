@@ -192,15 +192,15 @@ body.dark .matieres-thead th{
     gap: 0.5rem;
   }
 
-  .action-btn {
+  .btns-actions {
     border: none;
     background: transparent;
     cursor: pointer;
     padding: 0.5rem;
     border-radius: 50%;
     display: flex;
+    gap: 0.8rem;
     align-items: center;
-    justify-content: center;
     transition: all 0.2s ease;
   }
 
@@ -254,3 +254,10 @@ body.dark .matieres-thead th{
       gap: 0.3rem;
     }
   }
+
+
+
+
+
+
+

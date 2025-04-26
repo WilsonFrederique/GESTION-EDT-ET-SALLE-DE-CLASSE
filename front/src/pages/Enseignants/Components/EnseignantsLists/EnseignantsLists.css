@@ -122,29 +122,96 @@ body.dark .ls-search input::placeholder{
     font-size: 13px !important;
 }
 
-.btn-action-clients svg{
-    font-size: 2.5em;
-    margin: 0 0.2em;
-    color: #204184;
-    cursor: pointer;
-    padding: 0 0.2em;
+/* Conteneur des boutons d'action */
+.btn-action-clients {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+/* Style de base pour tous les boutons */
+.btn-action-clients a, 
+.btn-action-clients button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
+    background: #f8f9fa;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+    border: none;
+    cursor: pointer;
+    color: #495057;
 }
 
-.btn-action-clients .icon-action-clien1:hover{
-    color: rgb(39, 27, 212);
-    background: #b8c8ec7d;
+body.dark .btn-action-clients a, 
+body.dark .btn-action-clients button{
+    background: #ffffff16 !important;
 }
 
-.btn-action-clients .icon-action-clien2:hover{
-    color: rgb(21, 134, 68);
-    background: #b8c8ec7d;
+/* Effet au survol */
+.btn-action-clients a:hover, 
+.btn-action-clients button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
-.btn-action-clients .icon-action-clien3:hover{
-    color: rgb(212, 67, 27);
-    background: #b8c8ec7d;
+/* Icône Vue (Eye) */
+.icon-action-clien1 {
+    font-size: 16px;
+    color: #228be6;
 }
+
+/* Icône Modification */
+.icon-action-clien2 {
+    font-size: 16px;
+    color: #09901e;
+}
+
+/* Icône Suppression */
+.icon-action-clien3 {
+    font-size: 16px;
+    color: #fa5252;
+}
+
+/* Animation au clic */
+.btn-action-clients a:active, 
+.btn-action-clients button:active {
+    transform: scale(0.95);
+}
+
+/* Style spécifique pour chaque bouton */
+.btn-action-clients a:nth-child(1):hover {
+    background-color: rgba(34, 139, 230, 0.1);
+}
+
+.btn-action-clients a:nth-child(2):hover {
+    background-color: rgba(250, 176, 5, 0.1);
+}
+
+.btn-action-clients button:hover {
+    background-color: rgba(250, 82, 82, 0.1);
+}
+
+/* Responsive pour petits écrans */
+@media (max-width: 768px) {
+    .btn-action-clients {
+        gap: 8px;
+    }
+    .btn-action-clients a, 
+    .btn-action-clients button {
+        width: 32px;
+        height: 32px;
+    }
+    .icon-action-clien1,
+    .icon-action-clien2,
+    .icon-action-clien3 {
+        font-size: 14px;
+    }
+}
+
 
 .friends div{
     display: flex !important;

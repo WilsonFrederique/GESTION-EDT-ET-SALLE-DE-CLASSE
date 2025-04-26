@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS enseignants (
-    cinEns VARCHAR(12) PRIMARY KEY,
+    cinEns VARCHAR(14) PRIMARY KEY,
     Nom VARCHAR(50),
     Prenom VARCHAR(50),
     Sexe VARCHAR(10),
