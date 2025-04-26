@@ -1,16 +1,25 @@
 import './NiveauTous.css'
-import '../Niveau.css'
+import { useEffect, useState, useMemo } from "react";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import HomeIcon from "@mui/icons-material/Home";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { emphasize, styled } from "@mui/material/styles";
 import Chip from "@mui/material/Chip";
-
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogTitle from "@mui/material/DialogTitle";
 
 import { GoMoveToTop } from "react-icons/go";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { FaRegPlusSquare } from "react-icons/fa";
+import { IoSearchOutline } from "react-icons/io5";
+
+import { getAllEtudiants, deleteEtudiant } from '../../../services/etudiants_api';
+import type { Etudiant } from '../../../services/etudiants_api';
 
 const NiveauTous = () => {
     const StyledBreadcrumb = styled(Chip)(({ theme }) => {
@@ -33,8 +42,115 @@ const NiveauTous = () => {
         };
     });
 
+    // États
+    const [searchTerm, setSearchTerm] = useState("");
+    const [etudiants, setEtudiants] = useState<Etudiant[]>([]);
+    const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+    const [etudiantToDelete, setEtudiantToDelete] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
+
+    // Charger les étudiants
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const data = await getAllEtudiants();
+                setEtudiants(data);
+            } catch (error) {
+                console.error("Erreur lors du chargement des étudiants :", error);
+                toast.error("Erreur lors du chargement des étudiants");
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        fetchData();
+    }, []);
+
+    // Filtrage des étudiants
+    const filteredEtudiants = useMemo(() => {
+        if (!searchTerm) return etudiants;
+        
+        const term = searchTerm.toLowerCase();
+        return etudiants.filter(etudiant =>
+            etudiant.Matricule.toLowerCase().includes(term) ||
+            etudiant.Nom.toLowerCase().includes(term) ||
+            etudiant.Prenom.toLowerCase().includes(term) ||
+            etudiant.IDParcours.toLowerCase().includes(term) ||
+            etudiant.Adresse?.toLowerCase().includes(term) ||
+            etudiant.Telephone?.includes(term) ||
+            etudiant.Email?.toLowerCase().includes(term)
+        );
+    }, [etudiants, searchTerm]);
+
+    // Gestion de la suppression
+    const handleDeleteClick = (Matricule: string) => {
+        setEtudiantToDelete(Matricule);
+        setOpenDeleteDialog(true);
+    };
+
+    const handleConfirmDelete = async () => {
+        if (!etudiantToDelete) return;
+        
+        try {
+            await deleteEtudiant(etudiantToDelete);
+            toast.success("Étudiant supprimé avec succès");
+            setEtudiants(etudiants.filter(e => e.Matricule !== etudiantToDelete));
+        } catch (error) {
+            console.error("Erreur lors de la suppression de l'étudiant :", error);
+            toast.error(error instanceof Error ? error.message : "Erreur lors de la suppression");
+        } finally {
+            setOpenDeleteDialog(false);
+            setEtudiantToDelete(null);
+        }
+    };
+
+    const handleCancelDelete = () => {
+        setOpenDeleteDialog(false);
+        setEtudiantToDelete(null);
+    };
+
     return (
         <div>
+            {/* Toast Container */}
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="colored"
+            />
+
+            {/* Dialog de confirmation de suppression */}
+            <Dialog
+                open={openDeleteDialog}
+                onClose={handleCancelDelete}
+                aria-labelledby="alert-dialog-title"
+                classes={{ paper: 'delete-confirmation-dialog' }}
+            >
+                <DialogTitle id="alert-dialog-title">
+                    <div className="dialog-icon">
+                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" strokeWidth="2"/>
+                            <path d="M12 8V12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                            <path d="M12 16H12.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                        </svg>
+                    </div>
+                    Êtes-vous sûr de vouloir supprimer cet étudiant ?
+                </DialogTitle>
+                <DialogActions>
+                    <Button className="cancel-btn" onClick={handleCancelDelete}>
+                        Annuler
+                    </Button>
+                    <Button className="confirm-btn" onClick={handleConfirmDelete} autoFocus>
+                        Confirmer
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
             <div className="right-content w-100">
                 <div className="card shadow border-0 w-100 flex-row p-4">
                     <h5 className="mb-0">Tous les étudiants inscrits</h5>
@@ -55,12 +171,37 @@ const NiveauTous = () => {
                     </Breadcrumbs>
                 </div>
 
+                {/* Barre de recherche améliorée */}
+                <div className="card shadow border-0 p-3 mt-4">
+                    <div className="search-container">
+                        <form 
+                            className="search-form"
+                            onSubmit={(e) => e.preventDefault()}
+                        >
+                            <input 
+                                type="text" 
+                                className="search-input" 
+                                placeholder="Rechercher par matricule, nom, prénom, parcours..."
+                                aria-label="Rechercher des étudiants"
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                            />
+                            <button 
+                                type="submit" 
+                                className="search-button"
+                                aria-label="Lancer la recherche"
+                                disabled={isLoading}
+                            >
+                                <IoSearchOutline className="search-icon" />
+                            </button>
+                        </form>
+                    </div>
+                </div>
 
                 <div className="card shadow border-0 p-3 mt-4">
                     <div className="fa-reg-plus-square-container ensbl">
                         <div>Liste de tous les étudiants inscrits</div>
                         <a href="/etudiantsFrm"><FaRegPlusSquare /></a>
-                        {/* <a href="#"><FaRegPlusSquare /></a> */}
                     </div>
                     
                     <table className="tableNiveau">
@@ -79,250 +220,48 @@ const NiveauTous = () => {
                         </thead>
 
                         <tbody className='tbody-Niveau'>
-                            <tr className='tr-Niveau'>
-                                <td className='td-Niveau'>2555</td>
-                                <td className='td-Niveau'>GB</td>
-                                <td className='td-Niveau'>Toky</td>
-                                <td className='td-Niveau'>Jonah</td>
-                                <td className='td-Niveau'>14</td>
-                                <td className='td-Niveau'>Tanambao</td>
-                                <td className='td-Niveau'>034 44 444 44</td>
-                                <td className='td-Niveau'>tokyjonah@gmail.com</td>
-                                <td className='td-Niveau grp-btns'>
-                                    <FaEdit className='edit' />
-                                    <FaTrash className='delet' />
-                                </td>
-                            </tr>
-
-                            <tr className='tr-Niveau'>
-                                <td className='td-Niveau'>1001</td>
-                                <td className='td-Niveau'>IG</td>
-                                <td className='td-Niveau'>Rakoto</td>
-                                <td className='td-Niveau'>Jean</td>
-                                <td className='td-Niveau'>25</td>
-                                <td className='td-Niveau'>Antananarivo</td>
-                                <td className='td-Niveau'>034 11 111 11</td>
-                                <td className='td-Niveau'>rakoto.jean@mail.mg</td>
-                                <td className='td-Niveau grp-btns'>
-                                    <FaEdit className='edit' />
-                                    <FaTrash className='delet' />
-                                </td>
-                            </tr>
-
-                            <tr className='tr-Niveau'>
-                                <td className='td-Niveau'>1002</td>
-                                <td className='td-Niveau'>ASR</td>
-                                <td className='td-Niveau'>Rasoa</td>
-                                <td className='td-Niveau'>Marie</td>
-                                <td className='td-Niveau'>22</td>
-                                <td className='td-Niveau'>Fianarantsoa</td>
-                                <td className='td-Niveau'>034 22 222 22</td>
-                                <td className='td-Niveau'>rasoa.marie@mail.mg</td>
-                                <td className='td-Niveau grp-btns'>
-                                    <FaEdit className='edit' />
-                                    <FaTrash className='delet' />
-                                </td>
-                            </tr>
-
-                            <tr className='tr-Niveau'>
-                                <td className='td-Niveau'>1003</td>
-                                <td className='td-Niveau'>IG</td>
-                                <td className='td-Niveau'>Randria</td>
-                                <td className='td-Niveau'>Paul</td>
-                                <td className='td-Niveau'>19</td>
-                                <td className='td-Niveau'>Toamasina</td>
-                                <td className='td-Niveau'>034 33 333 33</td>
-                                <td className='td-Niveau'>randria.paul@mail.mg</td>
-                                <td className='td-Niveau grp-btns'>
-                                    <FaEdit className='edit' />
-                                    <FaTrash className='delet' />
-                                </td>
-                            </tr>
-
-                            <tr className='tr-Niveau'>
-                                <td className='td-Niveau'>1004</td>
-                                <td className='td-Niveau'>IG</td>
-                                <td className='td-Niveau'>Andria</td>
-                                <td className='td-Niveau'>Sarah</td>
-                                <td className='td-Niveau'>17</td>
-                                <td className='td-Niveau'>Mahajanga</td>
-                                <td className='td-Niveau'>034 44 555 66</td>
-                                <td className='td-Niveau'>andria.sarah@mail.mg</td>
-                                <td className='td-Niveau grp-btns'>
-                                    <FaEdit className='edit' />
-                                    <FaTrash className='delet' />
-                                </td>
-                            </tr>
-
-                            <tr className='tr-Niveau'>
-                                <td className='td-Niveau'>1005</td>
-                                <td className='td-Niveau'>ASR</td>
-                                <td className='td-Niveau'>Rabe</td>
-                                <td className='td-Niveau'>Jacques</td>
-                                <td className='td-Niveau'>28</td>
-                                <td className='td-Niveau'>Antsirabe</td>
-                                <td className='td-Niveau'>034 55 555 55</td>
-                                <td className='td-Niveau'>rabe.jacques@mail.mg</td>
-                                <td className='td-Niveau grp-btns'>
-                                    <FaEdit className='edit' />
-                                    <FaTrash className='delet' />
-                                </td>
-                            </tr>
-
-                            <tr className='tr-Niveau'>
-                                <td className='td-Niveau'>1006</td>
-                                <td className='td-Niveau'>GB</td>
-                                <td className='td-Niveau'>Ralay</td>
-                                <td className='td-Niveau'>Sophie</td>
-                                <td className='td-Niveau'>21</td>
-                                <td className='td-Niveau'>Toliara</td>
-                                <td className='td-Niveau'>034 66 666 66</td>
-                                <td className='td-Niveau'>ralay.sophie@mail.mg</td>
-                                <td className='td-Niveau grp-btns'>
-                                    <FaEdit className='edit' />
-                                    <FaTrash className='delet' />
-                            </td>
-                            </tr>
-
-                            <tr className='tr-Niveau'>
-                                <td className='td-Niveau'>1007</td>
-                                <td className='td-Niveau'>GB</td>
-                                <td className='td-Niveau'>Rajaona</td>
-                                <td className='td-Niveau'>Pierre</td>
-                                <td className='td-Niveau'>16</td>
-                                <td className='td-Niveau'>Antsiranana</td>
-                                <td className='td-Niveau'>034 77 777 77</td>
-                                <td className='td-Niveau'>rajaona.pierre@mail.mg</td>
-                                <td className='td-Niveau grp-btns'>
-                                    <FaEdit className='edit' />
-                                    <FaTrash className='delet' />
-                                </td>
-                            </tr>
-
-                            <tr className='tr-Niveau'>
-                                <td className='td-Niveau'>1008</td>
-                                <td className='td-Niveau'>ASR</td>
-                                <td className='td-Niveau'>Razafy</td>
-                                <td className='td-Niveau'>Claire</td>
-                                <td className='td-Niveau'>24</td>
-                                <td className='td-Niveau'>Morondava</td>
-                                <td className='td-Niveau'>034 88 888 88</td>
-                                <td className='td-Niveau'>razafy.claire@mail.mg</td>
-                                <td className='td-Niveau grp-btns'>
-                                    <FaEdit className='edit' />
-                                    <FaTrash className='delet' />
-                                </td>
-                            </tr>
-
-                            <tr className='tr-Niveau'>
-                                <td className='td-Niveau'>1009</td>
-                                <td className='td-Niveau'>ASR</td>
-                                <td className='td-Niveau'>Andriana</td>
-                                <td className='td-Niveau'>Thomas</td>
-                                <td className='td-Niveau'>20</td>
-                                <td className='td-Niveau'>Ambanja</td>
-                                <td className='td-Niveau'>034 99 999 99</td>
-                                <td className='td-Niveau'>andriana.thomas@mail.mg</td>
-                                <td className='td-Niveau grp-btns'>
-                                    <FaEdit className='edit' />
-                                    <FaTrash className='delet' />
-                                </td>
-                            </tr>
-
-                            <tr className='tr-Niveau'>
-                                <td className='td-Niveau'>1010</td>
-                                <td className='td-Niveau'>GB</td>
-                                <td className='td-Niveau'>Rasolofoniaina</td>
-                                <td className='td-Niveau'>Elise</td>
-                                <td className='td-Niveau'>18</td>
-                                <td className='td-Niveau'>Manakara</td>
-                                <td className='td-Niveau'>034 10 101 01</td>
-                                <td className='td-Niveau'>rasolo.elise@mail.mg</td>
-                                <td className='td-Niveau grp-btns'>
-                                    <FaEdit className='edit' />
-                                    <FaTrash className='delet' />
-                                </td>
-                            </tr>
-
-                            <tr className='tr-Niveau'>
-                                <td className='td-Niveau'>1011</td>
-                                <td className='td-Niveau'>IG</td>
-                                <td className='td-Niveau'>Randrianarisoa</td>
-                                <td className='td-Niveau'>Marc</td>
-                                <td className='td-Niveau'>23</td>
-                                <td className='td-Niveau'>Ambatolampy</td>
-                                <td className='td-Niveau'>034 11 010 10</td>
-                                <td className='td-Niveau'>randria.marc@mail.mg</td>
-                                <td className='td-Niveau grp-btns'>
-                                    <FaEdit className='edit' />
-                                    <FaTrash className='delet' />
-                                </td>
-                            </tr>
-
-                            <tr className='tr-Niveau'>
-                                <td className='td-Niveau'>1012</td>
-                                <td className='td-Niveau'>IG</td>
-                                <td className='td-Niveau'>Rakotomalala</td>
-                                <td className='td-Niveau'>Julie</td>
-                                <td className='td-Niveau'>19</td>
-                                <td className='td-Niveau'>Antalaha</td>
-                                <td className='td-Niveau'>034 12 121 21</td>
-                                <td className='td-Niveau'>rakoto.julie@mail.mg</td>
-                                <td className='td-Niveau grp-btns'>
-                                    <FaEdit className='edit' />
-                                    <FaTrash className='delet' />
-                                </td>
-                            </tr>
-
-                            <tr className='tr-Niveau'>
-                                <td className='td-Niveau'>1013</td>
-                                <td className='td-Niveau'>GB</td>
-                                <td className='td-Niveau'>Ramanantsoa</td>
-                                <td className='td-Niveau'>Luc</td>
-                                <td className='td-Niveau'>26</td>
-                                <td className='td-Niveau'>Ambositra</td>
-                                <td className='td-Niveau'>034 13 131 31</td>
-                                <td className='td-Niveau'>rama.luc@mail.mg</td>
-                                <td className='td-Niveau grp-btns'>
-                                    <FaEdit className='edit' />
-                                    <FaTrash className='delet' />
-                                </td>
-                            </tr>
-
-                            <tr className='tr-Niveau'>
-                                <td className='td-Niveau'>1014</td>
-                                <td className='td-Niveau'>ASR</td>
-                                <td className='td-Niveau'>Randriamanjaka</td>
-                                <td className='td-Niveau'>Anna</td>
-                                <td className='td-Niveau'>17</td>
-                                <td className='td-Niveau'>Sambava</td>
-                                <td className='td-Niveau'>034 14 141 41</td>
-                                <td className='td-Niveau'>randria.anna@mail.mg</td>
-                                <td className='td-Niveau grp-btns'>
-                                    <FaEdit className='edit' />
-                                    <FaTrash className='delet' />
-                                </td>
-                            </tr>
-
-                            <tr className='tr-Niveau'>
-                                <td className='td-Niveau'>1015</td>
-                                <td className='td-Niveau'>IG</td>
-                                <td className='td-Niveau'>Razafindrakoto</td>
-                                <td className='td-Niveau'>David</td>
-                                <td className='td-Niveau'>22</td>
-                                <td className='td-Niveau'>Nosy Be</td>
-                                <td className='td-Niveau'>034 15 151 51</td>
-                                <td className='td-Niveau'>razafy.david@mail.mg</td>
-                                <td className='td-Niveau grp-btns'>
-                                    <FaEdit className='edit' />
-                                    <FaTrash className='delet' />
-                                </td>
-                            </tr>
+                            {isLoading ? (
+                                <tr>
+                                    <td colSpan={9} className="text-center">Chargement en cours...</td>
+                                </tr>
+                            ) : filteredEtudiants.length === 0 ? (
+                                <tr>
+                                    <td colSpan={9} className="text-center">
+                                        {searchTerm ? "Aucun résultat trouvé" : "Aucun étudiant disponible"}
+                                    </td>
+                                </tr>
+                            ) : (
+                                filteredEtudiants.map((etudiant) => (
+                                    <tr className='tr-Niveau' key={etudiant.Matricule}>
+                                        <td className='td-Niveau'>{etudiant.Matricule}</td>
+                                        <td className='td-Niveau'>{etudiant.IDParcours}</td>
+                                        <td className='td-Niveau'>{etudiant.Nom}</td>
+                                        <td className='td-Niveau'>{etudiant.Prenom}</td>
+                                        <td className='td-Niveau'>{etudiant.Age}</td>
+                                        <td className='td-Niveau'>{etudiant.Adresse}</td>
+                                        <td className='td-Niveau'>{etudiant.Telephone}</td>
+                                        <td className='td-Niveau'>{etudiant.Email}</td>
+                                        <td className='td-moderne'>
+                                            <a 
+                                                href={`/modifierEtudiantsFrm/${etudiant.Matricule}`}
+                                                data-tooltip="Modifier"
+                                            >
+                                                <FaEdit className='modif-moderne' />
+                                            </a>
+                                            <button 
+                                                className='supp-moderne' 
+                                                onClick={() => handleDeleteClick(etudiant.Matricule)}
+                                                data-tooltip="Supprimer"
+                                            >
+                                                <FaTrash />
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))
+                            )}
                         </tbody>
                     </table>
-
                 </div>
-
 
                 <footer className="footer">
                     <div className="footer-text">
@@ -331,7 +270,7 @@ const NiveauTous = () => {
 
                     <div className="footer-iconTop">
                         <a onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-                        <GoMoveToTop />
+                            <GoMoveToTop />
                         </a>
                     </div>
                 </footer>
