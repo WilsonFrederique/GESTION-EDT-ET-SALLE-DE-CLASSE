@@ -81,7 +81,7 @@ async function getAll(req, res) {
   }
 }
 
-// 🔍 Obtenir un seul créneau
+// Dans creneaux.controller.js, modifiez la fonction getOne :
 async function getOne(req, res) {
   try {
     const { IDCreneaux } = req.params;
@@ -95,6 +95,7 @@ async function getOne(req, res) {
       return res.status(404).json({ error: "Créneau non trouvé" });
     }
 
+    // Retourner les dates telles quelles sans conversion
     return res.status(200).json(result[0]);
   } catch (error) {
     return res.status(500).json({ error: "Erreur serveur: " + error.message });

@@ -1,9 +1,8 @@
-import './EdtFrm.css'
-
-import React, { useState } from 'react'
-
+import React, { useState, useEffect } from 'react';
+import './EdtFrm.css';
 import "react-lazy-load-image-component/src/effects/blur.css";
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import { emphasize, styled } from '@mui/material/styles';
@@ -14,13 +13,18 @@ import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Button from '@mui/material/Button';
 
-
 import { FaTimes } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
 import { GoMoveToTop } from "react-icons/go";
 
-
-
+import { createEdt, updateEdt, getEdt } from '../../services/edts_api';
+import { useParams, useNavigate } from 'react-router-dom';
+import { getAllSalles, Salle } from '../../services/salles_api';
+import { getAllNiveaux, Niveaux } from '../../services/niveaux_api';
+import { getAllParcours, Parcour } from '../../services/parcours_api';
+import { getAllCreneaux, Creneau } from '../../services/creneaux_api';
+import { getAllMatieres, Matiere } from '../../services/matiers_api';
+import { getAllEnseignants, Enseignant } from '../../services/enseignants_api';
 
 const EdtFrm = () => {
     const StyledBreadcrumb = styled(Chip)(({ theme }) => {
@@ -28,7 +32,7 @@ const EdtFrm = () => {
             theme.palette.mode === 'light' 
             ? theme.palette.grey[100] 
             : theme.palette.grey[800];
-        return{
+        return {
             backgroundColor, 
             height: theme.spacing(3),
             color: theme.palette.text.primary,
@@ -36,284 +40,380 @@ const EdtFrm = () => {
             '&:hover, &:focus': {
                 backgroundColor: emphasize(backgroundColor, 0.06),
             },
-            '&:active':{
+            '&:active': {
                 boxShadow: theme.shadows[1],
                 backgroundColor: emphasize(backgroundColor, 0.12)
             }
-        }
+        };
     });
 
+    const navigate = useNavigate();
+    const { IDEdt } = useParams();
+    const isEditMode = Boolean(IDEdt);
+    
+    const [edtData, setEdtData] = useState({
+        IDEdt: 0,
+        IDSalle: '',
+        IDNiveaux: '',
+        IDParcours: '',
+        IDCreneaux: 0,
+        IDMatiere: '',
+        cinEns: ''
+    });
 
+    const [salles, setSalles] = useState<Salle[]>([]);
+    const [niveaux, setNiveaux] = useState<Niveaux[]>([]);
+    const [parcours, setParcours] = useState<Parcour[]>([]);
+    const [creneaux, setCreneaux] = useState<Creneau[]>([]);
+    const [matieres, setMatieres] = useState<Matiere[]>([]);
+    const [enseignants, setEnseignants] = useState<Enseignant[]>([]);
+    const [loading, setLoading] = useState(true);
 
+    // Charger les données initiales
+    useEffect(() => {
+        const loadData = async () => {
+            try {
+                // Charger toutes les données nécessaires en parallèle
+                const [
+                    sallesData, 
+                    niveauxData, 
+                    parcoursData, 
+                    creneauxData, 
+                    matieresData, 
+                    enseignantsData
+                ] = await Promise.all([
+                    getAllSalles(),
+                    getAllNiveaux(),
+                    getAllParcours(),
+                    getAllCreneaux(),
+                    getAllMatieres(),
+                    getAllEnseignants()
+                ]);
 
-    const [categoryVal1, setcategoryVal1] = React.useState('');
-    const handleChangeCategory1 = (event: SelectChangeEvent) => {
-        setcategoryVal1(event.target.value);
+                setSalles(sallesData);
+                setNiveaux(niveauxData);
+                setParcours(parcoursData);
+                setCreneaux(creneauxData);
+                setMatieres(matieresData);
+                setEnseignants(enseignantsData);
+
+                // Si en mode édition, charger les données de l'EDT
+                if (IDEdt) {
+                    const data = await getEdt(Number(IDEdt));
+                    setEdtData(data);
+                }
+
+                setLoading(false);
+            } catch (error) {
+                console.error('Erreur lors du chargement des données:', error);
+                toast.error('Erreur lors du chargement des données');
+                navigate('/listesTousEDT', { replace: true });
+            }
+        };
+        
+        loadData();
+    }, [IDEdt, navigate]);
+
+    // Gérer le changement dans les champs du formulaire
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { name, value } = event.target;
+        setEdtData(prevData => ({
+            ...prevData,
+            [name]: value
+        }));
     };
 
-    const [categoryVal2, setcategoryVal2] = React.useState('');
-    const handleChangeCategory2 = (event: SelectChangeEvent) => {
-        setcategoryVal2(event.target.value);
+    // Gérer le changement dans les sélecteurs
+    const handleSelectChange = (event: SelectChangeEvent) => {
+        const { name, value } = event.target;
+        setEdtData(prevData => ({
+            ...prevData,
+            [name]: value
+        }));
     };
 
-    const [categoryVal3, setcategoryVal3] = React.useState('');
-    const handleChangeCategory3 = (event: SelectChangeEvent) => {
-        setcategoryVal3(event.target.value);
+    // Fonction de soumission du formulaire
+    const handleSubmit = async (event: React.FormEvent) => {
+        event.preventDefault();
+
+        try {
+            if (isEditMode) {
+                await updateEdt(edtData);
+                toast.success('Emploi du temps modifié avec succès');
+            } else {
+                await createEdt(edtData);
+                toast.success('Emploi du temps créé avec succès');
+            }
+            
+            // Redirection après un délai pour voir le message de succès
+            setTimeout(() => navigate('/listesTousEDT'), 2000);
+        } catch (error) {
+            console.error('Erreur lors de la sauvegarde de l\'emploi du temps:', error);
+            toast.error(error instanceof Error ? error.message : 'Une erreur est survenue');
+        }
     };
 
-    const [brandVal1, setbrandVal1] = React.useState('');
-    const handleChangeBrand1 = (event: SelectChangeEvent) => {
-        setbrandVal1(event.target.value);
+    const handleCancel = () => {
+        navigate('/listesTousEDT');
     };
 
-    const [brandVal2, setbrandVal2] = React.useState('');
-    const handleChangeBrand2 = (event: SelectChangeEvent) => {
-        setbrandVal2(event.target.value);
-    };
-
-    const [brandVal3, setbrandVal3] = React.useState('');
-    const handleChangeBrand3 = (event: SelectChangeEvent) => {
-        setbrandVal3(event.target.value);
-    };
-
-
+    if (loading) {
+        return <div className="right-content w-100 d-flex justify-content-center align-items-center">
+            <div className="spinner-border text-primary" role="status">
+                <span className="visually-hidden">Chargement...</span>
+            </div>
+        </div>;
+    }
 
     return (
-        <>
-            <div className="right-content w-100">
-                <div className="card shadow border-0 w-100 flex-row p-4">
-                    <h5 className="mb-0">Ajout d’un étudiant</h5>
-                    <Breadcrumbs aria-label='breadcrumb' className='ms-auto breadcrumb_'>
-                        <a href="/">
-                            <StyledBreadcrumb 
-                                className='StyledBreadcrumb' 
-                                component="a"
-                                label="Accueil"
-                                icon={<HomeIcon fontSize='small' />}
-                            />
-                        </a>
-                        <a href="/listesTousEDT">
-                            <StyledBreadcrumb 
-                                className='StyledBreadcrumb' 
-                                label="Listes"
-                            />
-                        </a>
+        <div className="right-content w-100">
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="colored"
+            />
+
+            <div className="card shadow border-0 w-100 flex-row p-4">
+                <h5 className="mb-0">{isEditMode ? 'Modification' : 'Ajout'} d'un emploi du temps</h5>
+                <Breadcrumbs aria-label='breadcrumb' className='ms-auto breadcrumb_'>
+                    <a href="/">
                         <StyledBreadcrumb 
                             className='StyledBreadcrumb' 
-                            label="Ajout"
+                            component="a"
+                            label="Accueil"
+                            icon={<HomeIcon fontSize='small' />}
+                        />
+                    </a>
+                    <a href="/listesTousEDT">
+                        <StyledBreadcrumb 
+                            className='StyledBreadcrumb' 
+                            label="Liste"
                             icon={<ExpandMoreIcon fontSize="small" />}
                         />
-                    </Breadcrumbs>
+                    </a>
+                    <StyledBreadcrumb 
+                        className='StyledBreadcrumb' 
+                        label={isEditMode ? "Modification" : "Ajout"}
+                        icon={<ExpandMoreIcon fontSize="small" />}
+                    />
+                </Breadcrumbs>
+            </div>
+
+            <form className='form' onSubmit={handleSubmit}>
+                <div className="row">
+                    <div className="col-sm-12">
+                        <div className="card p-4">
+                            <h5 className='mb-4'>Données principales de l'emploi du temps</h5>
+
+                            {/* Salle, Niveau et Parcours */}
+                            <div className="row">
+                                <div className="col">
+                                    <div className="form-group">
+                                        <label htmlFor="IDSalle">
+                                            <h6>Salle</h6>
+                                        </label>
+                                        <Select
+                                            id="IDSalle"
+                                            name="IDSalle"
+                                            value={edtData.IDSalle}
+                                            onChange={handleSelectChange}
+                                            required
+                                            className="w-100"
+                                        >
+                                            <MenuItem value="">
+                                                <em>Sélectionnez une salle</em>
+                                            </MenuItem>
+                                            {salles.map((salle) => (
+                                                <MenuItem key={salle.IDSalle} value={salle.IDSalle}>
+                                                    {salle.IDSalle} - {salle.Salle}
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
+                                    </div>
+                                </div>
+
+                                <div className="col">
+                                    <div className="form-group">
+                                        <label htmlFor="IDNiveaux">
+                                            <h6>Niveau</h6>
+                                        </label>
+                                        <Select
+                                            id="IDNiveaux"
+                                            name="IDNiveaux"
+                                            value={edtData.IDNiveaux}
+                                            onChange={handleSelectChange}
+                                            required
+                                            className="w-100"
+                                        >
+                                            <MenuItem value="">
+                                                <em>Sélectionnez un niveau</em>
+                                            </MenuItem>
+                                            {niveaux.map((niveau) => (
+                                                <MenuItem key={niveau.IDNiveaux} value={niveau.IDNiveaux}>
+                                                    {niveau.IDNiveaux} - {niveau.Niveaux}
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
+                                    </div>
+                                </div>
+
+                                <div className="col">
+                                    <div className="form-group">
+                                        <label htmlFor="IDParcours">
+                                            <h6>Parcours</h6>
+                                        </label>
+                                        <Select
+                                            id="IDParcours"
+                                            name="IDParcours"
+                                            value={edtData.IDParcours}
+                                            onChange={handleSelectChange}
+                                            required
+                                            className="w-100"
+                                        >
+                                            <MenuItem value="">
+                                                <em>Sélectionnez un parcours</em>
+                                            </MenuItem>
+                                            {parcours.map((parcour) => (
+                                                <MenuItem key={parcour.IDParcours} value={parcour.IDParcours}>
+                                                    {parcour.IDParcours} - {parcour.Parcours}
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Créneau, Matière et Enseignant */}
+                            <div className="row">
+                                <div className="col">
+                                    <div className="form-group">
+                                        <label htmlFor="IDCreneaux">
+                                            <h6>Créneau</h6>
+                                        </label>
+                                        <Select
+                                            id="IDCreneaux"
+                                            name="IDCreneaux"
+                                            value={edtData.IDCreneaux.toString()}
+                                            onChange={(e) => setEdtData({...edtData, IDCreneaux: Number(e.target.value)})}
+                                            required
+                                            className="w-100"
+                                        >
+                                            <MenuItem value="">
+                                                <em>Sélectionnez un créneau</em>
+                                            </MenuItem>
+                                            {creneaux.map((creneau) => (
+                                                <MenuItem key={creneau.IDCreneaux} value={creneau.IDCreneaux?.toString()}>
+                                                    {creneau.Jours} {creneau.HeureDebut}-{creneau.HeureFin}
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
+                                    </div>
+                                </div>
+
+                                <div className="col">
+                                    <div className="form-group">
+                                        <label htmlFor="IDMatiere">
+                                            <h6>Matière</h6>
+                                        </label>
+                                        <Select
+                                            id="IDMatiere"
+                                            name="IDMatiere"
+                                            value={edtData.IDMatiere}
+                                            onChange={handleSelectChange}
+                                            required
+                                            className="w-100"
+                                        >
+                                            <MenuItem value="">
+                                                <em>Sélectionnez une matière</em>
+                                            </MenuItem>
+                                            {matieres.map((matiere) => (
+                                                <MenuItem key={matiere.IDMatiere} value={matiere.IDMatiere}>
+                                                    {matiere.IDMatiere} - {matiere.Matiere}
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
+                                    </div>
+                                </div>
+
+                                <div className="col">
+                                    <div className="form-group">
+                                        <label htmlFor="cinEns">
+                                            <h6>Enseignant</h6>
+                                        </label>
+                                        <Select
+                                            id="cinEns"
+                                            name="cinEns"
+                                            value={edtData.cinEns}
+                                            onChange={handleSelectChange}
+                                            required
+                                            className="w-100"
+                                        >
+                                            <MenuItem value="">
+                                                <em>Sélectionnez un enseignant</em>
+                                            </MenuItem>
+                                            {enseignants.map((enseignant) => (
+                                                <MenuItem key={enseignant.cinEns} value={enseignant.cinEns}>
+                                                    {enseignant.cinEns} - {enseignant.Nom} {enseignant.Prenom}
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-
-
-                <form className='form'>
-                    {/* Input */}
-                    <div className="row">
-                        {/* <div className="col-sm-8"> */}
-                        <div className="col-sm-12">
-                            <div className="card p-4">
-                                <h5 className='mb-4'>Données principales de l’étudiant</h5>
-
-                                {/* <div className="row">
-                                    <div className="col">
-                                        <div className="form-group">
-                                            <h6>ID Emploi du temps</h6>
-                                            <input type="number" />
-                                        </div>
-                                    </div>
-                                </div> */}
-
-                                <div className="row">
-                                    <div className="col">
-                                        <div className="form-group">
-                                            <h6>ID Salle</h6>
-                                            <Select
-                                                value={categoryVal1}
-                                                onChange={handleChangeCategory1  }
-                                                displayEmpty
-                                                inputProps={{ 'aria-label': 'Without label' }}
-                                                className='w-100'
-                                            >
-                                                <MenuItem value="">
-                                                    <em>Aucun</em>
-                                                </MenuItem>
-                                                <MenuItem value={10}>S001</MenuItem>
-                                                <MenuItem value={20}>S002</MenuItem>
-                                                <MenuItem value={30}>S003</MenuItem>
-                                                <MenuItem value={40}>S004</MenuItem>
-                                                <MenuItem value={50}>S005</MenuItem>
-                                                <MenuItem value={60}>S006</MenuItem>
-                                                <MenuItem value={70}>S006</MenuItem>
-                                            </Select>
-                                        </div>
-                                    </div>
-
-
-                                    <div className="col">
-                                        <div className="form-group">
-                                            <h6>ID Niveau</h6>
-                                            <Select
-                                                value={categoryVal2}
-                                                onChange={handleChangeCategory2  }
-                                                displayEmpty
-                                                inputProps={{ 'aria-label': 'Without label' }}
-                                                className='w-100'
-                                            >
-                                                <MenuItem value="">
-                                                    <em>Aucun</em>
-                                                </MenuItem>
-                                                <MenuItem value={10}>N001</MenuItem>
-                                                <MenuItem value={20}>N002</MenuItem>
-                                                <MenuItem value={30}>N003</MenuItem>
-                                                <MenuItem value={40}>N004</MenuItem>
-                                                <MenuItem value={50}>N005</MenuItem>
-                                                <MenuItem value={60}>N006</MenuItem>
-                                                <MenuItem value={70}>N006</MenuItem>
-                                            </Select>
-                                        </div>
-                                    </div>
-
-
-                                    <div className="col">
-                                        <div className="form-group">
-                                            <h6>ID Parcour</h6>
-                                            <Select
-                                                value={categoryVal3}
-                                                onChange={handleChangeCategory3  }
-                                                displayEmpty
-                                                inputProps={{ 'aria-label': 'Without label' }}
-                                                className='w-100'
-                                            >
-                                                <MenuItem value="">
-                                                    <em>Aucun</em>
-                                                </MenuItem>
-                                                <MenuItem value={10}>P001 - IG</MenuItem>
-                                                <MenuItem value={20}>P002 - GB</MenuItem>
-                                                <MenuItem value={30}>P003 - ASP</MenuItem>
-                                                <MenuItem value={40}>P004 - PRO</MenuItem>
-                                                <MenuItem value={50}>P005 - IA</MenuItem>
-                                            </Select>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <div className="row">
-                                    <div className="col">
-                                        <div className="form-group">
-                                            <h6>ID Créneau</h6>
-                                            <Select
-                                                value={brandVal1}
-                                                onChange={handleChangeBrand1  }
-                                                displayEmpty
-                                                inputProps={{ 'aria-label': 'Without label' }}
-                                                className='w-100'
-                                            >
-                                                <MenuItem value="">
-                                                    <em>Aucun</em>
-                                                </MenuItem>
-                                                <MenuItem value={10}>C001</MenuItem>
-                                                <MenuItem value={20}>C002</MenuItem>
-                                                <MenuItem value={30}>C003</MenuItem>
-                                                <MenuItem value={40}>C004</MenuItem>
-                                                <MenuItem value={50}>C005</MenuItem>
-                                                <MenuItem value={60}>C006</MenuItem>
-                                                <MenuItem value={70}>C006</MenuItem>
-                                            </Select>
-                                        </div>
-                                    </div>
-
-
-                                    <div className="col">
-                                        <div className="form-group">
-                                            <h6>ID Matière</h6>
-                                            <Select
-                                                value={brandVal2}
-                                                onChange={handleChangeBrand2  }
-                                                displayEmpty
-                                                inputProps={{ 'aria-label': 'Without label' }}
-                                                className='w-100'
-                                            >
-                                                <MenuItem value="">
-                                                    <em>Aucun</em>
-                                                </MenuItem>
-                                                <MenuItem value={10}>M001</MenuItem>
-                                                <MenuItem value={20}>M002</MenuItem>
-                                                <MenuItem value={30}>M003</MenuItem>
-                                                <MenuItem value={40}>M004</MenuItem>
-                                                <MenuItem value={50}>M005</MenuItem>
-                                                <MenuItem value={60}>M006</MenuItem>
-                                                <MenuItem value={70}>M006</MenuItem>
-                                            </Select>
-                                        </div>
-                                    </div>
-
-
-                                    <div className="col">
-                                        <div className="form-group">
-                                            <h6>CIN de l’enseignant</h6>
-                                            <Select
-                                                value={brandVal3}
-                                                onChange={handleChangeBrand3  }
-                                                displayEmpty
-                                                inputProps={{ 'aria-label': 'Without label' }}
-                                                className='w-100'
-                                            >
-                                                <MenuItem value="">
-                                                    <em>Aucun</em>
-                                                </MenuItem>
-                                                <MenuItem value={10}>EN01</MenuItem>
-                                                <MenuItem value={20}>EN02</MenuItem>
-                                                <MenuItem value={30}>EN03</MenuItem>
-                                                <MenuItem value={40}>EN04</MenuItem>
-                                                <MenuItem value={50}>EN05</MenuItem>
-                                            </Select>
-                                        </div>
-                                    </div>
-                                </div>
-
-
+                {/* Boutons */}
+                <div className="row">
+                    <div className="col-sm-12">
+                        <div className="card p-4 mt-0">
+                            <div className="d-flex gap-3">
+                                <Button 
+                                    type='submit' 
+                                    variant="contained" 
+                                    color="primary"
+                                    startIcon={<FaPlus />}
+                                    className='btn-blue btn-lg w-100'
+                                >
+                                    {isEditMode ? 'MODIFIER' : 'ENREGISTRER'}
+                                </Button>
+                                <Button 
+                                    type='button'
+                                    variant="contained" 
+                                    color="error"
+                                    startIcon={<FaTimes />}
+                                    className='btn-dang btn-lg w-100'
+                                    onClick={handleCancel}
+                                >
+                                    ANNULER
+                                </Button>
                             </div>
                         </div>
                     </div>
+                </div>
+            </form>
 
+            <footer className="footer">
+                <div className="footer-text">
+                    <p>&copy; 2025 par Planification Scolaire | Tous Droits Réservés.</p>
+                </div>
 
-                    {/* Button */}
-                    <div className="row">
-                        <div className="col-sm-15">
-                            <div className="card p-4 mt-0">
-                                <div className="grp-btns-save-annul">
-                                    <div className="imagesUploadSec">
-                                        <Button type='submit' className='btn-blue btn-lg btn-big w-100'><FaPlus /> &nbsp; ENREGISTRER</Button>
-                                    </div>
-                                    <div className="imagesUploadSec">
-                                        <a href="/edtFrm"><Button type='submit' className='btn-dang btn-lg btn-big w-100'><FaTimes /> &nbsp; ANNULER</Button></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div className="footer-iconTop">
+                    <a onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+                        <GoMoveToTop />
+                    </a>
+                </div>
+            </footer>
+        </div>
+    );
+};
 
-                </form>
-
-
-
-                <footer className="footer">
-                    <div className="footer-text">
-                        <p>&copy; 2025 par Planification Scolaire | Tous Droits Réservés.</p>
-                    </div>
-
-                    <div className="footer-iconTop">
-                        <a onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-                            <GoMoveToTop />
-                        </a>
-                    </div>
-                </footer>
-            </div>
-        </>
-    )
-}
-
-export default EdtFrm
+export default EdtFrm;

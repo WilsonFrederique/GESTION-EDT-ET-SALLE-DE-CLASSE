@@ -76,8 +76,8 @@ const SidBar = () => {
                         </Button>
                         <div className={`submenuWrapper ${activeTab===1 && isToggleSubmenu===true ? 'colapse' : 'colapsed'}`}>
                             <ul className="submenu">
-                                <li><Link to="/niveauxFrm">Ajouter un niveau</Link></li>
-                                <li><Link to="/parcoursFrm">Ajouter un Parcour</Link></li>
+                                {/* <li><Link to="/niveauxFrm">Ajouter un niveau</Link></li>
+                                <li><Link to="/parcoursFrm">Ajouter un Parcour</Link></li> */}
                                 <li><Link to="/niveaux">Niveaux disponibles</Link></li>
                                 <li><Link to="/parcours">Parcours proposés</Link></li>
                             </ul>
@@ -86,18 +86,18 @@ const SidBar = () => {
                     <li>
                         <Button className={`w-100 ${activeTab===8 && isToggleSubmenuClient===true ? 'active' : ''}`} onClick={()=>isOpenSubmenu(8)}>
                             <span className='icon'><FaUsersBetweenLines /></span>
-                            Liste des étudiants 
+                            Les étudiants
                             <span className='arrow'><FaAngleRight /></span>
                         </Button>
                         <div className={`submenuWrapperClient ${activeTab===8 && isToggleSubmenuClient===true ? 'colapse' : 'colapsed'}`}>
                             <ul className="submenu">
                                 <li><Link to="/etudiantsFrm">Ajouter un étudiant</Link></li>
                                 <li><Link to="/niveauTous">Tous les étudiants inscrits</Link></li>
-                                <li><Link to="/niveauL1">Niveau L1</Link></li>
+                                {/* <li><Link to="/niveauL1">Niveau L1</Link></li>
                                 <li><Link to="/niveauL2">Niveau L2</Link></li>
                                 <li><Link to="/niveauL3">Niveau L3</Link></li>
                                 <li><Link to="/niveauM1">Niveau M1</Link></li>
-                                <li><Link to="/niveauM2">Niveau M2</Link></li>
+                                <li><Link to="/niveauM2">Niveau M2</Link></li> */}
                             </ul>
                         </div>
                     </li>

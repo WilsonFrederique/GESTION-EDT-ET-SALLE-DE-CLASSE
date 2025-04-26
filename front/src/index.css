@@ -541,12 +541,12 @@ body.dark .footer-text p{
 }
 
 @media (max-width: 580px){    
-}
-
-@media (max-width: 576px){
     header .logo span{
         display: none !important;
     }
+}
+
+@media (max-width: 576px){
 
     .footer{
         flex-direction: column-reverse;
@@ -561,3 +561,305 @@ body.dark .footer-text p{
         margin-top: 2rem;
     }
 }
+
+
+
+
+
+
+/* Dialog de confirmation de suppression */
+.delete-confirmation-dialog {
+    border-radius: 16px !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(12px);
+    border: none !important;
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.08),
+        0 4px 12px rgba(0, 0, 0, 0.05) !important;
+    padding: 2rem;
+    animation: scaleIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.delete-confirmation-dialog .MuiDialogTitle-root {
+    padding: 0 !important;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    font-family: 'Inter', system-ui, sans-serif !important;
+    font-size: 1.25rem !important;
+    font-weight: 600 !important;
+    color: #1a1a1a !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+body.dark .delete-confirmation-dialog .MuiDialogTitle-root{
+    color: #f0f0f0 !important;
+}
+
+.delete-confirmation-dialog .dialog-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: #ff4757;
+    background: rgba(255, 71, 87, 0.1);
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.delete-confirmation-dialog .MuiDialogActions-root {
+    padding: 0 !important;
+    margin-top: 2rem;
+    justify-content: center !important;
+    gap: 1rem;
+}
+
+.delete-confirmation-dialog .cancel-btn {
+    padding: 10px 24px !important;
+    border-radius: 12px !important;
+    border: 1px solid #e0e0e0 !important;
+    background: white !important;
+    color: #666 !important;
+    font-weight: 500 !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+}
+
+.delete-confirmation-dialog .cancel-btn:hover {
+    background: #f8f8f8 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.delete-confirmation-dialog .confirm-btn {
+    padding: 10px 24px !important;
+    border-radius: 12px !important;
+    background: linear-gradient(135deg, #ff4757, #ff6b81) !important;
+    color: white !important;
+    font-weight: 500 !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 4px 14px rgba(255, 71, 87, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.delete-confirmation-dialog .confirm-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(255, 71, 87, 0.4);
+}
+
+.delete-confirmation-dialog .confirm-btn:hover::after {
+    left: 100%;
+}
+
+/* Animation */
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Overlay */
+.MuiBackdrop-root {
+    background: rgba(0, 0, 0, 0.385) !important;
+    backdrop-filter: blur(1px);
+}
+
+
+
+
+
+
+
+/* Btn Moderne Action  */
+/* Style pour la cellule d'actions */
+.td-moderne {
+    padding: 1rem 0.5rem;
+    text-align: center;
+  }
+  
+  /* Conteneur des boutons d'action */
+  .td-moderne {
+    display: flex;
+    gap: 1.25rem;
+    align-items: center;
+  }
+  
+  /* Style de base pour les boutons */
+  .td-moderne a,
+  .td-moderne button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 14px;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+  
+  /* Effet de fond animé */
+  .td-moderne a::before,
+  .td-moderne button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    z-index: 0;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .td-formation .modif-moderne{
+      color: #1a8c06 !important;
+    }
+    
+    /* Bouton Modification */
+.modif-moderne {
+    font-size: 1.3rem;
+    color: #1a8c06;
+    position: relative;
+    z-index: 1;
+    transition: all 0.3s ease;
+  }
+  
+  .td-moderne a[href*="modifier"]::before {
+    background: rgba(22, 167, 63, 0.1);
+    backdrop-filter: blur(4px);
+  }
+  
+  .td-moderne a[href*="modifier"]:hover::before {
+    background: rgba(59, 246, 84, 0.2);
+  }
+  
+  .td-moderne a:hover .modif-moderne {
+    color: #09a523;
+    transform: scale(1.15);
+  }
+
+  .td-formation .icon-supp-moderne{
+    color: #ef4444 !important;
+  }
+  
+  /* Bouton Suppression */
+  .supp-moderne {
+    color: #ef4444;
+    font-size: 1.2rem;
+    position: relative;
+    z-index: 1;
+    transition: all 0.3s ease;
+    background: none;
+    border: none;
+  }
+  
+  .td-moderne button::before {
+    background: rgba(239, 68, 68, 0.1);
+  }
+  
+  .td-moderne button:hover::before {
+    background: rgba(239, 68, 68, 0.2);
+  }
+  
+  .td-moderne button:hover .supp-moderne {
+    color: #dc2626;
+    transform: scale(1.15);
+  }
+  
+  /* Effets de survol */
+  .td-moderne a:hover,
+  .td-moderne button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+  }
+  
+  /* Effet "pression" au clic */
+  .td-moderne a:active,
+  .td-moderne button:active {
+    transform: translateY(1px);
+    transition: transform 0.1s ease;
+  }
+  
+  /* Tooltip moderne */
+  .td-moderne a,
+  .td-moderne button {
+    position: relative;
+  }
+  
+  .td-moderne a::after,
+  .td-moderne button::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: -38px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1f2937;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    z-index: 10;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+  
+  .td-moderne a:hover::after,
+  .td-moderne button:hover::after {
+    opacity: 1;
+    bottom: -42px;
+  }
+  
+  /* Animation d'onde au clic */
+  @keyframes wave {
+    0% {
+      transform: scale(0.8);
+      opacity: 0.6;
+    }
+    100% {
+      transform: scale(1.4);
+      opacity: 0;
+    }
+  }
+  
+  .td-moderne a:focus::before,
+  .td-moderne button:focus::before {
+    animation: wave 0.6s ease-out;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .td-moderne {
+      gap: 0.8rem;
+    }
+    
+    .td-moderne a,
+    .td-moderne button {
+      width: 2.4rem;
+      height: 2.4rem;
+      border-radius: 12px;
+    }
+    
+    .modif-moderne,
+    .supp-moderne {
+      font-size: 1.1rem;
+    }
+  }
