@@ -108,10 +108,42 @@ async function getOne(req, res) {
   }
 }
 
+// Obtenir les EDT avec les dernières dates par niveau
+async function getAllWithLatestDates(req, res) {
+  try {
+    const query = `
+      SELECT e.IDNiveaux, e.*
+      FROM edts e
+      JOIN creneaux c ON e.IDCreneaux = c.IDCreneaux
+      WHERE (c.DateDebut, c.DateFin) = (
+          SELECT DateDebut, DateFin
+          FROM creneaux
+          WHERE IDCreneaux IN (
+              SELECT IDCreneaux
+              FROM edts
+              WHERE IDNiveaux = e.IDNiveaux
+          )
+          ORDER BY DateDebut DESC, DateFin DESC
+          LIMIT 1
+      )
+      AND e.IDNiveaux IN (
+          SELECT IDNiveaux FROM niveaux
+      )
+      ORDER BY e.IDNiveaux;
+    `;
+    
+    const [result] = await pool.query(query);
+    return res.status(200).json(result);
+  } catch (error) {
+    return res.status(500).json({ error: "Erreur serveur: " + error.message });
+  }
+}
+
 export default {
   create,
   updateOne,
   deleteOne,
   getAll,
   getOne,
+  getAllWithLatestDates,
 };

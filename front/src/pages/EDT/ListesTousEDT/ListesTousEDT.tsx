@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import './ListesTousEDT.css';
 import '../EDT.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
+import { Link } from 'react-router-dom';
 
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import HomeIcon from "@mui/icons-material/Home";
@@ -18,8 +20,9 @@ import { GoMoveToTop } from "react-icons/go";
 import { MdDeleteOutline } from "react-icons/md";
 import { FaRegEdit } from "react-icons/fa";
 import { FaRegPlusSquare } from "react-icons/fa";
-import { IoSearchOutline } from "react-icons/io5";
+import { IoAddCircleOutline } from "react-icons/io5";
 import { ImPrinter } from "react-icons/im";
+import { FiRefreshCcw } from "react-icons/fi";
 
 import { getAllEdts, deleteEdt } from '../../../services/edts_api';
 import { getAllNiveaux } from '../../../services/niveaux_api';
@@ -65,14 +68,26 @@ const ListesTousEDT = () => {
     const [enseignants, setEnseignants] = useState<Enseignant[]>([]);
     const [salles, setSalles] = useState<Salle[]>([]);
     const [creneaux, setCreneaux] = useState<Creneau[]>([]);
+    const [creneauxGroupes, setCreneauxGroupes] = useState<any[]>([]);
     
     // États pour les filtres
     const [selectedNiveau, setSelectedNiveau] = useState<string>("");
     const [selectedParcours, setSelectedParcours] = useState<string>("");
+    const [selectedDateDebut, setSelectedDateDebut] = useState<string>("");
     
     // États pour la suppression
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
     const [edtToDelete, setEdtToDelete] = useState<number | null>(null);
+    const [isDeleting, setIsDeleting] = useState(false);
+
+    // Formater l'heure (supprime les secondes)
+    const formatHeure = (heure: string) => {
+        if (!heure) return '00:00';
+        if (heure.includes(':') && heure.split(':').length === 3) {
+            return heure.split(':').slice(0, 2).join(':');
+        }
+        return heure;
+    };
 
     // Charger toutes les données
     useEffect(() => {
@@ -103,6 +118,21 @@ const ListesTousEDT = () => {
                 setEnseignants(enseignantsData);
                 setSalles(sallesData);
                 setCreneaux(creneauxData);
+
+                const grouped = groupCreneauxByTime(edtsData, creneauxData);
+                setCreneauxGroupes(grouped);
+
+                // Définir la dernière date de début comme sélection par défaut
+                if (creneauxData.length > 0) {
+                    const latestDate = creneauxData.reduce((latest, creneau) => {
+                        const creneauDate = new Date(creneau.DateDebut);
+                        return creneauDate > latest ? creneauDate : latest;
+                    }, new Date(0));
+                    
+                    if (latestDate.getTime() !== 0) {
+                        setSelectedDateDebut(formatDate(latestDate));
+                    }
+                }
             } catch (error) {
                 console.error("Erreur lors du chargement des données :", error);
                 toast.error("Erreur lors du chargement des données");
@@ -110,6 +140,40 @@ const ListesTousEDT = () => {
         };
         fetchData();
     }, []);
+
+    // Grouper les créneaux par heureDebut et heureFin
+    const groupCreneauxByTime = (edtsData: Edt[], creneauxData: Creneau[]) => {
+        const groups: Record<string, { heureDebut: string; heureFin: string; jours: string[]; creneauxIds: number[] }> = {};
+        
+        edtsData.forEach(edt => {
+            const creneau = creneauxData.find(c => c.IDCreneaux === edt.IDCreneaux);
+            if (!creneau) return;
+            
+            const heureDebut = formatHeure(creneau.HeureDebut);
+            const heureFin = formatHeure(creneau.HeureFin);
+            
+            const key = `${heureDebut}-${heureFin}`;
+            
+            if (!groups[key]) {
+                groups[key] = {
+                    heureDebut,
+                    heureFin,
+                    jours: [],
+                    creneauxIds: []
+                };
+            }
+            
+            if (!groups[key].jours.includes(creneau.Jours)) {
+                groups[key].jours.push(creneau.Jours);
+            }
+            
+            if (!groups[key].creneauxIds.includes(creneau.IDCreneaux)) {
+                groups[key].creneauxIds.push(creneau.IDCreneaux);
+            }
+        });
+        
+        return Object.values(groups).sort((a, b) => a.heureDebut.localeCompare(b.heureDebut));
+    };
 
     // Gestion de la suppression
     const handleDeleteClick = (IDEdt: number) => {
@@ -120,16 +184,38 @@ const ListesTousEDT = () => {
     const handleConfirmDelete = async () => {
         if (!edtToDelete) return;
         
+        setIsDeleting(true);
         try {
             await deleteEdt(edtToDelete);
             toast.success("Emploi du temps supprimé avec succès");
-            // Recharger la liste après suppression
-            const data = await getAllEdts();
+            
+            // Mettre à jour les données après suppression
+            const [data, creneauxData] = await Promise.all([
+                getAllEdts(),
+                getAllCreneaux()
+            ]);
+            
             setEdts(data);
+            setCreneaux(creneauxData);
+            const grouped = groupCreneauxByTime(data, creneauxData);
+            setCreneauxGroupes(grouped);
+
+            // Mettre à jour la date sélectionnée si nécessaire
+            if (creneauxData.length > 0 && !creneauxData.some(c => formatDate(c.DateDebut) === selectedDateDebut)) {
+                const latestDate = creneauxData.reduce((latest, creneau) => {
+                    const creneauDate = new Date(creneau.DateDebut);
+                    return creneauDate > latest ? creneauDate : latest;
+                }, new Date(0));
+                
+                if (latestDate.getTime() !== 0) {
+                    setSelectedDateDebut(formatDate(latestDate));
+                }
+            }
         } catch (error) {
             console.error("Erreur lors de la suppression de l'emploi du temps :", error);
             toast.error(error instanceof Error ? error.message : "Erreur lors de la suppression");
         } finally {
+            setIsDeleting(false);
             setOpenDeleteDialog(false);
             setEdtToDelete(null);
         }
@@ -151,93 +237,140 @@ const ListesTousEDT = () => {
     const getSalleDetails = (id: string) => salles.find(s => s.IDSalle === id)?.Salle || id;
     const getCreneauDetails = (id: number) => {
         const creneau = creneaux.find(c => c.IDCreneaux === id);
-        if (!creneau) return id.toString();
+        if (!creneau) return null;
         
         return {
-            jour: creneau.Jours || 'Inconnu',
-            heureDebut: creneau.HeureDebut || '00:00',
-            heureFin: creneau.HeureFin || '00:00',
-            dateDebut: creneau.DateDebut || new Date(),
-            dateFin: creneau.DateFin || new Date()
+            ...creneau,
+            heureDebut: formatHeure(creneau.HeureDebut || '00:00'),
+            heureFin: formatHeure(creneau.HeureFin || '00:00')
         };
     };
 
     // Fonction pour formater les dates
     const formatDate = (dateString: string | Date) => {
+        if (!dateString) return "Date non définie";
         const date = new Date(dateString);
+        if (isNaN(date.getTime())) return "Date invalide";
+        
         const day = date.getDate().toString().padStart(2, '0');
         const month = (date.getMonth() + 1).toString().padStart(2, '0');
         const year = date.getFullYear();
         return `${day}/${month}/${year}`;
     };
 
-    // Trouver la période pour un niveau spécifique
-    const getPeriodForNiveau = (niveauId: string) => {
-        // Trouver le premier EDT pour ce niveau
-        const firstEdtForNiveau = edts.find(edt => edt.IDNiveaux === niveauId);
-        if (!firstEdtForNiveau) return "Période non définie";
+    // Grouper les EDT par niveau, parcours et créneau
+    const groupedEdts = useMemo(() => {
+        const groups: Record<string, Record<string, Record<number, Edt[]>>> = {};
         
-        // Trouver le créneau associé à cet EDT
-        const creneau = creneaux.find(c => c.IDCreneaux === firstEdtForNiveau.IDCreneaux);
-        if (!creneau) return "Période non définie";
-        
-        // Retourner les dates du créneau
-        return `Du ${formatDate(creneau.DateDebut)} au ${formatDate(creneau.DateFin)}`;
-    };
-
-    // Grouper les EDT par niveau et créneau
-    const groupedEdtsByNiveau = () => {
-        const groups: Record<string, Record<number, Edt[]>> = {};
-        
-        // Initialiser les groupes pour tous les niveaux
-        niveaux.forEach(niveau => {
-            groups[niveau.IDNiveaux] = {};
-        });
-
         edts.forEach(edt => {
-            // Appliquer les filtres
+            // Filtrer par niveau sélectionné
+            if (selectedNiveau && edt.IDNiveaux !== selectedNiveau) return;
+            
+            // Filtrer par parcours sélectionné
             if (selectedParcours && edt.IDParcours !== selectedParcours) return;
+            
+            // Filtrer par date de début sélectionnée
+            if (selectedDateDebut) {
+                const creneau = creneaux.find(c => c.IDCreneaux === edt.IDCreneaux);
+                if (!creneau) return;
+                
+                // Comparaison des dates formatées
+                const creneauDateDebut = formatDate(creneau.DateDebut);
+                if (creneauDateDebut !== selectedDateDebut) return;
+            }
             
             if (!groups[edt.IDNiveaux]) {
                 groups[edt.IDNiveaux] = {};
             }
             
-            if (!groups[edt.IDNiveaux][edt.IDCreneaux]) {
-                groups[edt.IDNiveaux][edt.IDCreneaux] = [];
+            if (!groups[edt.IDNiveaux][edt.IDParcours]) {
+                groups[edt.IDNiveaux][edt.IDParcours] = {};
             }
             
-            groups[edt.IDNiveaux][edt.IDCreneaux].push(edt);
+            if (!groups[edt.IDNiveaux][edt.IDParcours][edt.IDCreneaux]) {
+                groups[edt.IDNiveaux][edt.IDParcours][edt.IDCreneaux] = [];
+            }
+            
+            groups[edt.IDNiveaux][edt.IDParcours][edt.IDCreneaux].push(edt);
         });
         
         return groups;
+    }, [edts, selectedNiveau, selectedParcours, selectedDateDebut, creneaux]);
+
+    const hasEdtsForNiveauAndParcours = (niveauId: string, parcoursId: string) => {
+        return groupedEdts[niveauId]?.[parcoursId] && Object.keys(groupedEdts[niveauId][parcoursId]).length > 0;
     };
 
-    // Vérifier si un niveau a des EDT
     const hasEdtsForNiveau = (niveauId: string) => {
-        const niveauEdts = groupedEdtsByNiveau()[niveauId];
-        return niveauEdts && Object.values(niveauEdts).some(edts => edts.length > 0);
+        return groupedEdts[niveauId] && Object.keys(groupedEdts[niveauId]).length > 0;
     };
 
-    // Afficher un tableau d'emploi du temps pour un niveau donné
-    const renderEdtTable = (niveauId: string) => {
-        const niveauEdts = groupedEdtsByNiveau()[niveauId] || {};
+    // Fonction pour obtenir la période en fonction des filtres
+    const getPeriodForNiveauAndParcours = (niveauId: string, parcoursId: string) => {
+        // Filtrer les EDT par niveau et parcours
+        let edtsForNiveauAndParcours = edts.filter(edt => 
+            edt.IDNiveaux === niveauId && edt.IDParcours === parcoursId
+        );
+        
+        // Si une date est sélectionnée, filtrer également par date
+        if (selectedDateDebut) {
+            edtsForNiveauAndParcours = edtsForNiveauAndParcours.filter(edt => {
+                const creneau = creneaux.find(c => c.IDCreneaux === edt.IDCreneaux);
+                if (!creneau) return false;
+                return formatDate(creneau.DateDebut) === selectedDateDebut;
+            });
+        }
+        
+        if (edtsForNiveauAndParcours.length === 0) return "Période non définie";
+        
+        // Obtenir les créneaux correspondants
+        const creneauxForNiveau = edtsForNiveauAndParcours
+            .map(edt => getCreneauDetails(edt.IDCreneaux))
+            .filter(Boolean) as Creneau[];
+        
+        // Si une date est sélectionnée, utiliser cette date
+        if (selectedDateDebut) {
+            const creneau = creneauxForNiveau.find(c => formatDate(c.DateDebut) === selectedDateDebut);
+            if (!creneau) return "Période non définie";
+            return `Du ${formatDate(creneau.DateDebut)} au ${formatDate(creneau.DateFin)}`;
+        }
+        
+        // Sinon, trouver la date la plus récente
+        const latestDateDebut = new Date(Math.max(...creneauxForNiveau.map(c => new Date(c.DateDebut).getTime())));
+        const correspondingDateFin = creneauxForNiveau.find(c => 
+            new Date(c.DateDebut).getTime() === latestDateDebut.getTime()
+        )?.DateFin;
+        
+        if (!correspondingDateFin) return "Période non définie";
+        
+        return `Du ${formatDate(latestDateDebut)} au ${formatDate(correspondingDateFin)}`;
+    };
+
+    const getEdtForCreneauAndDay = (niveauId: string, parcoursId: string, creneauId: number, jour: string) => {
+        return groupedEdts[niveauId]?.[parcoursId]?.[creneauId]?.find(edt => {
+            const creneau = getCreneauDetails(edt.IDCreneaux);
+            return creneau?.Jours === jour;
+        });
+    };
+
+    const renderEdtTable = (niveauId: string, parcoursId: string) => {
         const niveauDetails = getNiveauDetails(niveauId);
+        const parcoursDetails = getParcoursDetails(parcoursId);
 
         return (
-            <div className="card shadow border-0 p-3 mt-4" key={niveauId}>
+            <div className="card shadow border-0 p-3 mt-4" key={`${niveauId}-${parcoursId}`}>
                 <div className="fa-reg-plus-square-container ensbl">
                     <div>Emploi du temps - {niveauDetails}</div>
-                    <div>
-                        <a href="#"><ImPrinter className='impression' /></a> &nbsp;&nbsp;
-                        <a href={`/edtFrm?niveau=${niveauId}`}><FaRegPlusSquare /></a>
+                    <div className='add'>
+                        <a href={`/edtFrm?niveau=${niveauId}&parcours=${parcoursId}`}><FaRegPlusSquare className='icn' /></a>
                     </div>
                 </div>
         
                 <hr className='hr-top' />
                 
                 <div>
-                    <h1>ENI - {niveauDetails}</h1>
-                    <h2>{getPeriodForNiveau(niveauId)}</h2>
+                    <p className='title-edt'>{niveauDetails} &nbsp; Parcours: <b>{parcoursDetails}</b></p>
+                    <h2>{getPeriodForNiveauAndParcours(niveauId, parcoursId)}</h2>
 
                     <form>
                         <div className="edt-table-container">
@@ -254,58 +387,62 @@ const ListesTousEDT = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {Object.entries(niveauEdts).map(([creneauId, edtsForCreneau]) => {
-                                        const creneauDetails = getCreneauDetails(parseInt(creneauId));
-                                        const heureDebut = typeof creneauDetails === 'object' ? 
-                                            creneauDetails.heureDebut : '00:00';
-                                        const heureFin = typeof creneauDetails === 'object' ? 
-                                            creneauDetails.heureFin : '00:00';
-                                        
-                                        return (
-                                            <tr key={creneauId}>
-                                                <td data-label="Heures">{heureDebut} - {heureFin}</td>
-                                                {['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'].map(jour => {
-                                                    const edtForJour = edtsForCreneau.find(edt => {
-                                                        const details = getCreneauDetails(edt.IDCreneaux);
-                                                        return typeof details === 'object' && details.jour === jour;
-                                                    });
-                                                    
-                                                    return (
-                                                        <td key={jour} data-label={jour}>
-                                                            {edtForJour ? (
-                                                                <div className="edt-cours-container">
-                                                                    <div className="edt-cours">
-                                                                        {getMatiereDetails(edtForJour.IDMatiere)}
-                                                                    </div>
-                                                                    <div className="edt-prof">
-                                                                        {getEnseignantDetails(edtForJour.cinEns)}
-                                                                    </div>
-                                                                    <div className="edt-salle">
-                                                                        Salle : {getSalleDetails(edtForJour.IDSalle)}
-                                                                    </div>
-                                                                    <div className="edt-actions">
-                                                                        <a 
-                                                                            href={`/modifierEdtFrm/${edtForJour.IDEdt}`}
-                                                                            data-tooltip="Modifier"
-                                                                        >
-                                                                            <FaRegEdit className='modif-moderne' />
-                                                                        </a>
-                                                                        <button 
-                                                                            className='supp-moderne' 
-                                                                            onClick={() => handleDeleteClick(edtForJour.IDEdt)}
-                                                                            data-tooltip="Supprimer"
-                                                                        >
-                                                                            <MdDeleteOutline className='icon-supp-moderne' />
-                                                                        </button>
-                                                                    </div>
+                                    {creneauxGroupes.map(({ heureDebut, heureFin, creneauxIds }) => (
+                                        <tr key={`${heureDebut}-${heureFin}`}>
+                                            <td data-label="Heures">
+                                                <div className='div-heur'>
+                                                    <div>{heureDebut}</div> 
+                                                    <div><b>-</b></div> 
+                                                    <div>{heureFin}</div>
+                                                </div>
+                                            </td>
+                                            {['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'].map(jour => {
+                                                let edtForJour = null;
+                                                for (const creneauId of creneauxIds) {
+                                                    edtForJour = getEdtForCreneauAndDay(niveauId, parcoursId, creneauId, jour);
+                                                    if (edtForJour) break;
+                                                }
+                                                
+                                                return (
+                                                    <td key={jour} data-label={jour}>
+                                                        {edtForJour ? (
+                                                            <div className="edt-cours-container">
+                                                                <div className="edt-cours">
+                                                                    {getMatiereDetails(edtForJour.IDMatiere)}
                                                                 </div>
-                                                            ) : null}
-                                                        </td>
-                                                    );
-                                                })}
-                                            </tr>
-                                        );
-                                    })}
+                                                                <div className="edt-prof">
+                                                                    {getEnseignantDetails(edtForJour.cinEns)}
+                                                                </div>
+                                                                <div className="edt-salle">
+                                                                    Salle : {getSalleDetails(edtForJour.IDSalle)}
+                                                                </div>
+                                                                <div className="edt-actions-icones">
+                                                                    <a 
+                                                                        href={`/modifierEdtFrm/${edtForJour.IDEdt}`}
+                                                                        data-tooltip="Modifier"
+                                                                    >
+                                                                        <FaRegEdit className='modif-moderne' />
+                                                                    </a>
+                                                                    <button 
+                                                                        className='supp-moderne' 
+                                                                        onClick={(e) => {
+                                                                            e.preventDefault();
+                                                                            e.stopPropagation();
+                                                                            handleDeleteClick(edtForJour.IDEdt);
+                                                                        }}
+                                                                        data-tooltip="Supprimer"
+                                                                        disabled={isDeleting}
+                                                                    >
+                                                                        <MdDeleteOutline className='icon-supp-moderne' />
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        ) : null}
+                                                    </td>
+                                                );
+                                            })}
+                                        </tr>
+                                    ))}
                                 </tbody>
                             </table>
                         </div>
@@ -321,9 +458,40 @@ const ListesTousEDT = () => {
         );
     };
 
+    const renderEdtTablesForNiveau = (niveauId: string) => {
+        const parcoursIds = groupedEdts[niveauId] ? Object.keys(groupedEdts[niveauId]) : [];
+        
+        return parcoursIds.map(parcoursId => (
+            hasEdtsForNiveauAndParcours(niveauId, parcoursId) && 
+            renderEdtTable(niveauId, parcoursId)
+        ));
+    };
+
+    // Obtenir les dates de début uniques pour le filtre
+    const uniqueDateDebuts = useMemo(() => {
+        const dates = new Set<string>();
+        creneaux.forEach(creneau => {
+            if (creneau.DateDebut) {
+                dates.add(formatDate(creneau.DateDebut));
+            }
+        });
+        return Array.from(dates).sort((a, b) => new Date(a.split('/').reverse().join('-')).getTime() - new Date(b.split('/').reverse().join('-')).getTime());
+    }, [creneaux]);
+
+    // Obtenir la dernière date de début
+    const getLatestDateDebut = () => {
+        if (creneaux.length === 0) return "";
+        
+        const latestDate = creneaux.reduce((latest, creneau) => {
+            const creneauDate = new Date(creneau.DateDebut);
+            return creneauDate > latest ? creneauDate : latest;
+        }, new Date(0));
+        
+        return latestDate.getTime() !== 0 ? formatDate(latestDate) : "";
+    };
+
     return (
         <div>
-            {/* Toast Container */}
             <ToastContainer
                 position="top-right"
                 autoClose={5000}
@@ -337,7 +505,6 @@ const ListesTousEDT = () => {
                 theme="colored"
             />
 
-            {/* Dialog de confirmation de suppression */}
             <Dialog
                 open={openDeleteDialog}
                 onClose={handleCancelDelete}
@@ -355,11 +522,16 @@ const ListesTousEDT = () => {
                     Êtes-vous sûr de vouloir supprimer cet emploi du temps ?
                 </DialogTitle>
                 <DialogActions>
-                    <Button className="cancel-btn" onClick={handleCancelDelete}>
+                    <Button className="cancel-btn" onClick={handleCancelDelete} disabled={isDeleting}>
                         Annuler
                     </Button>
-                    <Button className="confirm-btn" onClick={handleConfirmDelete} autoFocus>
-                        Confirmer
+                    <Button 
+                        className="confirm-btn" 
+                        onClick={handleConfirmDelete} 
+                        autoFocus
+                        disabled={isDeleting}
+                    >
+                        {isDeleting ? 'Suppression en cours...' : 'Confirmer'}
                     </Button>
                 </DialogActions>
             </Dialog>
@@ -385,9 +557,53 @@ const ListesTousEDT = () => {
                         </Breadcrumbs>
                     </div>
 
-                    {/* Filtres */}
                     <div className="card shadow border-0 p-3 mt-4">
+                    
+                        <div className="btn-recherche">
+                            <div className="esnbl-btns-imprimer-tout-et-ajout-pour-tout">
+                                <div className="text-left">
+                                    Action
+                                </div>
+                                <div className="tbns">
+                                    <div className="impr">
+                                        <ImPrinter />
+                                    </div>
+                                    <div className="impr">
+                                        <Link 
+                                            to="/edtFrm" 
+                                            className="impr-link" // Nouvelle classe spécifique pour le lien
+                                        >
+                                            <div className="impr">
+                                            <IoAddCircleOutline />
+                                            </div>
+                                        </Link>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div className="filters-container">
+                            <div className="filter-group">
+                                <h4 className="filter-title">Date début</h4>
+                                <div className="select-wrapper">
+                                    <select 
+                                        className="modern-select"
+                                        value={selectedDateDebut}
+                                        onChange={(e) => setSelectedDateDebut(e.target.value)}
+                                    >
+                                        <option value={getLatestDateDebut()}>Dernière date de début</option>
+                                        {uniqueDateDebuts
+                                            .filter(date => date !== getLatestDateDebut())
+                                            .map((date, index) => (
+                                                <option key={index} value={date}>
+                                                    {date}
+                                                </option>
+                                            ))}
+                                    </select>
+                                    <div className="select-arrow"></div>
+                                </div>
+                            </div>
+                            
                             <div className="filter-group">
                                 <h4 className="filter-title">Afficher par Niveau</h4>
                                 <div className="select-wrapper">
@@ -429,33 +645,44 @@ const ListesTousEDT = () => {
 
                         <div className="btn-recherche">
                             <Button 
-                                className='btn-blue btn-lg btn-big w-100'
+                                className='btn-reinitialiser btn-lg btn-big w-100'
                                 onClick={() => {
-                                    // La recherche est gérée automatiquement par les filtres
-                                    toast.info("Filtres appliqués");
+                                    // Réinitialiser les filtres
+                                    setSelectedDateDebut(getLatestDateDebut());
+                                    setSelectedNiveau("");
+                                    setSelectedParcours("");
                                 }}
                             >
-                                <IoSearchOutline /> &nbsp;&nbsp; Rechercher
+                                <FiRefreshCcw /> &nbsp;&nbsp; Réinitialiser
                             </Button>
                         </div>
                     </div>
 
-                    {/* Affichage des emplois du temps par niveau */}
                     {selectedNiveau ? (
-                        // Si un niveau est sélectionné, afficher seulement ce niveau
-                        hasEdtsForNiveau(selectedNiveau) ? (
-                            renderEdtTable(selectedNiveau)
-                        ) : (
-                            <div className="card shadow border-0 p-3 mt-4">
-                                <div className="text-center py-4">
-                                    <p>Aucun emploi du temps trouvé pour ce niveau.</p>
+                        selectedParcours ? (
+                            hasEdtsForNiveauAndParcours(selectedNiveau, selectedParcours) ? (
+                                renderEdtTable(selectedNiveau, selectedParcours)
+                            ) : (
+                                <div className="card shadow border-0 p-3 mt-4">
+                                    <div className="text-center py-4">
+                                        <p>Aucun emploi du temps trouvé pour ce niveau et parcours.</p>
+                                    </div>
                                 </div>
-                            </div>
+                            )
+                        ) : (
+                            hasEdtsForNiveau(selectedNiveau) ? (
+                                renderEdtTablesForNiveau(selectedNiveau)
+                            ) : (
+                                <div className="card shadow border-0 p-3 mt-4">
+                                    <div className="text-center py-4">
+                                        <p>Aucun emploi du temps trouvé pour ce niveau.</p>
+                                    </div>
+                                </div>
+                            )
                         )
                     ) : (
-                        // Sinon, afficher tous les niveaux qui ont des EDT
                         niveaux.map(niveau => (
-                            hasEdtsForNiveau(niveau.IDNiveaux) && renderEdtTable(niveau.IDNiveaux)
+                            hasEdtsForNiveau(niveau.IDNiveaux) && renderEdtTablesForNiveau(niveau.IDNiveaux)
                         ))
                     )}
 
