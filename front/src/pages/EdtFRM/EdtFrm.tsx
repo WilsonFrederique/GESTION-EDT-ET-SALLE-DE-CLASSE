@@ -12,13 +12,15 @@ import Chip from '@mui/material/Chip';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Button from '@mui/material/Button';
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
 
 import { FaTimes } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
 import { GoMoveToTop } from "react-icons/go";
 
 import { createEdt, updateEdt, getEdt } from '../../services/edts_api';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { getAllSalles, Salle } from '../../services/salles_api';
 import { getAllNiveaux, Niveaux } from '../../services/niveaux_api';
 import { getAllParcours, Parcour } from '../../services/parcours_api';
@@ -49,13 +51,18 @@ const EdtFrm = () => {
 
     const navigate = useNavigate();
     const { IDEdt } = useParams();
+    const [searchParams] = useSearchParams();
     const isEditMode = Boolean(IDEdt);
+    
+    // Récupérer les paramètres d'URL
+    const niveauIdFromUrl = searchParams.get('niveau');
+    const parcoursIdFromUrl = searchParams.get('parcours');
     
     const [edtData, setEdtData] = useState({
         IDEdt: 0,
         IDSalle: '',
-        IDNiveaux: '',
-        IDParcours: '',
+        IDNiveaux: niveauIdFromUrl || '',
+        IDParcours: parcoursIdFromUrl || '',
         IDCreneaux: 0,
         IDMatiere: '',
         cinEns: ''
@@ -165,6 +172,14 @@ const EdtFrm = () => {
         </div>;
     }
 
+    const formatDate = (dateString: string | Date) => {
+        const date = new Date(dateString);
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+    };
+
     return (
         <div className="right-content w-100">
             <ToastContainer
@@ -251,6 +266,7 @@ const EdtFrm = () => {
                                             onChange={handleSelectChange}
                                             required
                                             className="w-100"
+                                            disabled={!!niveauIdFromUrl} // Désactiver si le niveau est passé dans l'URL
                                         >
                                             <MenuItem value="">
                                                 <em>Sélectionnez un niveau</em>
@@ -276,6 +292,7 @@ const EdtFrm = () => {
                                             onChange={handleSelectChange}
                                             required
                                             className="w-100"
+                                            disabled={!!parcoursIdFromUrl} // Désactiver si le parcours est passé dans l'URL
                                         >
                                             <MenuItem value="">
                                                 <em>Sélectionnez un parcours</em>
@@ -297,23 +314,35 @@ const EdtFrm = () => {
                                         <label htmlFor="IDCreneaux">
                                             <h6>Créneau</h6>
                                         </label>
-                                        <Select
+                                        <Autocomplete
                                             id="IDCreneaux"
-                                            name="IDCreneaux"
-                                            value={edtData.IDCreneaux.toString()}
-                                            onChange={(e) => setEdtData({...edtData, IDCreneaux: Number(e.target.value)})}
-                                            required
-                                            className="w-100"
-                                        >
-                                            <MenuItem value="">
-                                                <em>Sélectionnez un créneau</em>
-                                            </MenuItem>
-                                            {creneaux.map((creneau) => (
-                                                <MenuItem key={creneau.IDCreneaux} value={creneau.IDCreneaux?.toString()}>
-                                                    {creneau.Jours} {creneau.HeureDebut}-{creneau.HeureFin}
-                                                </MenuItem>
-                                            ))}
-                                        </Select>
+                                            options={creneaux}
+                                            getOptionLabel={(option) => 
+                                                `${option.Jours} : ${option.HeureDebut}-${option.HeureFin} (du ${formatDate(option.DateDebut)} au ${formatDate(option.DateFin)})`
+                                            }
+                                            value={creneaux.find(c => c.IDCreneaux === edtData.IDCreneaux) || null}
+                                            onChange={(event, newValue) => {
+                                                setEdtData({...edtData, IDCreneaux: newValue?.IDCreneaux || 0});
+                                            }}
+                                            renderInput={(params) => (
+                                                <TextField
+                                                    {...params}
+                                                    label="Rechercher un créneau"
+                                                    variant="outlined"
+                                                    required
+                                                />
+                                            )}
+                                            renderOption={(props, option) => (
+                                                <li {...props}>
+                                                    <div>
+                                                        <strong>{option.Jours}</strong> : {option.HeureDebut}-{option.HeureFin}
+                                                        <div className="text-muted small">
+                                                            du {formatDate(option.DateDebut)} au {formatDate(option.DateFin)}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            )}
+                                        />
                                     </div>
                                 </div>
 

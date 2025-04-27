@@ -1,0 +1,514 @@
+.div-heur {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    font-weight: bold;
+    margin-top: 3.5rem;
+    margin-bottom: 3rem;
+}
+
+.title-edt{
+    font-size: 1.4em;
+    font-weight: 400;
+}
+
+
+
+
+
+
+
+
+
+.btn-reinitialiser{
+    background-color: #f0f0f0 !important;
+    color: #333 !important;
+    border: 1px solid #ccc !important;
+}
+
+body.dark .btn-reinitialiser{
+    background-color: #5358c734 !important;
+    color: #ffffffe2 !important;
+    border: 1px solid #cccccc44 !important;
+}
+
+
+
+
+
+
+
+
+
+/* Action Top Ajouit Pour Tout  */
+.esnbl-btns-imprimer-tout-et-ajout-pour-tout {
+    --primary-color: #3182ce;
+    --text-color: #4a5568;
+    --bg-blur: blur(12px);
+    --transition-speed: 0.4s;
+    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 1.5rem;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.08) 100%);
+    backdrop-filter: var(--bg-blur);
+    -webkit-backdrop-filter: var(--bg-blur);
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 
+        0 4px 6px -1px rgba(0, 0, 0, 0.05),
+        0 10px 15px -3px rgba(0, 0, 0, 0.08);
+    margin-bottom: 1.5rem;
+    transition: all var(--transition-speed) cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Dark mode adaptation */
+body.dark .esnbl-btns-imprimer-tout-et-ajout-pour-tout {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0.15) 100%);
+    border-color: rgba(255, 255, 255, 0.08);
+    box-shadow: 
+        0 4px 6px -1px rgba(0, 0, 0, 0.15),
+        0 10px 15px -3px rgba(0, 0, 0, 0.2);
+}
+
+.esnbl-btns-imprimer-tout-et-ajout-pour-tout:hover {
+    transform: translateY(-3px);
+    box-shadow: 
+        0 20px 25px -5px rgba(0, 0, 0, 0.12),
+        0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.esnbl-btns-imprimer-tout-et-ajout-pour-tout .text-left {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-color);
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    opacity: 0.9;
+    transition: color var(--transition-speed);
+}
+
+body.dark .esnbl-btns-imprimer-tout-et-ajout-pour-tout .text-left {
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.esnbl-btns-imprimer-tout-et-ajout-pour-tout .tbns {
+    display: flex;
+    gap: 1rem;
+}
+
+.esnbl-btns-imprimer-tout-et-ajout-pour-tout .impr {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: linear-gradient(145deg, #ffffff, #f0f0f0);
+    box-shadow: 
+        5px 5px 10px #d9d9d9,
+        -5px -5px 10px #ffffff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: var(--text-color);
+    font-size: 1.3rem;
+    overflow: hidden;
+}
+
+body.dark .esnbl-btns-imprimer-tout-et-ajout-pour-tout .impr {
+    background: linear-gradient(145deg, #2d3748, #1a202c);
+    box-shadow: 
+        5px 5px 10px rgba(0, 0, 0, 0.2),
+        -5px -5px 10px rgba(255, 255, 255, 0.03);
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.esnbl-btns-imprimer-tout-et-ajout-pour-tout .impr a {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    color: inherit;
+    text-decoration: none;
+}
+
+.esnbl-btns-imprimer-tout-et-ajout-pour-tout .impr::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, var(--primary-color), transparent);
+    opacity: 0;
+    transition: opacity var(--transition-speed);
+}
+
+.esnbl-btns-imprimer-tout-et-ajout-pour-tout .impr:hover {
+    color: var(--primary-color);
+    box-shadow: 
+        0 8px 20px rgba(49, 130, 206, 0.15),
+        3px 3px 6px #d9d9d9,
+        -3px -3px 6px #ffffff;
+}
+
+body.dark .esnbl-btns-imprimer-tout-et-ajout-pour-tout .impr:hover {
+    box-shadow: 
+        0 8px 20px rgba(49, 130, 206, 0.25),
+        3px 3px 6px rgba(0, 0, 0, 0.3),
+        -3px -3px 6px rgba(255, 255, 255, 0.05);
+}
+
+.esnbl-btns-imprimer-tout-et-ajout-pour-tout .impr:hover::before {
+    opacity: 0.1;
+}
+
+.esnbl-btns-imprimer-tout-et-ajout-pour-tout .impr:active {
+    transform: scale(0.92);
+    box-shadow: 
+        inset 2px 2px 5px #d9d9d9,
+        inset -2px -2px 5px #ffffff;
+}
+
+body.dark .esnbl-btns-imprimer-tout-et-ajout-pour-tout .impr:active {
+    box-shadow: 
+        inset 2px 2px 5px rgba(0, 0, 0, 0.3),
+        inset -2px -2px 5px rgba(255, 255, 255, 0.05);
+}
+
+/* Animation pulse moderne */
+@keyframes modernPulse {
+    0%, 100% { 
+        transform: scale(1) rotate(0deg);
+    }
+    50% { 
+        transform: scale(1.05) rotate(1deg);
+        box-shadow: 
+            0 0 0 4px rgba(49, 130, 206, 0.078),
+            7px 7px 14px #d9d9d900,
+            -7px -7px 14px #ffffff00;
+    }
+}
+
+.esnbl-btns-imprimer-tout-et-ajout-pour-tout .impr:nth-child(1) {
+    animation: modernPulse 4s infinite ease-in-out;
+}
+
+body.dark .esnbl-btns-imprimer-tout-et-ajout-pour-tout .impr:nth-child(1) {
+    animation: modernPulse 4s infinite ease-in-out;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .esnbl-btns-imprimer-tout-et-ajout-pour-tout {
+        padding: 0.7rem 1.2rem;
+        border-radius: 12px;
+    }
+    
+    .esnbl-btns-imprimer-tout-et-ajout-pour-tout .impr {
+        width: 36px;
+        height: 36px;
+        font-size: 1.15rem;
+    }
+    
+    .esnbl-btns-imprimer-tout-et-ajout-pour-tout .text-left {
+        font-size: 0.8rem;
+    }
+}
+
+
+.esnbl-btns-imprimer-tout-et-ajout-pour-tout .impr-link {
+    display: contents; /* Important pour conserver le layout */
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  /* Correction pour le conteneur impr quand il est dans un lien */
+  .esnbl-btns-imprimer-tout-et-ajout-pour-tout .impr-link .impr {
+    width: 100%;
+    height: 100%;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Action Modif et Supprimer  */
+/* Style général du conteneur des actions */
+.edt-actions-icones {
+    display: flex;
+    gap: 12px;
+    margin-top: 0.3rem;
+    padding: 8px 0;
+  }
+  
+  /* Style des liens et boutons */
+  .edt-actions-icones a,
+  .edt-actions-icones button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    position: relative;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+  }
+  
+  /* Style spécifique pour l'icône de modification */
+  .edt-actions-icones a {
+    color: #4a6cf7;
+    background-color: rgba(74, 108, 247, 0.1);
+  }
+  
+  /* Style spécifique pour l'icône de suppression */
+  .edt-actions-icones button {
+    color: #f74a4a;
+    background-color: rgba(247, 74, 74, 0.1);
+  }
+  
+  /* Effets au survol */
+  .edt-actions-icones a:hover {
+    background-color: rgba(74, 108, 247, 0.2);
+    transform: translateY(-2px);
+  }
+  
+  .edt-actions-icones button:hover {
+    background-color: rgba(247, 74, 74, 0.2);
+    transform: translateY(-2px);
+  }
+  
+  /* Effets actifs */
+  .edt-actions-icones a:active {
+    transform: translateY(0);
+  }
+  
+  .edt-actions-icones button:active {
+    transform: translateY(0);
+  }
+  
+  /* Style des icônes */
+  .modif-moderne,
+  .icon-supp-moderne {
+    font-size: 16px;
+  }
+  
+  /* Tooltips */
+  .edt-actions-icones [data-tooltip] {
+    position: relative;
+  }
+  
+  .edt-actions-icones [data-tooltip]::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 4px 8px;
+    background-color: #333;
+    color: white;
+    border-radius: 4px;
+    font-size: 12px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+    pointer-events: none;
+    margin-bottom: 8px;
+  }
+  
+  .edt-actions-icones [data-tooltip]:hover::after {
+    opacity: 1;
+    visibility: visible;
+    margin-bottom: 12px;
+  }
+  
+  /* Animation douce */
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  .edt-actions-icones a,
+  .edt-actions-icones button {
+    animation: fadeIn 0.3s ease;
+  }
+
+
+
+
+
+
+
+
+
+
+  
+
+  /* Icone Ajout  */
+  /* Conteneur principal */
+.add {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 12px;
+    perspective: 1000px;
+  }
+  
+  /* Style du lien */
+  .add a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    background: rgba(34, 59, 199, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 
+      0 8px 32px rgba(31, 38, 135, 0.15),
+      inset 0 0 12px rgba(255, 255, 255, 0.1);
+    color: #000 !important;
+    text-decoration: none;
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+    transform-style: preserve-3d;
+  }
+  
+  /* Effet 3D au survol */
+  .add a:hover {
+    transform: translateY(-4px) rotateX(15deg);
+    background: rgba(11, 29, 132, 0.574);
+    color: aliceblue;
+    box-shadow: 
+      0 12px 40px rgba(31, 38, 135, 0.25),
+      inset 0 0 16px rgba(255, 255, 255, 0.15);
+  }
+  
+  /* Effet au clic */
+  .add a:active {
+    transform: translateY(2px) rotateX(5deg);
+    transition: all 0.1s ease;
+  }
+  
+  /* Style de l'icône */
+  .add a .icn {
+    font-size: 20px;
+    color: #000;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.4s ease;
+    transform: translateZ(20px);
+  }
+  
+  /* Animation de l'icône au survol */
+  .add a:hover .icn {
+    color: #000 !important;
+    transform: scale(1.15) translateZ(30px);
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.4));
+  }
+  
+  /* Effet de lumière dynamique */
+  .add a::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+      45deg,
+      transparent,
+      rgba(255, 255, 255, 0.1),
+      transparent
+    );
+    transform: rotate(45deg);
+    transition: all 0.6s ease;
+    opacity: 0;
+  }
+  
+  .add a:hover::before {
+    animation: shine 1.5s ease infinite;
+    opacity: 1;
+  }
+  
+  @keyframes shine {
+    0% {
+      left: -50%;
+    }
+    100% {
+      left: 150%;
+    }
+  }
+  
+  /* Tooltip moderne */
+  .add a::after {
+    content: 'Nouvel EDT';
+    position: absolute;
+    bottom: calc(100% + 12px);
+    left: 50%;
+    transform: translateX(-50%) scale(0.9);
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    pointer-events: none;
+  }
+  
+  .add a:hover::after {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) scale(1);
+    bottom: calc(100% + 16px);
+  }
+  
+  /* Effet de particules au clic */
+  .add a:active::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.8) 0%,
+      transparent 70%
+    );
+    opacity: 0;
+    animation: particles 0.6s ease-out;
+  }
+  
+  @keyframes particles {
+    0% {
+      transform: scale(0);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(3);
+      opacity: 0;
+    }
+  }
