@@ -80,3 +80,16 @@ export async function getEdt(IDEdt: number): Promise<Edt> {
     throw new Error("Erreur inattendue");
   }
 }
+
+// 📄 Obtenir tous les emplois du temps avec les dernières dates par niveau
+export async function getAllEdtsWithLatestDates(): Promise<Edt[]> {
+  try {
+    const response = await axios.get<Edt[]>(`${API_BASE_URL}/edts/latest`);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data?.error || "Erreur lors de la récupération");
+    }
+    throw new Error("Erreur inattendue");
+  }
+}
