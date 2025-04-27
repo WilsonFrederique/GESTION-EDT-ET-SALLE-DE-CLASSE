@@ -45,6 +45,10 @@ import CreneauxFrm from "./pages/CreneauxFRM/CreneauxFrm";
 
 import NiveauTous from "./pages/EtudiantsList/NiveauTous/NiveauTous";
 
+import Notifications from "./pages/Notifications/Notifications";
+
+import Parametres from "./pages/Parametres/Parametres";
+
 
 const MyContext = createContext();
 
@@ -201,6 +205,10 @@ export default function App() {
               <Route path="/creneauxListe" element={<CreneauxListe />} />
               <Route path="/creneauxFrm" element={<CreneauxFrm />} />
               <Route path="/modifierCreneauxFrm/:IDCreneaux" element={<CreneauxFrm />} />
+
+              <Route path="/notifications" element={<Notifications />} />
+
+              <Route path="/parametres" element={<Parametres />} />
 
             </Routes>
           </div>
