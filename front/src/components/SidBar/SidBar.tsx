@@ -13,7 +13,7 @@ import { IoBookOutline } from "react-icons/io5";
 import { HiOutlineBuildingLibrary } from "react-icons/hi2";
 import { LuCalendarRange } from "react-icons/lu";
 import { PiChalkboardTeacherBold } from "react-icons/pi";
-import { IoSettingsOutline } from "react-icons/io5";
+import { MdOutlineSettings } from "react-icons/md";
 import { GoBook } from "react-icons/go";
 import { IoMdLogOut } from "react-icons/io";
 import { FaRegUser } from "react-icons/fa";
@@ -146,7 +146,7 @@ const SidBar = () => {
                             </Button>
                         </Link>
                     </li>
-                    <li>
+                    {/* <li>
                         <Link to="/message">
                             <Button className={`w-100 ${activeTab===3 ? 'active' : ''}`} onClick={()=>isOpenSubmenu(3)}>
                                 <span className='icon'><MdOutlineMessage /></span>
@@ -154,12 +154,21 @@ const SidBar = () => {
                                 <span className='arrow'><FaAngleRight /></span>
                             </Button>
                         </Link>
-                    </li>
+                    </li> */}
                     <li>
-                        <Link to="">
+                        <Link to="/notifications">
                             <Button className={`w-100 ${activeTab===4 ? 'active' : ''}`} onClick={()=>isOpenSubmenu(4)}>
                                 <span className='icon'><IoMdNotificationsOutline /></span>
                                 Notifictions 
+                                <span className='arrow'><FaAngleRight /></span>
+                            </Button>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="/parametres">
+                            <Button className={`w-100 ${activeTab===11 ? 'active' : ''}`} onClick={()=>isOpenSubmenu(11)}>
+                                <span className='icon'><MdOutlineSettings /></span>
+                                Paramètres 
                                 <span className='arrow'><FaAngleRight /></span>
                             </Button>
                         </Link>
@@ -178,15 +187,6 @@ const SidBar = () => {
                             <Button className={`w-100 ${activeTab===10 ? 'active' : ''}`} onClick={()=>isOpenSubmenu(10)}>
                                 <span className='icon'><FiUserPlus /></span>
                                 Inscription 
-                                <span className='arrow'><FaAngleRight /></span>
-                            </Button>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to="">
-                            <Button className={`w-100 ${activeTab===11 ? 'active' : ''}`} onClick={()=>isOpenSubmenu(11)}>
-                                <span className='icon'><IoSettingsOutline /></span>
-                                Paramètres 
                                 <span className='arrow'><FaAngleRight /></span>
                             </Button>
                         </Link>
