@@ -8,6 +8,7 @@ router.get("/edts/", edtsController.getAll);
 router.get("/edts/latest", edtsController.getAllWithLatestDates);
 router.get("/edts/:IDEdt", edtsController.getOne);
 router.post("/edts/", edtsController.create);
+router.post('/edts/check-availability', edtsController.checkAvailability);
 router.put("/edts/:IDEdt", edtsController.updateOne);
 router.delete("/edts/:IDEdt", edtsController.deleteOne);
 
