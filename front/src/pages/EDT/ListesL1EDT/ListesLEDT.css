@@ -1,0 +1,228 @@
+/* Filtres Ultra-Modernes */
+.ultra-modern-filters {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+    gap: 1.5rem !important;
+    padding: 1.5rem !important;
+    background: transparent !important;
+  }
+  
+  .glassmorphism-card {
+    background: rgba(255, 255, 255, 0.08) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border-radius: 16px !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    padding: 1.5rem !important;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15) !important;
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+  }
+  
+  .glassmorphism-card:hover {
+    transform: translateY(-5px) !important;
+    box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.25) !important;
+  }
+  
+  .filter-header {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.75rem !important;
+    margin-bottom: 1.25rem !important;
+  }
+  
+  .filter-icon {
+    font-size: 2rem !important;
+    color: #6366f1 !important;
+    background: rgba(99, 102, 241, 0.1) !important;
+    padding: 0.5rem !important;
+    border-radius: 12px !important;
+  }
+  
+  .filter-title {
+    margin: 0 !important;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    color: #333 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+  }
+
+  body.dark .filter-title{
+    color: #e0dfdf !important;
+  }
+  
+  .futuristic-select, .futuristic-combo {
+    position: relative !important;
+    width: 100% !important;
+  }
+  
+  .neo-select {
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    width: 100% !important;
+    padding: 0.85rem 1.25rem !important;
+    font-size: 0.95rem !important;
+    font-weight: 500 !important;
+    color: #000 !important;
+    background: rgba(15, 23, 42, 0.044) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 12px !important;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.166) !important;
+    transition: all 0.3s ease !important;
+    cursor: pointer !important;
+}
+
+body.dark .neo-select{
+    background: rgba(15, 23, 42, 0.044) !important;
+    color: #e0dfdf !important;
+}
+  
+  .neo-select:focus {
+    outline: none !important;
+    border-color: #6366f1 !important;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3) !important;
+  }
+  
+  .neo-select option {
+    background: #1e293b !important;
+    color: #e2e8f0 !important;
+  }
+  
+  .select-arrow {
+    position: absolute !important;
+    top: 50% !important;
+    right: 1rem !important;
+    transform: translateY(-50%) !important;
+    pointer-events: none !important;
+    color: #94a3b8 !important;
+    transition: transform 0.2s ease !important;
+  }
+  
+  .neo-select:focus + .select-arrow {
+    transform: translateY(-50%) rotate(180deg) !important;
+    color: #6366f1 !important;
+  }
+  
+  .select-combo {
+    display: flex !important;
+    gap: 0.75rem !important;
+  }
+  
+  .reset-button {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 48px !important;
+    height: 48px !important;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.9) 0%, rgba(79, 70, 229, 0.9) 100%) !important;
+    border: none !important;
+    border-radius: 12px !important;
+    color: white !important;
+    cursor: pointer !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    position: relative !important;
+    overflow: hidden !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+  }
+  
+  .reset-button::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 100%) !important;
+    opacity: 0 !important;
+    transition: opacity 0.3s ease !important;
+  }
+  
+  .reset-button:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+  }
+  
+  .reset-button:hover::before {
+    opacity: 1 !important;
+  }
+  
+  .reset-button:active {
+    transform: translateY(0) !important;
+    box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1) !important;
+  }
+  
+  .spin-on-hover {
+    transition: transform 0.5s ease !important;
+  }
+  
+  .reset-button:hover .spin-on-hover {
+    transform: rotate(360deg) !important;
+  }
+  
+  .btn-tooltip {
+    position: absolute !important;
+    bottom: -30px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    background: #1e293b !important;
+    color: white !important;
+    padding: 0.25rem 0.5rem !important;
+    border-radius: 6px !important;
+    font-size: 0.75rem !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transition: all 0.2s ease !important;
+    white-space: nowrap !important;
+  }
+  
+  .reset-button:hover .btn-tooltip {
+    opacity: 1 !important;
+    visibility: visible !important;
+    bottom: -35px !important;
+  }
+  
+  /* Effet holographique */
+  .holographic-btn {
+    position: relative !important;
+    overflow: hidden !important;
+  }
+  
+  .holographic-btn::after {
+    content: '' !important;
+    position: absolute !important;
+    top: -50% !important;
+    left: -50% !important;
+    right: -50% !important;
+    bottom: -50% !important;
+    background: linear-gradient(
+      to bottom right,
+      rgba(255, 255, 255, 0) 45%,
+      rgba(255, 255, 255, 0.1) 50%,
+      rgba(255, 255, 255, 0) 55%
+    ) !important;
+    transform: rotateZ(60deg) translate(-5em, 7.5em) !important;
+    animation: holographic 6s infinite linear !important;
+  }
+  
+  @keyframes holographic {
+    100% {
+      transform: rotateZ(60deg) translate(5em, -7.5em) !important;
+    }
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .ultra-modern-filters {
+      grid-template-columns: 1fr !important;
+    }
+    
+    .select-combo {
+      flex-direction: column !important;
+    }
+    
+    .reset-button {
+      width: 100% !important;
+      height: 42px !important;
+    }
+  }
