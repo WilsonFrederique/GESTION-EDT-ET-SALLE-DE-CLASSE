@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -8,6 +8,7 @@ import {
   DialogActions,
   Button
 } from '@mui/material';
+import { usePDF } from 'react-to-pdf';
 import './EnseignantsLists.css';
 import { getAllEnseignants, deleteEnseignant } from '../../../../services/enseignants_api';
 import { CiMenuKebab } from "react-icons/ci";
@@ -16,6 +17,8 @@ import { IoEyeSharp } from "react-icons/io5";
 import { MdMode } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 import { PiChalkboardTeacherBold } from "react-icons/pi";
+import { IoAddSharp } from "react-icons/io5";
+import { ImPrinter } from "react-icons/im";
 
 import ProfileF from '../../../../assets/images/sf.jpg'
 import ProfileM from '../../../../assets/images/sm.png'
@@ -26,6 +29,7 @@ const EnseignantsLists = () => {
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [selectedCin, setSelectedCin] = useState('');
   const navigate = useNavigate();
+  const { toPDF, targetRef } = usePDF({ filename: 'liste-enseignants.pdf' });
 
   // Charger les enseignants
   useEffect(() => {
@@ -69,6 +73,11 @@ const EnseignantsLists = () => {
     setOpenDeleteDialog(false);
   };
 
+  // Générer le PDF
+  const generatePDF = () => {
+    toPDF();
+  };
+
   return (
     <div className='ls'>
       {/* Toast Container */}
@@ -91,9 +100,11 @@ const EnseignantsLists = () => {
           <div className="menu">
             <CiMenuKebab />
             <div className="sub-menu">
-              <Link to="/enseignantsFRM"><p>Ajouter</p></Link>
+              <Link to="/enseignantsFRM"><p><IoAddSharp /> &nbsp; Ajouter</p></Link>
               <hr />
-              <Link to="/enseignants/details/tous"><p>Liste en détail</p></Link>
+              <p onClick={generatePDF} style={{ cursor: 'pointer' }}>
+                <ImPrinter /> &nbsp; PDF
+              </p>
             </div>
           </div>
         </div>
@@ -109,6 +120,59 @@ const EnseignantsLists = () => {
         </div>        
       </div>
 
+      {/* Contenu à exporter en PDF (positionné hors écran mais visible pour le PDF) */}
+      <div ref={targetRef} style={{
+        position: 'absolute',
+        left: '-9999px',
+        top: 0,
+        width: '794px', // Largeur A4 en pixels (21cm)
+        padding: '20px',
+        backgroundColor: 'white'
+      }}>
+        <h2 style={{ 
+          textAlign: 'center', 
+          marginBottom: '20px', 
+          color: 'black',
+          fontSize: '24px',
+          fontWeight: 'bold'
+        }}>
+          Liste des Enseignants
+        </h2>
+        <table style={{ 
+          width: '100%', borderCollapse: 'collapse'
+        }}>
+          <thead>
+            <tr style={{ backgroundColor: '#f2f2f2' }}>
+              <th style={{ padding: '10px', border: '1px solid #ddd', color: 'black' }}>Avatar</th>
+              <th style={{ padding: '10px', border: '1px solid #ddd', color: 'black' }}>Nom</th>
+              <th style={{ padding: '10px', border: '1px solid #ddd', color: 'black' }}>Prénom</th>
+              <th style={{ padding: '10px', border: '1px solid #ddd', color: 'black' }}>Grade</th>
+              <th style={{ padding: '10px', border: '1px solid #ddd', color: 'black' }}>Spécialité</th>
+              <th style={{ padding: '10px', border: '1px solid #ddd', color: 'black' }}>Email</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredEnseignants.map((enseignant) => (
+              <tr key={enseignant.cinEns} style={{ borderBottom: '1px solid #ddd' }}>
+                <td style={{ padding: '10px', textAlign: 'center', color: 'black' }}>
+                  <img 
+                    src={enseignant.Sexe === 'Masculin' ? ProfileM : ProfileF} 
+                    alt={`${enseignant.Nom} ${enseignant.Prenom}`}
+                    style={{ width: '50px', height: '50px', borderRadius: '50%', objectFit: 'cover' }}
+                  />
+                </td>
+                <td style={{ padding: '10px', color: 'black' }}>{enseignant.Nom}</td>
+                <td style={{ padding: '10px', color: 'black' }}>{enseignant.Prenom}</td>
+                <td style={{ padding: '10px', color: 'black' }}>{enseignant.Grade}</td>
+                <td style={{ padding: '10px', color: 'black' }}>{enseignant.Specialite}</td>
+                <td style={{ padding: '10px', color: 'black' }}>{enseignant.Email}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Affichage normal dans l'application */}
       <div className="ls-list">
         {filteredEnseignants.map((enseignant) => (
           <div key={enseignant.cinEns} className="friends2">

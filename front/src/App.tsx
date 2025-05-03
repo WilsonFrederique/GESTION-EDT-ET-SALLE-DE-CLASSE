@@ -1,14 +1,12 @@
 import React, { createContext, useEffect, useState } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Home from "./pages/Dashboard/DashboardIndex";
 import Header from "./components/Header/Header";
 import SidBar from "./components/SidBar/SidBar";
-import Login from "./pages/Login/Login";
 import SignUp from "./pages/SignUp/SignUp";
 import Message from "./pages/Message/Message";
 
-import { EnseignantsTousDetails } from "./pages/EnseignantsTousDetails/EnseignantsTousDetails";
 import Enseignants from "./pages/Enseignants/Enseignants";
 import EnseignantsFRM from "./pages/EnseignantsFRM/EnseignantsFRM";
 import EnseignantsDetail from "./pages/Enseignants/Components/EnseignantsDetail/EnseignantsDetail";
@@ -42,13 +40,13 @@ import SalleFRM from "./pages/SalleFRM/SalleFRM";
 
 import CreneauxListe from "./pages/CreneauxListe/CreneauxListe";
 import CreneauxFrm from "./pages/CreneauxFRM/CreneauxFrm";
+import CreneauxDirectFrm from "./pages/CreneauxFRM/CreneauxDirectFrm";
 
 import NiveauTous from "./pages/EtudiantsList/NiveauTous/NiveauTous";
 
 import Notifications from "./pages/Notifications/Notifications";
 
 import Parametres from "./pages/Parametres/Parametres";
-
 
 const MyContext = createContext();
 
@@ -155,16 +153,15 @@ export default function App() {
 
           <div className={`content ${isHideSidebarAndHeader && 'full'} ${isToggleSidebar && "toggle"}`}>
             <Routes>
+              {/* <Route path="/" element={<Home />} /> */}
               <Route path="/" element={<Home />} />
               <Route path="/home" element={<Home />} />
-              <Route path="/login" element={<Login />} />
               <Route path="/signUp" element={<SignUp />} />
               <Route path="/message" element={<Message />} />
 
               <Route path="/enseignants" element={<Enseignants />} />
               <Route path="/enseignantsFRM" element={<EnseignantsFRM />} />
               <Route path="/modifierEnseignantsFRM/:cinEns" element={<EnseignantsFRM />} />
-              {/* <Route path="/enseignants/details/tous" element={<EnseignantsTousDetails />} /> */}
               <Route path="/enseignants/details/:cinEns" element={<EnseignantsDetail />} />
 
               <Route path="/niveaux" element={<Niveaux />} />
@@ -205,6 +202,7 @@ export default function App() {
               <Route path="/creneauxListe" element={<CreneauxListe />} />
               <Route path="/creneauxFrm" element={<CreneauxFrm />} />
               <Route path="/modifierCreneauxFrm/:IDCreneaux" element={<CreneauxFrm />} />
+              <Route path="/creneauxDirectFrm" element={<CreneauxDirectFrm />} />
 
               <Route path="/notifications" element={<Notifications />} />
 

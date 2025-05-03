@@ -58,7 +58,34 @@
     box-shadow: 0 4px 6px rgba(0,0,0,0.05);
     cursor: pointer;
   }
+
+.btn-edt:hover {
+    background-color: #136c06;
+    border-color: #fff;
+    transform: translateY(-2px);
+  }
+
+.btn-impr{
+    background-color: #0a1c83;
+    color: #fff;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 10px;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    cursor: pointer;
+  }
   
+  .btn-impr:hover {
+    background-color: #041575;
+    border-color: #fff;
+    transform: translateY(-2px);
+  }
+
   .btn-prm:hover {
     background-color: #053de6;
     border-color: #fff;

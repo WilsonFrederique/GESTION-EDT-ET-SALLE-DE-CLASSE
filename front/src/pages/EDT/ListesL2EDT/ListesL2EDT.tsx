@@ -92,6 +92,332 @@ const ListesL2EDT = () => {
         return heure;
     };
 
+    // Fonction pour formater les dates pour l'impression (ex: "07 Mai 2025")
+    const formatDateForPrint = (dateString: string | Date) => {
+        if (!dateString) return "Date non définie";
+        const date = new Date(dateString);
+        if (isNaN(date.getTime())) return "Date invalide";
+        
+        const day = date.getDate().toString().padStart(2, '0');
+        const monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", 
+                           "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
+        const month = monthNames[date.getMonth()];
+        const year = date.getFullYear();
+        
+        return `${day} ${month} ${year}`;
+    };
+
+    // Impression par un seul EDT
+    const handlePrintSingle = (parcoursId: string) => {
+        const printWindow = window.open('', '_blank');
+        if (!printWindow) return;
+
+        const niveauDetails = getNiveauDetails(niveauL2Id);
+        const parcoursDetails = getParcoursDetails(parcoursId);
+
+        // Filtrer les EDT par parcours et date sélectionnée
+        let edtsForParcours = edts.filter(edt => 
+            edt.IDParcours === parcoursId
+        );
+        
+        // Appliquer le filtre de date si une date est sélectionnée
+        if (selectedDateDebut) {
+            edtsForParcours = edtsForParcours.filter(edt => {
+                const creneau = creneaux.find(c => c.IDCreneaux === edt.IDCreneaux);
+                if (!creneau) return false;
+                return formatDate(creneau.DateDebut) === selectedDateDebut;
+            });
+        }
+
+        let dateDebut = '';
+        let dateFin = '';
+        
+        if (edtsForParcours.length > 0) {
+            // Trouver le créneau correspondant à la date sélectionnée ou le plus récent
+            const latestEdt = edtsForParcours.reduce((latest, current) => {
+                const currentCreneau = creneaux.find(c => c.IDCreneaux === current.IDCreneaux);
+                const latestCreneau = creneaux.find(c => c.IDCreneaux === latest.IDCreneaux);
+                
+                if (!currentCreneau) return latest;
+                if (!latestCreneau) return current;
+                
+                // Si une date est sélectionnée, trouver exactement cette date
+                if (selectedDateDebut) {
+                    const currentDate = formatDate(currentCreneau.DateDebut);
+                    const latestDate = formatDate(latestCreneau.DateDebut);
+                    return currentDate === selectedDateDebut ? current : latest;
+                }
+                
+                // Sinon, prendre la plus récente
+                return new Date(currentCreneau.DateDebut) > new Date(latestCreneau.DateDebut) ? current : latest;
+            });
+            
+            const creneau = creneaux.find(c => c.IDCreneaux === latestEdt.IDCreneaux);
+            if (creneau) {
+                dateDebut = formatDateForPrint(creneau.DateDebut);
+                dateFin = formatDateForPrint(creneau.DateFin);
+            }
+        }
+
+        let printContent = `
+            <html>
+                <head>
+                    <title>Emploi du temps - ${niveauDetails} - ${parcoursDetails}</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 20px; }
+                        .title{ text-align: right; position: absolute; right: 0; }
+                        .print-header { text-align: center; margin-bottom: 20px; }
+                        .print-title { font-size: 24px; font-weight: bold; }
+                        .print-date { font-size: 18px; margin: 10px 0; }
+                        .edt-table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+                        .edt-table th, .edt-table td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+                        .edt-table th { background-color: #f2f2f2; }
+                        .edt-cours-container { padding: 5px; }
+                        .edt-cours { font-weight: bold; }
+                        .edt-prof { font-size: 0.9em; }
+                        .edt-salle { font-size: 0.8em; color: #555; }
+                        .page-break { page-break-after: always; }
+                        .school-header { text-align: center; margin-bottom: 10px; }
+                        .niveau-header { text-align: center; margin-bottom: 15px; }
+                        .date-period { text-align: center; margin-bottom: 15px; font-style: italic; }
+                    </style>
+                </head>
+                <body>
+                    <div class="school-header">
+                        <p><b>ENI</b> &nbsp; <b>É</b>cole <b>N</b>ationale d'<b>I</b>nformatique</p>
+                    </div>
+                    <div class="niveau-header">
+                        <h2>${niveauDetails} - ${parcoursDetails}</h2>
+                    </div>
+                    <div class="date-period">
+                        <p>Du ${dateDebut} au ${dateFin}</p>
+                    </div>
+                    <table class="edt-table">
+                        <thead>
+                            <tr>
+                                <th>Heures</th>
+                                <th>Lundi</th>
+                                <th>Mardi</th>
+                                <th>Mercredi</th>
+                                <th>Jeudi</th>
+                                <th>Vendredi</th>
+                                <th>Samedi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+        `;
+
+        creneauxGroupes.forEach(({ heureDebut, heureFin, creneauxIds }) => {
+            printContent += `
+                <tr>
+                    <td>${heureDebut} - ${heureFin}</td>
+            `;
+
+            ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'].forEach(jour => {
+                let edtForJour = null;
+                for (const creneauId of creneauxIds) {
+                    edtForJour = getEdtForCreneauAndDay(parcoursId, creneauId, jour);
+                    if (edtForJour) break;
+                }
+
+                printContent += '<td>';
+                if (edtForJour) {
+                    printContent += `
+                        <div class="edt-cours-container">
+                            <div class="edt-cours">${getMatiereDetails(edtForJour.IDMatiere)}</div>
+                            <div class="edt-prof">${getEnseignantDetails(edtForJour.cinEns)}</div>
+                            <div class="edt-salle">Salle: ${getSalleDetails(edtForJour.IDSalle)}</div>
+                        </div>
+                    `;
+                }
+                printContent += '</td>';
+            });
+
+            printContent += '</tr>';
+        });
+
+        printContent += `
+                        </tbody>
+                    </table>
+                </body>
+            </html>
+        `;
+
+        printWindow.document.write(printContent);
+        printWindow.document.close();
+        
+        setTimeout(() => {
+            printWindow.print();
+            printWindow.close();
+        }, 500);
+    };
+
+    // Impression de tous les EDT
+    const handlePrintAll = () => {
+        const printWindow = window.open('', '_blank');
+        if (!printWindow) return;
+            
+        // Récupérer le HTML de tous les EDT à imprimer
+        let printContent = `
+            <html>
+                <head>
+                    <title class="title">Emplois du temps L2 - ${selectedDateDebut || getLatestDateDebut()}</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 20px; }
+                        .title{ text-align: right; position: absolute; right: 0; }
+                        .print-header { text-align: center; margin-bottom: 20px; }
+                        .print-title { font-size: 24px; font-weight: bold; }
+                        .print-date { font-size: 18px; margin: 10px 0; }
+                        .edt-table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+                        .edt-table th, .edt-table td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+                        .edt-table th { background-color: #f2f2f2; }
+                        .edt-cours-container { padding: 5px; }
+                        .edt-cours { font-weight: bold; }
+                        .edt-prof { font-size: 0.9em; }
+                        .edt-salle { font-size: 0.8em; color: #555; }
+                        .page-break { page-break-after: always; }
+                        .school-header { text-align: center; margin-bottom: 10px; }
+                        .niveau-header { text-align: center; margin-bottom: 15px; }
+                        .date-period { text-align: center; margin-bottom: 15px; font-style: italic; }
+                    </style>
+                </head>
+                <body>
+                    <div class="print-header">
+                        <div class="print-title">Emplois du temps L2</div>
+                        <div class="print-date">Date: ${selectedDateDebut || getLatestDateDebut()}</div>
+                    </div>
+        `;
+
+        // Ajouter chaque EDT au contenu à imprimer
+        parcours.forEach(parcour => {
+            if (hasEdtsForParcours(parcour.IDParcours)) {
+                const niveauDetails = getNiveauDetails(niveauL2Id);
+                const parcoursDetails = getParcoursDetails(parcour.IDParcours);
+                
+                // Filtrer les EDT par parcours et date sélectionnée
+                let edtsForParcours = edts.filter(edt => 
+                    edt.IDParcours === parcour.IDParcours
+                );
+                
+                // Appliquer le filtre de date si une date est sélectionnée
+                if (selectedDateDebut) {
+                    edtsForParcours = edtsForParcours.filter(edt => {
+                        const creneau = creneaux.find(c => c.IDCreneaux === edt.IDCreneaux);
+                        if (!creneau) return false;
+                        return formatDate(creneau.DateDebut) === selectedDateDebut;
+                    });
+                }
+                
+                let dateDebut = '';
+                let dateFin = '';
+                
+                if (edtsForParcours.length > 0) {
+                    // Trouver le créneau correspondant à la date sélectionnée ou le plus récent
+                    const latestEdt = edtsForParcours.reduce((latest, current) => {
+                        const currentCreneau = creneaux.find(c => c.IDCreneaux === current.IDCreneaux);
+                        const latestCreneau = creneaux.find(c => c.IDCreneaux === latest.IDCreneaux);
+                        
+                        if (!currentCreneau) return latest;
+                        if (!latestCreneau) return current;
+                        
+                        // Si une date est sélectionnée, trouver exactement cette date
+                        if (selectedDateDebut) {
+                            const currentDate = formatDate(currentCreneau.DateDebut);
+                            const latestDate = formatDate(latestCreneau.DateDebut);
+                            return currentDate === selectedDateDebut ? current : latest;
+                        }
+                        
+                        // Sinon, prendre la plus récente
+                        return new Date(currentCreneau.DateDebut) > new Date(latestCreneau.DateDebut) ? current : latest;
+                    });
+                    
+                    const creneau = creneaux.find(c => c.IDCreneaux === latestEdt.IDCreneaux);
+                    if (creneau) {
+                        dateDebut = formatDateForPrint(creneau.DateDebut);
+                        dateFin = formatDateForPrint(creneau.DateFin);
+                    }
+                }
+                
+                printContent += `
+                    <div class="edt-section">
+                        <div class="school-header">
+                            <p><b>ENI</b> &nbsp; <b>É</b>cole <b>N</b>ationale d'<b>I</b>nformatique</p>
+                        </div>
+                        <div class="niveau-header">
+                            <h2>${niveauDetails} - ${parcoursDetails}</h2>
+                        </div>
+                        <div class="date-period">
+                            <p>Du ${dateDebut} au ${dateFin}</p>
+                        </div>
+                        <table class="edt-table">
+                            <thead>
+                                <tr>
+                                    <th>Heures</th>
+                                    <th>Lundi</th>
+                                    <th>Mardi</th>
+                                    <th>Mercredi</th>
+                                    <th>Jeudi</th>
+                                    <th>Vendredi</th>
+                                    <th>Samedi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                `;
+
+                creneauxGroupes.forEach(({ heureDebut, heureFin, creneauxIds }) => {
+                    printContent += `
+                        <tr>
+                            <td>${heureDebut} - ${heureFin}</td>
+                    `;
+
+                    ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'].forEach(jour => {
+                        let edtForJour = null;
+                        for (const creneauId of creneauxIds) {
+                            edtForJour = getEdtForCreneauAndDay(parcour.IDParcours, creneauId, jour);
+                            if (edtForJour) break;
+                        }
+
+                        printContent += '<td>';
+                        if (edtForJour) {
+                            printContent += `
+                                <div class="edt-cours-container">
+                                    <div class="edt-cours">${getMatiereDetails(edtForJour.IDMatiere)}</div>
+                                    <div class="edt-prof">${getEnseignantDetails(edtForJour.cinEns)}</div>
+                                    <div class="edt-salle">Salle: ${getSalleDetails(edtForJour.IDSalle)}</div>
+                                </div>
+                            `;
+                        }
+                        printContent += '</td>';
+                    });
+
+                    printContent += '</tr>';
+                });
+
+                printContent += `
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="page-break"></div>
+                `;
+            }
+        });
+
+        printContent += `
+                </body>
+            </html>
+        `;
+
+        // Écrire le contenu dans la fenêtre d'impression
+        printWindow.document.write(printContent);
+        printWindow.document.close();
+        
+        // Délai pour s'assurer que le contenu est chargé avant impression
+        setTimeout(() => {
+            printWindow.print();
+            printWindow.close();
+        }, 500);
+    };
+
     // Charger toutes les données
     useEffect(() => {
         const fetchData = async () => {
@@ -438,7 +764,11 @@ const ListesL2EDT = () => {
                         </div>
 
                         <div className="edt-buttons">
-                            <Button type='button' className='btn-imprimer btn-lg'>
+                            <Button 
+                                type='button' 
+                                className='btn-imprimer btn-lg'
+                                onClick={() => handlePrintSingle(parcoursId)}
+                            >
                                 <ImPrinter /> &nbsp; IMPRIMER
                             </Button>
                         </div>
@@ -545,7 +875,7 @@ const ListesL2EDT = () => {
                                     Action
                                 </div>
                                 <div className="tbns">
-                                    <div className="impr">
+                                    <div className="impr" onClick={handlePrintAll}>
                                         <ImPrinter />
                                     </div>
                                     <div className="impr">

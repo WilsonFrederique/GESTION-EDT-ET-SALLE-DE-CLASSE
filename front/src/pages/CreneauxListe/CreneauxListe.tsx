@@ -196,8 +196,36 @@ const CreneauxListe = () => {
                     <div className="fa-reg-plus-square-container ensbl">
                         <div>Liste des créneaux</div>
                         <div>
-                            <ImPrinter className='impression' /> &nbsp;
-                            <a href="/creneauxFrm"><FaRegPlusSquare /></a>
+                            <div className="add-actions-glass">
+                                <span className="add-label-glass">Ajouter un créneau :</span>
+                                <div className="action-buttons-glass">
+                                    <a href="/creneauxDirectFrm">
+                                        <button className="action-btn-glass direct-glass">
+                                            <span>Direct</span>
+                                            <div className="icon-wrapper-glass">
+                                                <svg viewBox="0 0 24 24" width="20" height="20">
+                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" fill="currentColor"/>
+                                                </svg>
+                                            </div>
+                                            <div className="hover-effect-glass"></div>
+                                        </button>
+                                    </a>
+                                    <a href="/creneauxFrm">
+                                        <button className="action-btn-glass custom-glass">
+                                            <span>Personnalisé</span>
+                                            <div className="icon-wrapper-glass">
+                                                <svg viewBox="0 0 24 24" width="20" height="20">
+                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" fill="currentColor"/>
+                                                <path d="M7 7h1v1H7zM10 7h1v1h-1zM7 10h1v1H7z" fill="currentColor" opacity="0.8"/>
+                                                </svg>
+                                            </div>
+                                            <div className="hover-effect-glass"></div>
+                                        </button>
+                                    </a>
+                                </div>
+                            </div>
+                            {/* <ImPrinter className='impression' /> &nbsp;&nbsp;
+                            <a href="/creneauxFrm"><FaRegPlusSquare /></a> */}
                         </div>
                     </div>
             

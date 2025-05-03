@@ -200,14 +200,8 @@ const MatiersListe = () => {
                 <div className="card shadow border-0 p-3 mt-4">
                     <div className="fa-reg-plus-square-container ensbl">
                         <div>Liste des matières</div>
-                        <div>
-                            <a href="">
-                                <ImPrinter className='impression' />
-                            </a>
-                            &nbsp;&nbsp;
-                            <a href="/matiereFrm" className="add-button">
-                                <FaRegPlusSquare />
-                            </a>
+                        <div className='add'>
+                            <a href="/matiereFrm"><FaRegPlusSquare className='icn' /></a>
                         </div>
                     </div>
             

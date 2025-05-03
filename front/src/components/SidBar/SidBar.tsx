@@ -110,12 +110,12 @@ const SidBar = () => {
                         <div className={`submenuWrapperEDT ${activeTab===14 && isToggleSubmenuEDT===true ? 'colapse' : 'colapsed'}`}>
                             <ul className="submenu">
                                 <li><Link to="/edtFrm">Ajouter un EDT</Link></li>
-                                <li><Link to="/listesTousEDT">Tous les emplois du temps</Link></li>
                                 <li><Link to="/listesL1EDT">Emploi du temps de L1</Link></li>
                                 <li><Link to="/listesL2EDT">Emploi du temps de L2</Link></li>
                                 <li><Link to="/listesL3EDT">Emploi du temps de L3</Link></li>
                                 <li><Link to="/listesM1EDT">Emploi du temps de M1</Link></li>
                                 <li><Link to="/listesM2EDT">Emploi du temps de M2</Link></li>
+                                <li><Link to="/listesTousEDT">Tous les EDT</Link></li>
                             </ul>
                         </div>
                     </li>
