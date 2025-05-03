@@ -12,9 +12,10 @@ import Chip from '@mui/material/Chip';
 import Button from '@mui/material/Button';
 
 import { GoMoveToTop } from "react-icons/go";
-import { FaPlus } from "react-icons/fa6";
 import { FaTimes } from "react-icons/fa";
 import { FaCheckSquare } from "react-icons/fa";
+import { FaRegEdit } from "react-icons/fa";
+import { IoAdd } from "react-icons/io5";
 
 import { createSalle, updateSalle, getSalle, getAllSalles } from '../../services/salles_api';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -271,9 +272,19 @@ const SalleFRM = () => {
                                     type='submit' 
                                     variant="contained" 
                                     color="primary"
-                                    startIcon={<FaPlus />}
-                                    className='btn-blue btn-lg w-100'
-                                >
+                                    startIcon={isEditMode ? <FaRegEdit /> : <IoAdd />}
+                                    className={isEditMode ? 'btn-blue btn-lg w-100' : 'btn-edt btn-lg w-100' }
+                                    sx={{
+                                        textTransform: 'none',
+                                        fontSize: '1rem',
+                                        padding: '12px 24px',
+                                        borderRadius: '8px',
+                                        boxShadow: 'none',
+                                        '&:hover': {
+                                        boxShadow: 'none',
+                                        }
+                                    }}
+                                    >
                                     {isEditMode ? 'MODIFIER' : 'ENREGISTRER'}
                                 </Button>
                                 <Button 

@@ -25,6 +25,84 @@ async function create(req, res) {
   }
 }
 
+// ➕ Créer plusieurs créneaux en une seule requête
+async function createMultiple(req, res) {
+  try {
+    const creneaux = req.body;
+
+    if (!Array.isArray(creneaux)) {
+      return res.status(400).json({
+        error: "Un tableau de créneaux est requis"
+      });
+    }
+
+    // Validation des données
+    for (const creneau of creneaux) {
+      if (!creneau.Jours || !creneau.HeureDebut || !creneau.HeureFin || !creneau.DateDebut || !creneau.DateFin) {
+        return res.status(400).json({
+          error: "Tous les champs sont obligatoires pour chaque créneau"
+        });
+      }
+    }
+
+    // Préparer les valeurs pour l'insertion multiple
+    const values = creneaux.map(creneau => [
+      creneau.Jours, 
+      creneau.HeureDebut, 
+      creneau.HeureFin, 
+      creneau.DateDebut, 
+      creneau.DateFin
+    ]);
+
+    const [result] = await pool.query(
+      `INSERT INTO creneaux (Jours, HeureDebut, HeureFin, DateDebut, DateFin) VALUES ?`,
+      [values]
+    );
+
+    return res.status(201).json({
+      message: `${creneaux.length} créneaux ajoutés avec succès`,
+      insertedIds: Array.from({length: creneaux.length}, (_, i) => result.insertId + i)
+    });
+  } catch (error) {
+    return res.status(500).json({ error: "Erreur serveur: " + error.message });
+  }
+}
+
+// Vérifier si un créneau existe déjà ou chevauche avec un autre
+async function checkExisting(req, res) {
+    try {
+        const { Jours, HeureDebut, HeureFin, DateDebut, DateFin, excludeId } = req.body;
+
+        let query = `SELECT COUNT(*) as count FROM creneaux 
+                    WHERE Jours = ? 
+                    AND HeureDebut = ? 
+                    AND HeureFin = ? 
+                    AND DateDebut = ? 
+                    AND DateFin = ?`;
+        
+        let params = [Jours, HeureDebut, HeureFin, DateDebut, DateFin];
+
+        // Si on a un ID à exclure (pour la modification)
+        if (excludeId) {
+            query += ` AND IDCreneaux != ?`;
+            params.push(excludeId);
+        }
+
+        const [result] = await pool.query(query, params);
+
+        return res.status(200).json({
+            exists: result[0].count > 0,
+            message: result[0].count > 0 
+                ? "Un créneau identique existe déjà" 
+                : "Aucun créneau identique trouvé"
+        });
+    } catch (error) {
+        return res.status(500).json({ 
+            error: "Erreur serveur: " + error.message 
+        });
+    }
+}
+
 // ✏️ Modifier un créneau
 async function updateOne(req, res) {
   try {
@@ -105,6 +183,8 @@ async function getOne(req, res) {
 // 📦 Export des fonctions
 export default {
   create,
+  createMultiple,
+  checkExisting,
   updateOne,
   deleteOne,
   getAll,

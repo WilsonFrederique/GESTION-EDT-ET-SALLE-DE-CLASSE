@@ -154,7 +154,9 @@ const Parcours = () => {
 
                 <div className="card shadow border-0 p-3 mt-4">
                     <div className="fa-reg-plus-square-container">
-                        <a href="/parcoursFrm"><FaRegPlusSquare /></a>
+                        <div className='add'>
+                            <a href="/parcoursFrm"><FaRegPlusSquare className='icn' /></a>
+                        </div>
                     </div>
                     <table className="tableFormation table-hover table-bordered rounded shadow-sm overflow-hidden">
                         <thead className="table-light">
@@ -194,7 +196,7 @@ const Parcours = () => {
 
                 <footer className="footer">
                     <div className="footer-text">
-                        <p>&copy; 2025 par Planning Scolaire | Tous Droits Réservés.</p>
+                        <p>&copy; 2025 par Planification Scolaire | Tous Droits Réservés.</p>
                     </div>
 
                     <div className="footer-iconTop">

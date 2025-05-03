@@ -12,9 +12,11 @@ import Chip from '@mui/material/Chip'
 import Button from '@mui/material/Button'
 
 import { GoMoveToTop } from "react-icons/go"
-import { FaPlus, FaTimes, FaCheckSquare } from "react-icons/fa"
+import { FaTimes, FaCheckSquare } from "react-icons/fa"
+import { IoAdd } from "react-icons/io5";
+import { FaRegEdit } from "react-icons/fa";
 
-import { createCreneau, updateCreneau, getCreneau } from '../../services/creneaux_api'
+import { createCreneau, updateCreneau, getCreneau, checkExistingCreneaux } from '../../services/creneaux_api'
 import { useParams, useNavigate } from 'react-router-dom'
 
 const CreneauxFrm = () => {
@@ -116,6 +118,17 @@ const CreneauxFrm = () => {
         }));
     };
 
+    // Vérifier si le créneau existe déjà
+    const checkIfCreneauExists = async (): Promise<boolean> => {
+        try {
+            return await checkExistingCreneaux(creneauData);
+        } catch (error) {
+            console.error('Erreur lors de la vérification du créneau:', error);
+            toast.error('Erreur lors de la vérification du créneau');
+            return false;
+        }
+    };
+
     // Fonction de soumission du formulaire
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
@@ -128,6 +141,15 @@ const CreneauxFrm = () => {
         if (!validateHeures(creneauData.HeureDebut, creneauData.HeureFin)) {
             toast.error('L\'heure de fin doit être postérieure à l\'heure de début');
             return;
+        }
+
+        // Vérifier si le créneau existe déjà (sauf en mode édition)
+        if (!isEditMode) {
+            const creneauExists = await checkIfCreneauExists();
+            if (creneauExists) {
+                toast.error('Ce créneau existe déjà');
+                return;
+            }
         }
 
         try {
@@ -317,11 +339,21 @@ const CreneauxFrm = () => {
                                         type="submit"
                                         variant="contained"
                                         color="primary"
-                                        startIcon={<FaPlus />}
-                                        className="btn-blue btn-lg w-100"
                                         disabled={!validateDates(creneauData.DateDebut, creneauData.DateFin) || 
                                                  !validateHeures(creneauData.HeureDebut, creneauData.HeureFin)}
-                                    >
+                                        startIcon={isEditMode ? <FaRegEdit /> : <IoAdd />}
+                                        className={isEditMode ? 'btn-blue btn-lg w-100' : 'btn-edt btn-lg w-100' }
+                                        sx={{
+                                            textTransform: 'none',
+                                            fontSize: '1rem',
+                                            padding: '12px 24px',
+                                            borderRadius: '8px',
+                                            boxShadow: 'none',
+                                            '&:hover': {
+                                            boxShadow: 'none',
+                                            }
+                                        }}
+                                        >
                                         {isEditMode ? 'MODIFIER' : 'ENREGISTRER'}
                                     </Button>
                                     <Button 

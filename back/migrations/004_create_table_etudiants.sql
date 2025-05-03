@@ -10,6 +10,6 @@ CREATE TABLE IF NOT EXISTS etudiants (
     Telephone VARCHAR(13),
     Email VARCHAR(50),
     Img VARCHAR(255),
-    FOREIGN KEY (IDNiveaux) REFERENCES niveaux(IDNiveaux),
-    FOREIGN KEY (IDParcours) REFERENCES parcours(IDParcours)
+    FOREIGN KEY (IDNiveaux) REFERENCES niveaux(IDNiveaux) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (IDParcours) REFERENCES parcours(IDParcours) ON DELETE CASCADE ON UPDATE CASCADE
 );

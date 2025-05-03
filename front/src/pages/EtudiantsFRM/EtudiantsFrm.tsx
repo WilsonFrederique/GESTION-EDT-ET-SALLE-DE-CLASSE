@@ -22,6 +22,7 @@ import { createEtudiant, updateEtudiant, getEtudiant, getAllEtudiants } from '..
 import { getAllNiveaux } from '../../services/niveaux_api';
 import { getAllParcours } from '../../services/parcours_api';
 import { useParams, useNavigate } from 'react-router-dom';
+import { FaRegEdit } from "react-icons/fa";
 
 const EtudiantsFrm = () => {
     const StyledBreadcrumb = styled(Chip)(({ theme }) => {
@@ -526,9 +527,19 @@ const EtudiantsFrm = () => {
                                     type='submit' 
                                     variant="contained" 
                                     color="primary"
-                                    startIcon={<FaPlus />}
-                                    className='btn-blue btn-lg w-100'
-                                >
+                                    startIcon={isEditMode ? <FaRegEdit /> : <FaPlus />}
+                                    className={isEditMode ? 'btn-blue btn-lg w-100' : 'btn-edt btn-lg w-100' }
+                                    sx={{
+                                        textTransform: 'none',
+                                        fontSize: '1rem',
+                                        padding: '12px 24px',
+                                        borderRadius: '8px',
+                                        boxShadow: 'none',
+                                        '&:hover': {
+                                        boxShadow: 'none',
+                                        }
+                                    }}
+                                    >
                                     {isEditMode ? 'MODIFIER' : 'ENREGISTRER'}
                                 </Button>
                                 <Button 

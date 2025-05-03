@@ -1,0 +1,636 @@
+/* Base Styles */
+.container-frm {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+  }
+  
+  .form-pour-tout-les-jours {
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+    padding: 2.5rem;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+  }
+
+  body.dark .form-pour-tout-les-jours {
+    background: #03001825;
+  }
+  
+  .form-pour-tout-les-jours:hover {
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
+  }
+  
+  /* Date Range Section */
+  .ens-dates {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+  }
+  
+  .date-debut, .date-fin {
+    flex: 1;
+    min-width: 250px;
+  }
+  
+  .date-debut label, .date-fin label {
+    display: block;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+    color: #2d3748;
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+  }
+  
+  .modern-date-input {
+    width: 100%;
+    padding: 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background-color: #f8fafc;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+  }
+
+  body.dark .modern-date-input{
+    background: transparent;
+  }
+  
+  .modern-date-input:focus {
+    outline: none;
+    border-color: #818cf8;
+    box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.3);
+    background-color: #ffffff;
+  }
+  
+  /* Days Grid Layout */
+  .ens-jours {
+    /* display: grid; */
+    /* grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); */
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+  }
+  
+  /* Day Cards */
+  .jour-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.03);
+    border: 1px solid #edf2f7;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 1rem;
+  }
+
+  body.dark .jour-card {
+    background: #ffffff0d;
+  }
+  
+  .jour-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(to bottom, #818cf8, #a5b4fc);
+    transition: all 0.3s ease;
+  }
+
+  body.dark .jour-card::before{
+    background: #6365f1b0;
+  }
+  
+  .jour-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+  }
+  
+  .jour-card:hover::before {
+    width: 6px;
+  }
+  
+  .jour-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  
+  /* Time Sections */
+  .time-sections {
+    display: flex;
+    /* flex-direction: column; */
+    gap: 1.5rem;
+  }
+
+  body.dark .time-section{
+    background: #01054553 !important;
+  }
+
+  .day-name-input{
+    background: transparent;
+    border: 0;
+    outline: none;
+    font-size: 1.5em;
+    font-weight: 500;
+  }
+  
+  .time-section {
+    background: #f8fafc;
+    border-radius: 12px;
+    width: 100%;
+    padding: 1rem;
+  }
+  
+  .time-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #4a5568;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+  }
+  
+  .time-label::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #a5b4fc;
+    margin-right: 8px;
+  }
+  
+  .time-slots {
+    display: grid;
+    gap: 1rem;
+  }
+  
+  .time-slot {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 0.75rem;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  }
+
+  body.dark .time-slot{
+    background: #01000410;
+    box-shadow: 0 0 5px #ffffff16;
+  }
+  
+  .time-slot label {
+    display: block;
+    font-size: 0.8rem;
+    color: #718096;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+  
+  .time-inputs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+  
+  .time-input-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .time-input-group label {
+    font-size: 0.75rem;
+    color: #718096;
+    margin-bottom: 0.25rem;
+  }
+  
+  .modern-time-input {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    background-color: #ffffff;
+    transition: all 0.2s ease;
+  }
+
+  body.dark .modern-time-input{
+    background: transparent;
+    border: 1px solid #718096;
+  }
+  
+  .modern-time-input:focus {
+    outline: none;
+    border-color: #818cf8;
+    box-shadow: 0 0 0 2px rgba(129, 140, 248, 0.2);
+  }
+  
+  /* Radio Toggle */
+  .radio-toggle {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e2e8f0;
+  }
+  
+  .radio-option {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+  }
+  
+  .radio-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+  }
+  
+  .radio-custom {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid #cbd5e0;
+    display: inline-block;
+    position: relative;
+    margin-right: 8px;
+    transition: all 0.2s ease;
+  }
+  
+  .radio-option input[type="radio"]:checked + .radio-custom {
+    border-color: #6366f1;
+    background-color: #6366f1;
+    box-shadow: inset 0 0 0 3px white;
+  }
+  
+  .radio-option:hover .radio-custom {
+    border-color: #a5b4fc;
+  }
+  
+  .radio-label {
+    font-size: 0.9rem;
+    color: #4a5568;
+    font-weight: 500;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .ens-dates {
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .time-sections {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+    
+    .ens-jours {
+      grid-template-columns: 1fr;
+    }
+    
+    .time-inputs {
+      grid-template-columns: 1fr;
+    }
+    
+    .radio-toggle {
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+  }
+  
+  /* Animations */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .jour-card {
+    animation: fadeInUp 0.5s ease-out forwards;
+    opacity: 0;
+  }
+  
+  /* Animation delays for each day */
+  .jour-card:nth-child(1) { animation-delay: 0.1s; }
+  .jour-card:nth-child(2) { animation-delay: 0.2s; }
+  .jour-card:nth-child(3) { animation-delay: 0.3s; }
+  .jour-card:nth-child(4) { animation-delay: 0.4s; }
+  .jour-card:nth-child(5) { animation-delay: 0.5s; }
+  .jour-card:nth-child(6) { animation-delay: 0.6s; }
+  .jour-card:nth-child(7) { animation-delay: 0.7s; }
+
+
+
+
+
+
+
+
+
+  /* Conteneur des actions Enregistrer ou Annuler */
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1.5rem;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  /* Bouton Annuler - Style Néomorphisme */
+  .modern-cancel-btn {
+    position: relative;
+    padding: 1.1rem 2.2rem;
+    background: #f19090;
+    color: #f9f9f9;
+    border: none;
+    border-radius: 14px;
+    font-size: 1.05rem;
+    width: 100%;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    overflow: hidden;
+    z-index: 1;
+}
+
+.modern-cancel-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #e66d6d;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: -1;
+  }
+  
+  .modern-cancel-btn:hover {
+      transform: translateY(-3px) scale(1.02);
+    box-shadow: 12px 12px 24px rgba(163, 177, 198, 0.7),
+    -12px -12px 24px rgba(255, 255, 255, 0.9);
+    color: #f9f9f9;
+  }
+  
+  .modern-cancel-btn:hover::before {
+    opacity: 1;
+  }
+  
+  .modern-cancel-btn:active {
+    transform: translateY(1px) scale(0.98);
+    box-shadow: 4px 4px 8px rgba(163, 177, 198, 0.6),
+    -4px -4px 8px rgba(255, 255, 255, 0.8);
+  }
+  
+  .modern-reset-btn {
+    position: relative;
+    padding: 1.1rem 2.2rem;
+    background: #09096544;
+    color: #f9f9f9;
+    border: none;
+    border-radius: 14px;
+    font-size: 1.05rem;
+    width: 100%;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  .modern-reset-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #09096557;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      z-index: -1;
+    }
+    
+    .modern-reset-btn:hover {
+        transform: translateY(-3px) scale(1.02);
+      box-shadow: 12px 12px 24px rgba(163, 177, 198, 0.7),
+      -12px -12px 24px rgba(255, 255, 255, 0.9);
+      color: #f9f9f9;
+    }
+    
+    .modern-reset-btn:hover::before {
+      opacity: 1;
+    }
+    
+    .modern-reset-btn:active {
+      transform: translateY(1px) scale(0.98);
+      box-shadow: 4px 4px 8px rgba(163, 177, 198, 0.6),
+      -4px -4px 8px rgba(255, 255, 255, 0.8);
+    }
+  
+  body.dark .modern-reset-btn{
+    background: #6365f138 !important;
+  }
+  
+  /* Bouton Enregistrer - Style Glassmorphism avec animation */
+  .modern-submit-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.1rem 2.5rem;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.9), rgba(139, 92, 246, 0.9));
+    backdrop-filter: blur(10px);
+    color: white;
+    width: 100%;
+    border: none;
+    border-radius: 14px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    box-shadow: 0 8px 32px rgba(99, 102, 241, 0.3);
+    overflow: hidden;
+    z-index: 1;
+  }
+  
+  .modern-submit-btn::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+      to bottom right,
+      rgba(255, 255, 255, 0.3) 0%,
+      rgba(255, 255, 255, 0) 60%
+    );
+    transform: rotate(30deg);
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    z-index: -1;
+  }
+  
+  .modern-submit-btn:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 12px 40px rgba(99, 102, 241, 0.4);
+  }
+  
+  .modern-submit-btn:hover::before {
+    left: 100%;
+  }
+  
+  .modern-submit-btn:active {
+    transform: translateY(1px) scale(0.98);
+    box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3);
+  }
+  
+  /* Icône flèche */
+  .submit-icon {
+    width: 20px;
+    height: 20px;
+    margin-left: 12px;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  
+  .modern-submit-btn:hover .submit-icon {
+    transform: translateX(4px);
+  }
+  
+  /* Effet de lumière dynamique */
+  @keyframes lightSweep {
+    0% {
+      transform: translateX(-100%) skewX(-20deg);
+    }
+    100% {
+      transform: translateX(200%) skewX(-20deg);
+    }
+  }
+  
+  .modern-submit-btn::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.2) 50%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    animation: lightSweep 3s infinite ease-in-out;
+    z-index: -1;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .form-actions {
+      flex-direction: column;
+      gap: 1rem;
+    }
+    
+    .modern-cancel-btn,
+    .modern-submit-btn {
+      width: 100%;
+      padding: 1rem;
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  /* INPUT ERREUR  */
+  /* Ajoutez ces styles à votre fichier CSS */
+
+.input-error {
+  border-color: #ff6b6b !important;
+  box-shadow: 0 0 0 2px rgba(255, 107, 107, 0.2) !important;
+}
+
+.error-message {
+  color: #ff6b6b;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+.time-input-group {
+  position: relative;
+}
+
+/* Pour le mode sombre */
+body.dark .input-error {
+  border-color: #ff6b6b !important;
+}
+
+body.dark .error-message {
+  color: #ff9e9e;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Styles pour les messages d'erreur */
+.Toastify__toast--error {
+  background-color: #ff6b6b !important;
+  color: white !important;
+}
+
+.Toastify__toast--error .Toastify__close-button {
+  color: white !important;
+}
+
+.error-details {
+  margin-top: 8px;
+  font-size: 0.9em;
+  opacity: 0.9;
+}
+
+/* Pour le mode sombre */
+body.dark .Toastify__toast--error {
+  background-color: #d32f2f !important;
+}
