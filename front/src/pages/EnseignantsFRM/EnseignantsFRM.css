@@ -251,6 +251,10 @@
     min-width: 0;
 }
 
+body.dark input::placeholder{
+    color: #ffffff7a !important;
+}
+
 .grp-btns-save-annul .imagesUploadSec button {
     width: 100% !important;
 }
@@ -259,4 +263,266 @@
     .grp-btns-save-annul .imagesUploadSec button {
         font-size: 15px !important;
     }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* CSS POUR SEXE  */
+/* Modern Gender Radio Buttons */
+.gender-label h6 {
+    margin-bottom: 12px;
+    color: #4a5568;
+    font-weight: 500;
+    font-size: 0.875rem;
+  }
+  
+  .gender-radio-container {
+    margin-top: 4px;
+  }
+  
+  .gender-radio-group {
+    display: flex;
+    gap: 12px;
+  }
+  
+  .gender-radio-option {
+    position: relative;
+    flex: 1;
+    border: 1px solid #e2e8f0eb;
+    border-radius: 12px;
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background-color: #f8fafc;
+    margin-bottom: 1.5em;
+}
+
+body.dark .gender-radio-option {
+    background: #ffffff24 !important;
+    border: 1px solid #546985eb !important;
+}
+  
+  .gender-radio-option:hover {
+    border-color: #cbd5e0;
+    background-color: #f1f5f9;
+  }
+  
+  .gender-radio-option.selected {
+    border-color: #3b82f6;
+    background-color: #6da6f150;
+    box-shadow: 0 0 0 1px #3b82f6;
+  }
+  
+  body.dark .gender-radio-option.selected {
+    background-color: #6da6f13f !important;
+  }
+  
+  .gender-radio-input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  .gender-radio-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .gender-radio-content span {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #1e293b;
+  }
+  
+  .gender-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+  }
+  
+  .gender-radio-option.selected .gender-icon {
+    background-color: rgba(59, 130, 246, 0.1);
+  }
+  
+  .male-icon svg {
+    width: 24px;
+    height: 24px;
+    stroke: #3b82f6;
+  }
+  
+  .female-icon svg {
+    width: 24px;
+    height: 24px;
+    stroke: #ec4899;
+  }
+  
+  .gender-radio-option.selected .male-icon svg {
+    stroke: #2563eb;
+  }
+  
+  .gender-radio-option.selected .female-icon svg {
+    stroke: #db2777;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  /* Blue button for edit mode */
+/* Bouton MODIFIER (Edit mode) */
+.btn-edt {
+  background: linear-gradient(135deg, #3f51b5 0%, #2196f3 100%) !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 12px !important;
+  padding: 14px 28px !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  text-transform: none !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+  position: relative !important;
+  overflow: hidden !important;
+  width: 100% !important;
+}
+
+.btn-edt:hover {
+  background: linear-gradient(135deg, #303f9f 0%, #1976d2 100%) !important;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15) !important;
+  transform: translateY(-2px) !important;
+}
+
+.btn-edt:active {
+  transform: translateY(0) !important;
+}
+
+.btn-edt::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.5);
+  opacity: 0;
+  border-radius: 100%;
+  transform: scale(1, 1) translate(-50%, -50%);
+  transform-origin: 50% 50%;
+}
+
+.btn-edt:focus:not(:active)::after {
+  animation: ripple 0.6s ease-out;
+}
+
+/* Bouton ENREGISTRER (Create mode) */
+.btn-blue {
+  background: linear-gradient(135deg, #4caf50 0%, #8bc34a 100%) !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 12px !important;
+  padding: 14px 28px !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  text-transform: none !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+  position: relative !important;
+  overflow: hidden !important;
+  width: 100% !important;
+}
+
+.btn-blue:hover {
+  background: linear-gradient(135deg, #388e3c 0%, #7cb342 100%) !important;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15) !important;
+  transform: translateY(-2px) !important;
+}
+
+.btn-blue:active {
+  transform: translateY(0) !important;
+}
+
+/* Bouton ANNULER */
+.btn-dang {
+  background: linear-gradient(135deg, #f44336 0%, #ff5722 100%) !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 12px !important;
+  padding: 14px 28px !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  text-transform: none !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+  position: relative !important;
+  overflow: hidden !important;
+  width: 100% !important;
+}
+
+.btn-dang:hover {
+  background: linear-gradient(135deg, #d32f2f 0%, #e64a19 100%) !important;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15) !important;
+  transform: translateY(-2px) !important;
+}
+
+.btn-dang:active {
+  transform: translateY(0) !important;
+}
+
+/* Animation pour l'effet ripple */
+@keyframes ripple {
+  0% {
+    transform: scale(0, 0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(25, 25);
+    opacity: 0;
+  }
+}
+
+/* Styles communs pour tous les boutons */
+.btn-lg {
+  min-height: 48px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+}
+
+.w-100 {
+  width: 100% !important;
 }

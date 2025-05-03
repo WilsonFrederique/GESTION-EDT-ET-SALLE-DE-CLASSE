@@ -184,9 +184,8 @@ const SalleListe = () => {
                 <div className="card shadow border-0 p-3 mt-4">
                     <div className="fa-reg-plus-square-container ensbl">
                         <div>Liste des salles de classe</div>
-                        <div>
-                            <a href="#"><ImPrinter className='impression' /></a> &nbsp;&nbsp;
-                            <a href="/salleFRM"><FaRegPlusSquare /></a>
+                        <div className='add'>
+                            <a href="/salleFRM"><FaRegPlusSquare className='icn' /></a>
                         </div>
                     </div>
             

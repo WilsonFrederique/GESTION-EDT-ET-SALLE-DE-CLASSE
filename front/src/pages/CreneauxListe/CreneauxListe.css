@@ -162,3 +162,172 @@ body.dark .creneaux-thead th{
       font-size: 0.85rem;
     }
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  /* Ajouter un créneau  */
+
+  /* Base Styles */
+.add-actions-glass {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  font-family: 'Inter', 'SF Pro Display', -apple-system, sans-serif;
+  backdrop-filter: blur(10px);
+  padding: 0.75rem 1.25rem;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+}
+
+.add-label-glass {
+  font-size: 1rem;
+  color: rgba(23, 22, 22, 0.9);
+  font-weight: 500;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.action-buttons-glass {
+  display: flex;
+  gap: 0.875rem;
+}
+
+.action-btn-glass {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  border: none;
+  overflow: hidden;
+  color: white;
+  z-index: 1;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.action-btn-glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.1));
+  border-radius: inherit;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.action-btn-glass:hover::before {
+  opacity: 1;
+}
+
+.hover-effect-glass {
+  position: absolute;
+  width: 150%;
+  height: 150%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, transparent 70%);
+  top: -50%;
+  left: -50%;
+  transform: translate(0, -100%) rotate(0deg);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: -1;
+}
+
+.action-btn-glass:hover .hover-effect-glass {
+  transform: translate(0, 0) rotate(0deg);
+}
+
+.card .fa-reg-plus-square-container svg{
+  color: #e2e8f0 !important;
+}
+
+.icon-wrapper-glass {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Direct Button */
+.direct-glass {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.9), rgba(37, 99, 235, 0.9));
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.direct-glass:hover {
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Custom Button */
+.custom-glass {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.9), rgba(124, 58, 237, 0.9));
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.custom-glass:hover {
+  box-shadow: 0 8px 24px rgba(139, 92, 246, 0.3);
+  transform: translateY(-2px);
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Animations */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(-2px);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .add-actions-glass {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1rem;
+  }
+  
+  .action-buttons-glass {
+    width: 100%;
+    flex-direction: column;
+  }
+  
+  .action-btn-glass {
+    width: 100%;
+    justify-content: center;
+  }
+}

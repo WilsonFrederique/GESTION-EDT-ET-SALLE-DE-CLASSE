@@ -17,6 +17,7 @@ import { FaTimes } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
 import { GoMoveToTop } from "react-icons/go";
 import { FaUpload } from 'react-icons/fa';
+import { FaRegEdit } from "react-icons/fa";
 
 import { createEnseignant, updateEnseignant, getEnseignant, getAllEnseignants } from '../../services/enseignants_api';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -237,38 +238,40 @@ const EnseignantsFRM = () => {
                         <div className="card p-4">
                             <h5 className='mb-4'>Données principales de l'enseignant</h5>
 
-                            {/* CIN */}
-                            <div className="form-group">
-                                <label htmlFor="cinEns">
-                                    <h6>CIN</h6>
-                                </label>
-                                <input
-                                    id="cinEns"
-                                    type="text"
-                                    name="cinEns"
-                                    value={enseignantData.cinEns.replace(/\D/g, '').replace(/(\d{4})(?=\d)/g, '$1 ')}
-                                    onChange={(e) => {
-                                        // Supprime tout sauf les chiffres et limite à 12 caractères
-                                        let value = e.target.value.replace(/\D/g, '').substring(0, 12);
-                                        
-                                        // Ajoute des espaces tous les 4 chiffres
-                                        value = value.replace(/(\d{4})(?=\d)/g, '$1 ');
-                                        
-                                        setEnseignantData(prev => ({
-                                            ...prev,
-                                            cinEns: value
-                                        }));
-                                    }}
-                                    required
-                                    className="form-control"
-                                    disabled={isEditMode}
-                                    maxLength={14} // 12 chiffres + 2 espaces
-                                    placeholder="1234 5678 9012"
-                                />
-                            </div>  
-
-                            {/* Nom et Prénom */}
+                            {/* CIN , NOM , PRENOM Et Adresse */}
                             <div className="row">
+                                <div className="col">
+                                    <div className="form-group">
+                                        <label htmlFor="cinEns">
+                                            <h6>CIN</h6>
+                                        </label>
+                                        <input
+                                            id="cinEns"
+                                            type="text"
+                                            name="cinEns"
+                                            value={enseignantData.cinEns.replace(/\D/g, '').replace(/(\d{4})(?=\d)/g, '$1 ')}
+                                            onChange={(e) => {
+                                                // Supprime tout sauf les chiffres et limite à 12 caractères
+                                                let value = e.target.value.replace(/\D/g, '').substring(0, 12);
+                                                
+                                                // Ajoute des espaces tous les 4 chiffres
+                                                value = value.replace(/(\d{4})(?=\d)/g, '$1 ');
+                                                
+                                                setEnseignantData(prev => ({
+                                                    ...prev,
+                                                    cinEns: value
+                                                }));
+                                            }}
+                                            required
+                                            className="form-control"
+                                            disabled={isEditMode}
+                                            maxLength={14} // 12 chiffres + 2 espaces
+                                            placeholder="1234 5678 9012"
+                                        />
+                                    </div>  
+                                </div>  
+
+
                                 <div className="col">
                                     <div className="form-group">
                                         <label htmlFor="Nom">
@@ -303,49 +306,28 @@ const EnseignantsFRM = () => {
                                         />
                                     </div>
                                 </div>
-                            </div>
-
-                            {/* Sexe et Grade */}
-                            <div className="row">
-                                <div className="col">
-                                    <div className="form-group">
-                                        <label htmlFor="Sexe">
-                                            <h6>Sexe</h6>
-                                        </label>
-                                        <Select
-                                            id="Sexe"
-                                            name="Sexe"
-                                            value={enseignantData.Sexe}
-                                            onChange={handleSelectChange}
-                                            required
-                                            className="w-100"
-                                        >
-                                            <MenuItem value="Masculin">Masculin</MenuItem>
-                                            <MenuItem value="Féminin">Féminin</MenuItem>
-                                        </Select>
-                                    </div>
-                                </div>
 
                                 <div className="col">
                                     <div className="form-group">
-                                        <label htmlFor="Grade">
-                                            <h6>Grade</h6>
+                                        <label htmlFor="Adresse">
+                                            <h6>Adresse</h6>
                                         </label>
                                         <input
-                                            id="Grade"
+                                            id="Adresse"
                                             type="text"
-                                            name="Grade"
-                                            value={enseignantData.Grade}
-                                            onChange={handleInputChange}
+                                            name="Adresse"
+                                            value={enseignantData.Adresse}
+                                            onChange={handleInputChange}                                    
                                             className="form-control"
-                                            maxLength={100}
+                                            maxLength={50}
                                         />
                                     </div>
                                 </div>
                             </div>
 
-                            {/* Téléphone et Email */}
+                            {/* Téléphone et Email , Spécialité et Grage*/}
                             <div className="row">
+
                                 <div className="col">
                                     <div className="form-group">
                                         <label htmlFor="Telephone">
@@ -384,38 +366,92 @@ const EnseignantsFRM = () => {
                                         />
                                     </div>
                                 </div>
+
+                                <div className="col">
+                                    <div className="form-group">
+                                        <label htmlFor="Grade">
+                                            <h6>Grade</h6>
+                                        </label>
+                                        <input
+                                            id="Grade"
+                                            type="text"
+                                            name="Grade"
+                                            value={enseignantData.Grade}
+                                            onChange={handleInputChange}
+                                            className="form-control"
+                                            maxLength={100}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="col">
+                                    <div className="form-group">
+                                        <label htmlFor="Specialite">
+                                            <h6>Spécialité</h6>
+                                        </label>
+                                        <input
+                                            id="Specialite"
+                                            type="text"
+                                            name="Specialite"
+                                            value={enseignantData.Specialite}
+                                            onChange={handleInputChange}
+                                            className="form-control"
+                                            maxLength={50}
+                                        />
+                                    </div>
+                                </div>
                             </div>
 
-                            {/* Adresse */}
-                            <div className="form-group">
-                                <label htmlFor="Adresse">
-                                    <h6>Adresse</h6>
+                            {/* Sexe */}
+                            <div className="col">
+                                <label htmlFor="Sexe" className="gender-label">
+                                <h6>Sexe</h6>
                                 </label>
-                                <input
-                                    id="Adresse"
-                                    type="text"
-                                    name="Adresse"
-                                    value={enseignantData.Adresse}
-                                    onChange={handleInputChange}                                    
-                                    className="form-control"
-                                    maxLength={50}
-                                />
-                            </div>
+                                <div className="gender-radio-container">
+                                    <div className="gender-radio-group">
+                                        <label className={`gender-radio-option ${enseignantData.Sexe === 'Masculin' ? 'selected' : ''}`}>
+                                            <input
+                                                type="radio"
+                                                name="Sexe"
+                                                value="Masculin"
+                                                checked={enseignantData.Sexe === 'Masculin'}
+                                                onChange={handleSelectChange}
+                                                className="gender-radio-input"
+                                            />
+                                            <div className="gender-radio-content">
+                                                <div className="gender-icon male-icon">
+                                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M10 15C13.3137 15 16 12.3137 16 9C16 5.68629 13.3137 3 10 3C6.68629 3 4 5.68629 4 9C4 12.3137 6.68629 15 10 15Z" stroke="currentColor" strokeWidth="2"/>
+                                                        <path d="M21 21L15 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                                                        <path d="M15 10V15H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                                    </svg>
+                                                </div>
+                                                <span>Masculin</span>
+                                            </div>
+                                        </label>
 
-                            {/* Spécialité */}
-                            <div className="form-group">
-                                <label htmlFor="Specialite">
-                                    <h6>Spécialité</h6>
-                                </label>
-                                <input
-                                    id="Specialite"
-                                    type="text"
-                                    name="Specialite"
-                                    value={enseignantData.Specialite}
-                                    onChange={handleInputChange}
-                                    className="form-control"
-                                    maxLength={50}
-                                />
+                                        <label className={`gender-radio-option ${enseignantData.Sexe === 'Féminin' ? 'selected' : ''}`}>
+                                            <input
+                                                type="radio"
+                                                name="Sexe"
+                                                value="Féminin"
+                                                checked={enseignantData.Sexe === 'Féminin'}
+                                                onChange={handleSelectChange}
+                                                className="gender-radio-input"
+                                            />
+                                            <div className="gender-radio-content">
+                                                <div className="gender-icon female-icon">
+                                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M12 15C15.3137 15 18 12.3137 18 9C18 5.68629 15.3137 3 12 3C8.68629 3 6 5.68629 6 9C6 12.3137 8.68629 15 12 15Z" stroke="currentColor" strokeWidth="2"/>
+                                                    <path d="M12 15V21" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                                                    <path d="M9 18H15" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                                                </svg>
+                                                </div>
+                                                <span>Féminin</span>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
 
                             {/* Photo */}
@@ -486,9 +522,19 @@ const EnseignantsFRM = () => {
                                     type='submit' 
                                     variant="contained" 
                                     color="primary"
-                                    startIcon={<FaPlus />}
-                                    className='btn-blue btn-lg w-100'
-                                >
+                                    startIcon={isEditMode ? <FaRegEdit /> : <FaPlus />}
+                                    className={isEditMode ? 'btn-blue btn-lg w-100' : 'btn-edt btn-lg w-100' }
+                                    sx={{
+                                        textTransform: 'none',
+                                        fontSize: '1rem',
+                                        padding: '12px 24px',
+                                        borderRadius: '8px',
+                                        boxShadow: 'none',
+                                        '&:hover': {
+                                        boxShadow: 'none',
+                                        }
+                                    }}
+                                    >
                                     {isEditMode ? 'MODIFIER' : 'ENREGISTRER'}
                                 </Button>
                                 <Button 

@@ -216,4 +216,48 @@
       padding: 0.75rem;
     }
   }
+ 
+  .title{
+    text-align: right !important;
+    position: absolute !important;
+    right: 0 !important; 
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+  .bg-edt-acceuil{
+    background: rgba(248, 248, 250, 0.651) !important;
+  }
+  
+  body.dark .bg-edt-acceuil{
+    background: rgba(112, 112, 235, 0.071) !important;
+  }
+
+
+
+
+
+
+
+
+
+
+  /* Style pour les boutons d'action */
+.supp-moderne-acc svg{
+  color: red !important;
+}
+
+.modif svg{
+  color: rgb(21, 118, 21) !important;
+}
   

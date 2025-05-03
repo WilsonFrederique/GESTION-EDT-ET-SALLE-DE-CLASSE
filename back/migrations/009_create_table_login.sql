@@ -1,0 +1,8 @@
+-- CREATE TABLE IF NOT EXISTS login (
+--     IDLogin INT AUTO_INCREMENT PRIMARY KEY,
+--     NomPrenom VARCHAR(100),
+--     Telephone VARCHAR(13),
+--     Email VARCHAR(50),
+--     Passwd VARCHAR(50),
+--     Img VARCHAR(255)
+-- );

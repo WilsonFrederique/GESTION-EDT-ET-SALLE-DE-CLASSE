@@ -14,6 +14,8 @@ import Button from '@mui/material/Button';
 import { GoMoveToTop } from "react-icons/go";
 import { IoMdDownload } from "react-icons/io";
 import { FaTimes } from "react-icons/fa";
+import { FaRegEdit } from "react-icons/fa";
+import { IoAdd } from "react-icons/io5";
 
 import { createNiveau, updateNiveau, getNiveau, getAllNiveaux } from '../../../services/niveaux_api';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -222,9 +224,19 @@ const NiveauxFrm = () => {
                                     type='submit' 
                                     variant="contained" 
                                     color="primary"
-                                    startIcon={<IoMdDownload />}
-                                    className='btn-blue btn-lg w-100'
-                                >
+                                    startIcon={isEditMode ? <FaRegEdit /> : <IoAdd />}
+                                    className={isEditMode ? 'btn-blue btn-lg w-100' : 'btn-edt btn-lg w-100' }
+                                    sx={{
+                                        textTransform: 'none',
+                                        fontSize: '1rem',
+                                        padding: '12px 24px',
+                                        borderRadius: '8px',
+                                        boxShadow: 'none',
+                                        '&:hover': {
+                                        boxShadow: 'none',
+                                        }
+                                    }}
+                                    >
                                     {isEditMode ? 'MODIFIER' : 'ENREGISTRER'}
                                 </Button>
                                 <Button 

@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { usePDF } from 'react-to-pdf';
 import { getEnseignant, deleteEnseignant } from '../../../../services/enseignants_api';
 import './EnseignantsDetail.css';
 
@@ -26,6 +27,7 @@ import { FaEdit } from "react-icons/fa";
 import { FaChalkboardTeacher } from "react-icons/fa";
 import { FaTransgenderAlt } from "react-icons/fa";
 import { IoMdArrowRoundBack } from "react-icons/io";
+import { ImPrinter } from "react-icons/im";
 
 import ProfileF from '../../../../assets/images/sf.jpg';
 import ProfileM from '../../../../assets/images/sm.png';
@@ -36,6 +38,7 @@ const EnseignantsDetail = () => {
   const [enseignant, setEnseignant] = useState<Enseignant | null>(null);
   const [loading, setLoading] = useState(true);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const { toPDF, targetRef } = usePDF({ filename: `enseignant-${cinEns}.pdf` });
 
   const StyledBreadcrumb = styled(Chip)(({ theme }) => {
     const backgroundColor =
@@ -97,6 +100,10 @@ const EnseignantsDetail = () => {
     }
   };
 
+  const generatePDF = () => {
+    toPDF();
+  };
+
   if (loading) return <div className="right-content w-100">Chargement...</div>;
   if (!enseignant) return <div className="right-content w-100">Enseignant non trouvé</div>;
 
@@ -143,6 +150,125 @@ const EnseignantsDetail = () => {
         </DialogActions>
       </Dialog>
 
+      {/* Contenu PDF caché */}
+      <div ref={targetRef} style={{
+        position: 'absolute',
+        left: '-9999px',
+        top: 0,
+        width: '794px',
+        padding: '20px',
+        backgroundColor: 'white'
+      }}>
+        <h2 style={{ 
+          textAlign: 'center', 
+          marginBottom: '30px', 
+          color: 'black',
+          fontSize: '24px',
+          fontWeight: 'bold',
+          borderBottom: '2px solid #f2f2f2',
+          paddingBottom: '10px'
+        }}>
+          Fiche Enseignant
+        </h2>
+        
+        <div style={{ display: 'flex', marginBottom: '30px' }}>
+          <div style={{ marginRight: '30px' }}>
+            <img 
+              src={enseignant.Sexe === 'Masculin' ? ProfileM : ProfileF} 
+              alt={`${enseignant.Nom} ${enseignant.Prenom}`}
+              style={{ 
+                width: '150px', 
+                height: '150px', 
+                borderRadius: '10px', 
+                objectFit: 'cover',
+                border: '3px solid #f2f2f2'
+              }}
+            />
+          </div>
+          <div style={{ flex: 1 }}>
+            <h3 style={{ 
+              color: 'black', 
+              marginBottom: '10px',
+              fontSize: '20px'
+            }}>
+              {enseignant.Nom} {enseignant.Prenom}
+            </h3>
+            <p style={{ color: '#666', marginBottom: '5px' }}>
+              <strong>Grade:</strong> {enseignant.Grade}
+            </p>
+            <p style={{ color: '#666', marginBottom: '5px' }}>
+              <strong>Spécialité:</strong> {enseignant.Specialite}
+            </p>
+          </div>
+        </div>
+
+        <div style={{ 
+          backgroundColor: '#f9f9f9', 
+          padding: '15px',
+          borderRadius: '5px',
+          marginBottom: '20px'
+        }}>
+          <h4 style={{ 
+            color: 'black', 
+            marginBottom: '15px',
+            borderBottom: '1px solid #ddd',
+            paddingBottom: '5px'
+          }}>
+            Informations Personnelles
+          </h4>
+          <table style={{ width: '100%' }}>
+            <tbody>
+              <tr>
+                <td style={{ padding: '8px 0', width: '30%', color: '#555' }}>Sexe:</td>
+                <td style={{ padding: '8px 0', color: 'black' }}>{enseignant.Sexe}</td>
+              </tr>
+              <tr>
+                <td style={{ padding: '8px 0', color: '#555' }}>Adresse:</td>
+                <td style={{ padding: '8px 0', color: 'black' }}>{enseignant.Adresse}</td>
+              </tr>
+              <tr>
+                <td style={{ padding: '8px 0', color: '#555' }}>Téléphone:</td>
+                <td style={{ padding: '8px 0', color: 'black' }}>{enseignant.Telephone}</td>
+              </tr>
+              <tr>
+                <td style={{ padding: '8px 0', color: '#555' }}>Email:</td>
+                <td style={{ padding: '8px 0', color: 'black' }}>{enseignant.Email}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div style={{ 
+          backgroundColor: '#f9f9f9', 
+          padding: '15px',
+          borderRadius: '5px'
+        }}>
+          <h4 style={{ 
+            color: 'black', 
+            marginBottom: '15px',
+            borderBottom: '1px solid #ddd',
+            paddingBottom: '5px'
+          }}>
+            Description
+          </h4>
+          <p style={{ color: 'black' }}>
+            {enseignant.Descriptions || 'Aucune description disponible'}
+          </p>
+        </div>
+
+        <div style={{ 
+          marginTop: '30px',
+          textAlign: 'center',
+          color: '#888',
+          fontSize: '12px',
+          borderTop: '1px solid #eee',
+          paddingTop: '10px'
+        }}>
+          Généré le {new Date().toLocaleDateString()} - Système de Gestion des Enseignants
+        </div>
+      </div>
+
+      {/* Interface utilisateur */}
       <div className="card shadow border-0 w-100 flex-row p-4">
         <h5 className="mb-0">Détails de l'enseignant</h5>
         <Breadcrumbs aria-label="breadcrumb" className="ms-auto breadcrumb_">
@@ -189,6 +315,12 @@ const EnseignantsDetail = () => {
                       <IoMdArrowRoundBack />
                     </button>
                   </Link>
+                  <button 
+                    className="btn-impr btn-lg me-2"
+                    onClick={generatePDF}
+                  >
+                    <ImPrinter />
+                  </button>
                   <Link to={`/modifierEnseignantsFRM/${enseignant.cinEns}`}>
                     <button className="btn-edt btn-lg me-2">
                       <FaEdit />

@@ -19,7 +19,8 @@ import Tooltip from '@mui/material/Tooltip';
 
 // Importations icônes
 import { FaTimes } from "react-icons/fa";
-import { FaPlus } from "react-icons/fa6";
+import { FaRegEdit } from "react-icons/fa";
+import { IoAdd } from "react-icons/io5";
 import { GoMoveToTop } from "react-icons/go";
 
 // Importations API
@@ -1049,10 +1050,20 @@ const EdtFrm = () => {
                                             type='submit' 
                                             variant="contained" 
                                             color="primary"
-                                            startIcon={<FaPlus />}
-                                            className='btn-blue btn-lg w-100'
                                             disabled={!formValid || niveauParcoursConflict !== null}
-                                        >
+                                            startIcon={isEditMode ? <FaRegEdit /> : <IoAdd />}
+                                            className={isEditMode ? 'btn-blue btn-lg w-100' : 'btn-edt btn-lg w-100' }
+                                            sx={{
+                                                textTransform: 'none',
+                                                fontSize: '1rem',
+                                                padding: '12px 24px',
+                                                borderRadius: '8px',
+                                                boxShadow: 'none',
+                                                '&:hover': {
+                                                boxShadow: 'none',
+                                                }
+                                            }}
+                                            >
                                             {isEditMode ? 'MODIFIER' : 'ENREGISTRER'}
                                         </Button>
                                     </span>

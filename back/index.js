@@ -10,6 +10,7 @@ import creneauxRoutes from "./routes/creneaux.routes.js";
 import sallesRoutes from "./routes/salles.routes.js";
 import matieresRoutes from "./routes/matieres.routes.js";
 import edtsRoutes from "./routes/edts.routes.js";
+// import loginsRoutes from "./routes/logins.routes.js";
 
 dotenv.config({ path: ".env" });
 
@@ -34,6 +35,7 @@ app.use("/api", creneauxRoutes);
 app.use("/api", sallesRoutes);
 app.use("/api", matieresRoutes);
 app.use("/api", edtsRoutes);
+// app.use("/api", loginsRoutes);
 
 app.listen(port, () => {
   console.log(`App listening on http://localhost:${port}`);

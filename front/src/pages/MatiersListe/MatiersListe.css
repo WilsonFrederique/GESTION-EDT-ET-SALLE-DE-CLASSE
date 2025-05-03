@@ -261,3 +261,10 @@ body.dark .matieres-thead th{
 
 
 
+
+
+
+  .esbl-impr-add{
+    display: flex;
+    align-items: center;
+  }
